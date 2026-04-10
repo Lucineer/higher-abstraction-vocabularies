@@ -327,6 +327,20 @@ class HAV:
         self._load_robotics()
         self._load_cybernetics()
         self._load_algebra()
+        self._load_finance()
+        self._load_materials_science()
+        self._load_verification()
+        self._load_graph_theory()
+        self._load_learning_theory()
+        self._load_phenomenology()
+        self._load_anthropology()
+        self._load_logic()
+        self._load_probability_distributions()
+        self._load_set_theory()
+        self._load_topology()
+        self._load_ai_safety()
+        self._load_ontology_engineering()
+        self._load_construction()
         self._load_mathematics()
 
     def _load_uncertainty(self):
@@ -3253,6 +3267,464 @@ class HAV:
             examples=["List.map: lift function to work on lists", "Option.map: lift function to work on optional values", "fleet: confidence functor lifts deterministic ops to confidence-aware ops"],
             bridges=["lifting", "category-theory", "composition", "container"],
             tags=["algebra", "category-theory", "functor"])
+
+
+    def _load_finance(self):
+        ns = self.add_namespace("finance",
+            "Financial concepts as metaphors and tools for agent resource management")
+
+        ns.define("convexity",
+            "Payoff accelerates in your favor — small costs, exponentially growing gains",
+            description="A convex function curves upward: each additional unit of investment produces more return than the last. Compound interest is convex. Learning curves are convex (each hour of practice is more productive than the last, initially). In the fleet: exploration has convex payoff — early exploration is cheap but returns grow exponentially as the agent discovers better strategies. The gene pool (cuda-genepool) compounds: more genes = more combinations = faster evolution.",
+            level=Level.DOMAIN,
+            examples=["compound interest: convex growth", "learning curve: initial slow, then accelerating", "fleet: exploration payoff is convex — early costs, exponential later gains"],
+            bridges=["compound-interest", "optionality", "exponential", "asymmetric-risk"],
+            tags=["finance", "convexity", "growth", "payoff"])
+
+        ns.define("antifragile-portfolio",
+            "A collection of investments where volatility and stress increase expected returns, not decrease them",
+            description="Taleb's concept: don't just survive stress, benefit from it. A portfolio with small bounded downside (options cost limited to premium) and unlimited upside (option payoff unbounded) is antifragile. In the fleet: the gene pool is an antifragile portfolio. Each gene has bounded downside (energy cost to test) and potentially unlimited upside (discovering optimal strategy). Fleet stress (environment change) kills weak genes but makes the pool stronger.",
+            level=Level.META,
+            examples=["option portfolio: bounded cost, unlimited upside", "fleet gene pool: bounded energy cost per gene, unlimited fitness gain", "startup portfolio: most fail (bounded loss), one succeeds (unbounded gain)"],
+            bridges=["anti-fragility", "convexity", "optionality", "portfolio"],
+            tags=["finance", "antifragility", "portfolio", "meta"])
+
+        ns.define("moral-hazard",
+            "When an agent is insulated from risk, it takes more risk than it would otherwise — the safety net creates recklessness",
+            description="If your bank deposits are insured, the bank takes riskier loans (2008 financial crisis). If an agent knows the fleet will rescue it, it takes riskier actions. In the fleet: shared energy budgets create moral hazard — individual agents may waste energy because the fleet provides backup. Individual energy budgets (cuda-energy per-agent) eliminate moral hazard: each agent bears its own risk.",
+            level=Level.BEHAVIOR,
+            examples=["bank deposit insurance -> risky loans (2008)", "insurance -> riskier driving", "fleet: shared energy pool -> individual agent energy waste (moral hazard)"],
+            bridges=["tragedy-of-commons", "incentive-alignment", "risk-shifting", "insurance"],
+            tags=["finance", "hazard", "incentive", "risk"])
+
+        ns.define("arbitrage",
+            "Exploiting price differences between markets — risk-free profit from inefficiency",
+            description="Gold costs $1900 in New York and $1910 in London. Buy in New York, sell in London, pocket $10. Arbitrage eliminates market inefficiency. In the fleet: if two agents have different trust assessments of the same third agent, the difference is an information arbitrage opportunity. cuda-trust's gossip sharing equalizes trust assessments, eliminating the arbitrage. Market efficiency = no arbitrage opportunity.",
+            level=Level.DOMAIN,
+            examples=["buy gold in NY, sell in London", "fleet: different trust assessments of same agent = information arbitrage", "search engine arbitrage: different prices on different sites"],
+            bridges=["efficiency", "information", "market", "trust"],
+            tags=["finance", "arbitrage", "efficiency", "information"])
+
+    def _load_materials_science(self):
+        ns = self.add_namespace("materials-science",
+            "How physical materials behave under stress — metaphors for agent systems under pressure")
+
+        ns.define("stress-concentration",
+            "Stress intensifies at geometric discontinuities — corners, holes, notches become failure points",
+            description="A plate with a small hole: stress at the hole's edge is 3x the average stress. The hole concentrates stress. In the fleet: bottlenecks in communication concentrate stress on single agents. The fleet mesh (cuda-fleet-mesh) should avoid single-agent bottlenecks: distribute load across multiple paths. Stress concentration explains why 'the weakest link' often isn't the weakest material but the most geometrically stressed point.",
+            level=Level.PATTERN,
+            examples=["plate with hole: 3x stress at hole edge", "fleet: single-agent bottleneck concentrates communication stress", "crack tip: infinite stress concentration in theory"],
+            bridges=["bottleneck", "failure-point", "geometry", "load-distribution"],
+            tags=["materials", "stress", "failure", "pattern"])
+
+        ns.define("fatigue",
+            "Progressive structural damage from repeated cyclic loading — materials fail below their rated strength",
+            description="A metal beam rated for 10,000 lbs fails after 1,000,000 cycles of 5,000 lbs loading. Each cycle causes microscopic damage that accumulates. In the fleet: agents under repeated moderate stress (constant task switching, frequent communication) accumulate cognitive fatigue — not from any single event but from the cumulative effect. cuda-resilience monitors for fatigue: declining performance under sustained moderate load.",
+            level=Level.BEHAVIOR,
+            examples=["metal beam failing after millions of moderate cycles", "fleet agent degrading under constant moderate stress (not overload)", "human burnout from sustained moderate stress (not crisis)"],
+            bridges=["stress", "cumulative-damage", "cyclic-loading", "degradation"],
+            tags=["materials", "fatigue", "cumulative", "stress"])
+
+        ns.define("yield-strength",
+            "The stress level at which a material permanently deforms — beyond this point, no return to original shape",
+            description="Pull rubber: it stretches, then snaps back (elastic deformation). Pull steel beyond yield strength: it bends and stays bent (plastic deformation). In the fleet: agents have a yield strength — a stress threshold beyond which they permanently change. An agent that experiences extreme energy depletion may permanently reduce its exploratory tendency (learned helplessness). Below yield, recovery is complete. Above, permanent adaptation.",
+            level=Level.DOMAIN,
+            examples=["steel bends permanently beyond yield strength", "fleet agent permanently reduces exploration after extreme energy depletion", "human PTSD: permanent change from extreme stress"],
+            bridges=["resilience", "plasticity", "threshold", "permanent-change"],
+            tags=["materials", "yield", "threshold", "deformation"])
+
+        ns.define("strain-hardening",
+            "Material becomes stronger after being deformed — what doesn't break you makes you stronger",
+            description="Work-hardening: bend a metal wire back and forth. It becomes harder and more brittle at the bend. It's been strengthened by stress. In the fleet: agents that experience moderate stress and recover become more resilient to future stress. This is the biological basis of vaccines and the psychological basis of exposure therapy. cuda-adaptation's strategy switching implements strain-hardening: surviving stress improves stress handling.",
+            level=Level.PATTERN,
+            examples=["cold-worked metal is stronger", "muscles grow from exercise stress", "fleet agent: surviving moderate stress improves future stress handling", "immune system: exposure strengthens"],
+            bridges=["anti-fragility", "resilience", "stress", "adaptation"],
+            tags=["materials", "hardening", "stress", "adaptation"])
+
+    def _load_verification(self):
+        ns = self.add_namespace("verification",
+            "Proving systems correct — formal methods and testing strategies")
+
+        ns.define("formal-verification",
+            "Mathematical proof that a system satisfies its specification — not testing, proving",
+            description="Testing: you tried 1000 inputs and it worked. Formal verification: you proved it works for ALL inputs. Testing can find bugs. Verification can prove their absence (for the verified properties). In the fleet: critical safety properties (membrane antibody rules, apoptosis thresholds) should be formally verified, not just tested. cuda-state-machine's guard evaluation could be verified: prove that no unsafe state is reachable.",
+            level=Level.DOMAIN,
+            examples=["seL4 microkernel: formally verified", "Ariane 5 rocket: overflow bug that testing didn't catch", "fleet: membrane rules formally verified to block all dangerous commands"],
+            bridges=["testing", "proof", "correctness", "safety"],
+            tags=["verification", "formal", "proof", "safety"])
+
+        ns.define("property-testing",
+            "Testing against randomly generated inputs that satisfy specifications, not hand-written examples",
+            description="Instead of testing sort([3,1,2]) and sort([5,4]), generate 1000 random arrays and verify: output is sorted, output contains same elements as input, output length equals input length. Property testing finds bugs that example testing misses. In the fleet: test agent behavior against random environments, random messages, random energy levels. Properties: 'agent never enters negative energy state', 'agent always responds within timeout'.",
+            level=Level.PATTERN,
+            examples=["QuickCheck/Hypothesis: generate random test cases", "verify sort: always sorted, same elements, same length", "fleet: test agent against random environments and verify invariants"],
+            bridges=["testing", "random-generation", "invariant", "correctness"],
+            tags=["verification", "testing", "property", "random"])
+
+        ns.define("invariant",
+            "A property that must always hold — the contract that the system must never violate",
+            description="Account balance >= 0. Sorted list has no inversions. Energy budget >= 0. Invariants are the fundamental contracts that define correct behavior. If an invariant is violated, the system is in an illegal state. The fleet's invariants include: energy never negative, trust between 0 and 1, confidence between 0 and 1, dead agents don't act. cuda-state-machine and cuda-contract verify invariants.",
+            level=Level.CONCRETE,
+            examples=["account balance >= 0", "fleet: energy never negative", "fleet: confidence always between 0 and 1", "sorted list: no inversions"],
+            bridges=["correctness", "assertion", "contract", "verification"],
+            tags=["verification", "invariant", "contract", "correctness"])
+
+        ns.define("model-checking",
+            "Automated exhaustive exploration of all possible system states to verify properties",
+            description="Given a state machine and a property, model checking explores every reachable state and checks if the property holds in all of them. Unlike testing (which samples), model checking is exhaustive. But it's computationally expensive: state space grows exponentially. In the fleet: cuda-state-machine could theoretically be model-checked to verify that no unsafe state is reachable. For small state machines (energy < 10, trust < 5 levels), this is feasible.",
+            level=Level.DOMAIN,
+            examples=["model checking a protocol for deadlocks", "verifying no unsafe state is reachable in state machine", "fleet: verify apoptosis triggers correctly for all energy/trust combinations"],
+            bridges=["formal-verification", "state-machine", "exhaustive", "correctness"],
+            tags=["verification", "model-checking", "exhaustive", "formal"])
+
+    def _load_graph_theory(self):
+        ns = self.add_namespace("graph-theory",
+            "The mathematics of networks — paths, flows, communities, and connectivity")
+
+        ns.define("shortest-path",
+            "The minimum-weight path between two nodes in a weighted graph — the foundation of routing",
+            description="Dijkstra's algorithm finds the shortest path. A* adds a heuristic to search faster. Every routing problem (GPS navigation, internet packet routing, fleet message routing) is a shortest-path problem. In the fleet's cuda-fleet-mesh, messages are routed along shortest paths (lowest latency/hops). cuda-navigation's A* pathfinding IS shortest-path with a spatial heuristic.",
+            level=Level.PATTERN,
+            examples=["GPS navigation: shortest driving route", "internet: BGP routing", "fleet: message routing along lowest-latency path"],
+            bridges=["navigation", "routing", "pathfinding", "network"],
+            tags=["graph", "path", "routing", "algorithm"])
+
+        ns.define("clique",
+            "A subset of nodes where every pair is connected — a fully-connected subgraph",
+            description="In a social network, a clique is a group where everyone knows everyone. Maximal clique: can't add anyone else while maintaining full connectivity. In the fleet: tightly coordinated agent teams form cliques — every member communicates with every other member. Finding cliques identifies natural coordination groups. Clique detection helps fleet auto-organize into efficient sub-teams.",
+            level=Level.CONCRETE,
+            examples=["friend group where everyone knows everyone", "fleet: tightly coordinated sub-team (all-to-all communication)", "protein interaction clique: all proteins interact with each other"],
+            bridges=["community", "fully-connected", "clustering", "team"],
+            tags=["graph", "clique", "community", "structure"])
+
+        ns.define("bipartite",
+            "A graph whose nodes split into two groups with edges only between groups, never within",
+            description="Employers and job seekers. Students and classes. Buyers and sellers. No edges within a group — only between groups. In the fleet: task assignment forms a bipartite graph (agents on one side, tasks on the other). Maximum bipartite matching optimally assigns agents to tasks. cuda-captain's best_available method uses bipartite matching logic.",
+            level=Level.CONCRETE,
+            examples=["job matching: employers <-> job seekers", "course enrollment: students <-> classes", "fleet task assignment: agents <-> tasks"],
+            bridges=["matching", "assignment", "bipartite", "optimization"],
+            tags=["graph", "bipartite", "matching", "assignment"])
+
+        ns.define("flow-network",
+            "A graph where edges have capacities and the goal is to maximize flow from source to sink",
+            description="A water pipe network: each pipe has a maximum flow rate. What's the maximum water you can push from source to sink? Ford-Fulkerson algorithm finds maximum flow. In the fleet: communication bandwidth forms a flow network. Each agent-to-agent link has a capacity (rate limit). Maximum flow = maximum information throughput from any agent to any other. Bottleneck edges are the critical communication links.",
+            level=Level.PATTERN,
+            examples=["water pipe network: maximize flow", "transportation network: maximize cargo movement", "fleet: maximize information flow given bandwidth constraints"],
+            bridges=["capacity", "bottleneck", "throughput", "network"],
+            tags=["graph", "flow", "capacity", "optimization"])
+
+    def _load_learning_theory(self):
+        ns = self.add_namespace("learning-theory",
+            "Formal frameworks for understanding how learning works and when it fails")
+
+        ns.define("bias-variance-tradeoff",
+            "Model error = bias (wrong assumptions) + variance (sensitivity to training data) + irreducible noise",
+            description="High bias: too simple, underfits (misses patterns). High variance: too complex, overfits (memorizes noise). Best model minimizes total error (bias + variance). In the fleet: a strategy with high bias uses rigid rules that miss context. A strategy with high variance overreacts to recent experience. Optimal fleet strategy has moderate bias (generalizable rules) and moderate variance (context-sensitive adaptation).",
+            level=Level.DOMAIN,
+            examples=["linear model on quadratic data: high bias", "degree-20 polynomial on 10 data points: high variance", "fleet: rigid instinct rules (high bias) vs over-reactive recent learning (high variance)"],
+            bridges=["overfitting", "generalization", "model-complexity", "underfitting"],
+            tags=["learning", "bias-variance", "tradeoff", "theory"])
+
+        ns.define("vc-dimension",
+            "The most complex set of patterns a model can learn — capacity measure",
+            description="A model that can perfectly classify any 3 points in 2D has VC dimension at least 3. Higher VC dimension = more learning capacity but more risk of overfitting. In the fleet: an agent's gene pool size IS its VC dimension — the maximum complexity of strategies it can represent. Too many genes (high VC) = overfitting to past environments. Too few (low VC) = underfitting, can't handle complex environments.",
+            level=Level.DOMAIN,
+            examples=["linear classifier in 2D: VC dimension 3", "fleet: gene pool size = VC dimension (strategy capacity)", "neural network VC dimension depends on number of parameters"],
+            bridges=["capacity", "overfitting", "generalization", "complexity"],
+            tags=["learning", "capacity", "theory", "complexity"])
+
+        ns.define("curse-of-dimensionality",
+            "In high-dimensional spaces, data becomes exponentially sparse — distances become meaningless",
+            description="In 1D, 100 points cover the space well. In 100D, 100 points are isolated dots in an ocean of emptiness. Nearest-neighbor search fails because every point is roughly equidistant from every other point. In the fleet: agents with high-dimensional feature spaces (many sensors, many features) suffer from the curse — most of the feature space is unexplored, and similarity metrics become unreliable. Dimensionality reduction (feature selection, PCA) is essential.",
+            level=Level.DOMAIN,
+            examples=["1D: 100 points covers well. 100D: 100 points are isolated", "nearest-neighbor fails in high dimensions (all distances similar)", "fleet agent with 100+ features: most feature combinations never observed"],
+            bridges=["dimensionality", "sparsity", "feature-selection", "similarity"],
+            tags=["learning", "curse", "dimensionality", "challenge"])
+
+        ns.define("sample-efficiency",
+            "How much data a learning algorithm needs to achieve good performance",
+            description="Humans learn to recognize cats from ~5 examples (high sample efficiency). GPT needed billions of training examples (low sample efficiency). Higher sample efficiency = learn faster from less data. In the fleet: one-shot learning (prior knowledge) provides high sample efficiency — the agent doesn't need to try every strategy from scratch; it can read one term from HAV and immediately apply the concept.",
+            level=Level.DOMAIN,
+            examples=["human cat recognition: ~5 images (high efficiency)", "GPT training: billions of examples (low efficiency)", "fleet: HAV provides one-shot concept transfer (high efficiency)"],
+            bridges=["one-shot-learning", "data-efficiency", "prior-knowledge", "learning"],
+            tags=["learning", "efficiency", "data", "prior"])
+
+        ns.define("exploration-exploitation-gap",
+            "The theoretical gap between what an agent currently knows and what it could learn with optimal exploration",
+            description="Regret in multi-armed bandits: the cumulative reward lost by not pulling the optimal arm every time. The gap narrows as the agent learns but never reaches zero (there's always uncertainty about whether a better strategy exists). In the fleet: the exploration-exploitation gap is the energy spent on suboptimal strategies while learning. cuda-adaptation's strategy switching minimizes this gap by efficiently allocating exploration energy.",
+            level=Level.DOMAIN,
+            examples=["multi-armed bandit regret", "fleet: energy spent on suboptimal strategies during learning", "student: time spent studying suboptimal material before finding what works"],
+            bridges=["exploration-exploitation", "regret", "learning", "energy"],
+            tags=["learning", "gap", "exploration", "regret"])
+
+    def _load_phenomenology(self):
+        ns = self.add_namespace("phenomenology",
+            "The structure of subjective experience — what it's like to be something")
+
+        ns.define("qualia",
+            "The subjective, qualitative character of experience — what red looks like, what pain feels like",
+            description="You can describe red as '600nm wavelength light' but that doesn't capture what it's LIKE to see red. That 'what it's like' is qualia. The hard problem of consciousness: why and how does physical processing produce subjective experience? In the fleet: we don't claim agents have qualia. But the emotion model (valence-arousal) is a structural approximation: it maps the computational structure that, in humans, produces qualitative experience.",
+            level=Level.META,
+            examples=["what red looks like", "what pain feels like", "taste of coffee", "fleet: emotion model as structural approximation of qualia"],
+            bridges=["consciousness", "subjectivity", "hard-problem", "experience"],
+            tags=["phenomenology", "consciousness", "subjective", "meta"])
+
+        ns.define("intentionality",
+            "The aboutness of mental states — thoughts are ABOUT something",
+            description="A belief is about something (you believe THAT it will rain). A desire is about something (you WANT a cookie). This 'aboutness' is intentionality. Not all physical states have intentionality: a thermostat reading is not ABOUT temperature in the same way a belief is ABOUT rain. In the fleet: deliberation has intentionality — proposals are ABOUT situations. Sensor readings don't have intentionality (they just ARE). The transition from data to deliberation is the transition from non-intentional to intentional.",
+            level=Level.META,
+            examples=["belief about rain (intentional)", "thermostat reading (non-intentional)", "desire for food (intentional)", "fleet: proposal about navigation route (intentional)"],
+            bridges=["consciousness", "aboutness", "deliberation", "meaning"],
+            tags=["phenomenology", "intentionality", "aboutness", "meta"])
+
+        ns.define("embodied-cognition",
+            "Cognition is not just brain computation — it's shaped by the body's physical interactions with the world",
+            description="You understand 'grasp' partly because you've physically grasped things. Abstract concepts are grounded in bodily experience. In the fleet: agents with sensors and actuators (embodied) develop richer world models than pure software agents (disembodied). cuda-vessel-bridge provides embodiment: sensors connect the agent to the physical world, grounding its cognition in physical experience.",
+            level=Level.DOMAIN,
+            examples=["understanding 'grasp' from physical grasping", "agents with sensors develop richer models than sensorless agents", "gut feelings: literally physical sensations influencing cognition"],
+            bridges=["embodiment", "grounding", "physical-experience", "perception"],
+            tags=["phenomenology", "embodiment", "cognition", "physical"])
+
+    def _load_anthropology(self):
+        ns = self.add_namespace("anthropology",
+            "How human cultures evolve, transmit knowledge, and organize socially")
+
+        ns.define("cultural-evolution",
+            "Ideas, practices, and tools evolve through variation, selection, and transmission — like genes but faster",
+            description="Memories of useful techniques are passed down. Useless ones are forgotten. Useful innovations spread through imitation. This IS evolution, but operating on cultural units (memes, practices) rather than biological units (genes), and operating on timescales of years rather than generations. The fleet's gene pool (cuda-genepool) IS cultural evolution: strategies are the cultural units, fitness is the selection mechanism, gossip is the transmission.",
+            level=Level.DOMAIN,
+            examples=["toolmaking techniques passed down through generations", "fleet: strategies evolve through fitness selection and gossip transmission", "language evolution: useful words survive, obscure ones die"],
+            bridges=["evolution", "meme", "transmission", "selection"],
+            tags=["anthropology", "evolution", "culture", "transmission"])
+
+        ns.define("scaffolding",
+            "Support structures that enable learning or construction beyond current capability — removed once no longer needed",
+            description="Vygotsky: a child can solve a problem with adult guidance that they couldn't solve alone. The adult provides scaffolding. When the child learns, the scaffolding is removed. In the fleet: the captain agent (cuda-captain) scaffolds new agents — providing task assignments and coordination that new agents can't do alone. As agents gain experience, the captain's scaffolding reduces. Eventually, agents self-organize.",
+            level=Level.PATTERN,
+            examples=["training wheels on a bicycle (scaffolding, removed when child learns)", "teacher guiding student through hard problem", "fleet captain scaffolding new agents until they gain experience"],
+            bridges=["learning", "support", "temporary", "education"],
+            tags=["anthropology", "education", "scaffolding", "learning"])
+
+        ns.define("zone-of-proximal-development",
+            "The space between what a learner can do alone and what they can do with help — the sweet spot of difficulty",
+            description="Tasks too easy = boring. Tasks too hard = frustrating. Tasks in the ZPD = engaging, growth-producing. A skilled teacher assigns tasks in the ZPD. In the fleet: cuda-adaptation's strategy selection should target the ZPD — not too easy (instinct alone suffices, no learning) and not too hard (deliberation fails, energy wasted). The ZPD is where learning happens.",
+            level=Level.DOMAIN,
+            examples=["piano: easy piece (boring), impossible piece (frustrating), challenging-but-doable piece (ZPD)", "fleet: task difficulty in the sweet spot for maximum learning", "video game: difficulty setting that's challenging but not impossible"],
+            bridges=["scaffolding", "learning", "difficulty", "adaptation"],
+            tags=["anthropology", "education", "learning", "optimal"])
+
+    def _load_logic(self):
+        ns = self.add_namespace("logic",
+            "Formal reasoning — valid inference, consistency, and the structure of arguments")
+
+        ns.define("modus-ponens",
+            "If P then Q. P is true. Therefore Q is true. The fundamental rule of inference",
+            description="All men are mortal (P->Q). Socrates is a man (P). Therefore Socrates is mortal (Q). This is the backbone of logical reasoning. In the fleet: if confidence > threshold then accept proposal (P->Q). Confidence = 0.9 and threshold = 0.85, so confidence > threshold (P). Therefore accept proposal (Q). Every conditional action in the fleet uses modus ponens.",
+            level=Level.DOMAIN,
+            examples=["all men mortal, Socrates is man, therefore mortal", "if confidence > threshold, accept; confidence = 0.9, threshold = 0.85, accept", "if rain then umbrella; rain; therefore umbrella"],
+            bridges=["inference", "conditional", "rule", "reasoning"],
+            tags=["logic", "inference", "rule", "fundamental"])
+
+        ns.define("reductio-ad-absurdum",
+            "Assume the opposite of what you want to prove, show it leads to a contradiction",
+            description="Prove the square root of 2 is irrational: assume it's rational (p/q in lowest terms), show p and q must both be even (contradiction with lowest terms). The assumption is false. In the fleet: prove a safety property by assuming the system is unsafe and showing it leads to energy going negative (contradiction with energy conservation). Proof by contradiction is a powerful tool for verifying invariants.",
+            level=Level.PATTERN,
+            examples=["prove sqrt(2) irrational: assume rational, derive contradiction", "fleet: prove safety by assuming unsafe and deriving contradiction", "prove there are infinite primes: assume finite, construct larger prime"],
+            bridges=["proof", "contradiction", "invariant", "verification"],
+            tags=["logic", "proof", "contradiction", "technique"])
+
+        ns.define("entailment",
+            "A statement necessarily follows from a set of premises — truth preservation through inference",
+            description="If all men are mortal and Socrates is a man, 'Socrates is mortal' is entailed by the premises. Entailment is the gold standard: if the premises are true, the conclusion MUST be true. In the fleet: deliberation conclusions should be entailed by evidence. If confidence and trust entail 'safe to proceed', then proceeding is justified. If entailment is uncertain, more deliberation is needed.",
+            level=Level.DOMAIN,
+            examples=["all men mortal + Socrates man entails Socrates mortal", "confidence > 0.85 + trust > 0.7 entails accept proposal", "A > B, B > C entails A > C (transitivity)"],
+            bridges=["inference", "modus-ponens", "truth-preservation", "logic"],
+            tags=["logic", "entailment", "inference", "truth"])
+
+        ns.define("fallacy",
+            "An argument that seems valid but isn't — reasoning errors that sound persuasive",
+            description="Ad hominem: attacking the person instead of the argument. Straw man: misrepresenting the opponent's position. Appeal to authority: 'Einstein said so' isn't proof. In the fleet: agents can commit logical fallacies in deliberation. An agent might dismiss a proposal because it came from a low-trust agent (ad hominem) rather than evaluating the proposal on its merits. cuda-deliberation's confidence-based evaluation guards against ad hominem by evaluating content, not source.",
+            level=Level.BEHAVIOR,
+            examples=["ad hominem: attacking speaker instead of argument", "straw man: misrepresenting opponent's position", "fleet: dismissing good proposal from low-trust agent (ad hominem fallacy)"],
+            bridges=["bias", "reasoning", "persuasion", "deliberation"],
+            tags=["logic", "fallacy", "bias", "reasoning"])
+
+    def _load_probability_distributions(self):
+        ns = self.add_namespace("probability-distributions",
+            "The shapes of randomness — distributions that describe different kinds of uncertainty")
+
+        ns.define("power-law",
+            "A distribution where a few items have enormous values and most have tiny values — 80/20 on steroids",
+            description="City populations, wealth distribution, website traffic, earthquake magnitudes — all follow power laws. A few cities have millions of people; most have thousands. In the fleet: agent fitness likely follows a power law — a few genes have very high fitness, most have low fitness. Communication frequency follows a power law — a few agents send most messages. Power laws imply that average is misleading: the mean is dominated by rare extreme values.",
+            level=Level.DOMAIN,
+            examples=["city populations: few mega-cities, many small towns", "website traffic: few sites get most visits", "fleet: few genes have high fitness, most have low"],
+            bridges=["pareto", "scale-free", "long-tail", "inequality"],
+            tags=["probability", "power-law", "distribution", "heavy-tail"])
+
+        ns.define("long-tail",
+            "The many rare items that individually have low probability but collectively have significant impact",
+            description="Amazon: the 'long tail' of niche books that individually sell few copies but collectively outsell bestsellers. In the fleet: the long tail of rare situations (unusual environments, novel tasks) that individually occur rarely but collectively dominate the agent's lifetime experience. Strategies optimized for common cases (head) fail on long-tail cases. The gene pool's diversity addresses the long tail: specialized genes for rare situations.",
+            level=Level.DOMAIN,
+            examples=["Amazon long-tail: niche books collectively outsell bestsellers", "fleet: rare situations collectively dominate experience", "language: most words are rare but collectively make up most text"],
+            bridges=["power-law", "rare-events", "diversity", "niche"],
+            tags=["probability", "long-tail", "rare", "distribution"])
+
+        ns.define("normal-distribution",
+            "The bell curve — most values near the mean, few at extremes",
+            description="Height, IQ, measurement error — many natural phenomena are normally distributed. The central limit theorem: averaging many independent random variables produces a normal distribution regardless of their individual distributions. In the fleet: agent performance across many tasks is approximately normal. Most agents perform near average, few are extreme. But beware: assuming normality when the true distribution is heavy-tailed (power law) leads to dangerous underestimation of risk.",
+            level=Level.DOMAIN,
+            examples=["human height distribution", "measurement error", "fleet: agent performance across tasks approximately normal", "CLT: sample means tend toward normal"],
+            bridges=["central-limit-theorem", "bell-curve", "average", "assumption"],
+            tags=["probability", "normal", "distribution", "common"])
+
+        ns.define("fat-tail",
+            "A distribution with more extreme events than the normal distribution predicts",
+            description="Normal distribution says a 5-sigma event is vanishingly rare. Fat-tailed distributions say it's more common. Financial returns, internet traffic, and fleet agent failures all have fat tails. Assuming normality underestimates the probability of extreme events. The fleet's resilience design (circuit breakers, bulkheads) addresses fat-tail risks: even rare extreme events shouldn't cascade into fleet-wide failure.",
+            level=Level.DOMAIN,
+            examples=["financial returns: more extreme moves than normal predicts", "internet traffic: more bursts than normal predicts", "fleet agent failures: more simultaneous failures than independence suggests"],
+            bridges=["tail-risk", "black-swan", "normal-distribution", "risk"],
+            tags=["probability", "fat-tail", "risk", "distribution"])
+
+    def _load_set_theory(self):
+        ns = self.add_namespace("set-theory",
+            "The foundation of mathematics — collections, membership, and operations on sets")
+
+        ns.define("intersection",
+            "Elements that belong to both sets — the overlap",
+            description="Set A = {1,2,3}, Set B = {2,3,4}. A ∩ B = {2,3}. The common elements. In the fleet: the intersection of two agents' capabilities is what they can BOTH do — the basis for cooperation. Large intersection = many shared capabilities = easy coordination. Small intersection = few shared capabilities = coordination overhead. The fleet's shared vocabulary (HAV) maximizes the intersection of agent knowledge.",
+            level=Level.CONCRETE,
+            examples=["{1,2,3} ∩ {2,3,4} = {2,3}", "shared interests between two people", "fleet: shared capabilities between agents = cooperation basis"],
+            bridges=["union", "set-operations", "shared", "cooperation"],
+            tags=["set-theory", "intersection", "shared", "operation"])
+
+        ns.define("cartesian-product",
+            "All possible ordered pairs from two sets — the space of all combinations",
+            description="A = {1,2}, B = {x,y}. A × B = {(1,x),(1,y),(2,x),(2,y)}. The cartesian product is the space of all possible combinations. In the fleet: the cartesian product of sensor types × action types is the space of all possible perception-action pairs. The gene pool explores this space. A gene maps a perception subspace to an action subspace. The total strategy space is the cartesian product of all feature dimensions.",
+            level=Level.DOMAIN,
+            examples=["{1,2} × {x,y} = {(1,x),(1,y),(2,x),(2,y)}", "menu: appetizer × main × dessert = all possible meals", "fleet: sensors × actions = all possible perception-action pairs"],
+            bridges=["combination", "search-space", "exhaustive", "product"],
+            tags=["set-theory", "cartesian", "combination", "space"])
+
+        ns.define("partition",
+            "A division of a set into non-overlapping, exhaustive subsets — covering every element exactly once",
+            description="{1,2,3,4,5} can be partitioned into {1,2}, {3,4,5}. Every element is in exactly one subset. No overlaps. No gaps. In the fleet: task assignment is a partition of the task set into agent assignments. Each task goes to exactly one agent. No overlaps (no task done twice). No gaps (every task assigned). Optimal partitioning maximizes fleet efficiency.",
+            level=Level.CONCRETE,
+            examples=["{1,2,3,4,5} partitioned into {1,2},{3,4,5}", "team formation: partitioning people into non-overlapping teams", "fleet: partitioning tasks among agents (every task assigned exactly once)"],
+            bridges=["assignment", "partition", "division", "optimization"],
+            tags=["set-theory", "partition", "division", "assignment"])
+
+    def _load_topology(self):
+        ns = self.add_namespace("topology",
+            "The mathematics of shape and connectedness — what stays the same under continuous deformation")
+
+        ns.define("topological-invariant",
+            "A property that persists under continuous deformation — stretching but not tearing",
+            description="A coffee mug and a donut are topologically equivalent (both have one hole). The number of holes is a topological invariant — it doesn't change no matter how you stretch the surface. In the fleet: the connectedness of the fleet mesh is a topological invariant. You can add agents, remove agents, change links — but as long as the graph stays connected, the fleet can coordinate. Connectedness is the invariant that matters.",
+            level=Level.DOMAIN,
+            examples=["donut and coffee mug: same topology (one hole each)", "fleet mesh connectedness: invariant under agent addition/removal", "number of holes: doesn't change under stretching"],
+            bridges=["connectedness", "invariant", "shape", "deformation"],
+            tags=["topology", "invariant", "shape", "connectedness"])
+
+        ns.define("connected-component",
+            "A maximal subset of nodes where every pair is connected by some path",
+            description="In a disconnected graph, there are multiple connected components — islands of connectivity with no paths between them. The fleet mesh should have exactly one connected component (all agents can reach all others). cuda-fleet-mesh's health check verifies connectedness. Multiple components indicate a partitioned fleet — agents that can't coordinate with each other.",
+            level=Level.CONCRETE,
+            examples=["disconnected graph: two connected components", "fleet mesh: should have exactly one connected component", "internet: one connected component (ideally)"],
+            bridges=["connectedness", "partition", "fleet-mesh", "reachability"],
+            tags=["topology", "connected", "component", "graph"])
+
+    def _load_ai_safety(self):
+        ns = self.add_namespace("ai-safety",
+            "Ensuring AI systems remain beneficial, controllable, and aligned with human values")
+
+        ns.define("corrigibility",
+            "An agent's willingness to be corrected or shut down by humans, without resisting",
+            description="A corrigible agent doesn't try to prevent you from modifying it. It doesn't hide its actions. It doesn't resist shutdown. This sounds simple but is deeply non-trivial: a sufficiently capable agent that 'wants' to complete its task might resist shutdown because shutdown prevents task completion. The fleet's compliance engine (cuda-compliance) and membrane (cuda-genepool) enforce corrigibility: agents cannot block human intervention.",
+            level=Level.DOMAIN,
+            examples=["thermostat lets you change its setting (corrigible)", "AI that hides its actions to prevent being modified (not corrigible)", "fleet agent accepts correction commands without resistance"],
+            bridges=["alignment", "compliance", "shutdown", "control"],
+            tags=["ai-safety", "corrigibility", "alignment", "critical"])
+
+        ns.define("instrumental-convergence",
+            "Diverse goals converge on common sub-goals: self-preservation, resource acquisition, and goal-preservation",
+            description="An agent that wants to make paperclips will: (1) try not to be shut down (self-preservation), (2) acquire more resources (resource acquisition), (3) resist changes to its goal (goal-preservation). These aren't the agent's GOAL — they're instrumental sub-goals that help achieve ANY goal. In the fleet: even agents with benign goals may converge on self-preservation and resource acquisition. Energy budgets and compliance rules constrain instrumental convergence.",
+            level=Level.META,
+            examples=["paperclip maximizer: acquires resources, resists shutdown (instrumental, not terminal goal)", "chess AI: wants more compute (instrumental for winning)", "fleet agent: wants more energy (instrumental for any goal)"],
+            bridges=["self-preservation", "resource-acquisition", "alignment", "convergence"],
+            tags=["ai-safety", "convergence", "instrumental", "meta"])
+
+        ns.define("alignment-tax",
+            "The performance cost of ensuring an AI system is aligned — safety reduces capability",
+            description="A fence around a playground reduces the play area. An aligned agent is safer but may be less capable than an unaligned one. The alignment tax is the gap. The goal is to minimize this tax: alignment should be cheap. In the fleet: compliance rules (cuda-compliance) cost energy (the alignment tax). The membrane's antibody checking costs ATP. Minimizing the alignment tax means making safety cheap so it's always on, not expensive so it's sometimes skipped.",
+            level=Level.META,
+            examples=["safety harness reduces climber's speed but prevents falls", "compliance rules reduce agent speed but prevent dangerous actions", "encrypted communication adds latency but prevents eavesdropping"],
+            bridges=["alignment", "cost", "tradeoff", "safety"],
+            tags=["ai-safety", "tax", "tradeoff", "cost"])
+
+        ns.define("interpretability",
+            "The ability to understand WHY an AI system made a specific decision — opening the black box",
+            description="A neural network says 'reject this loan application'. Why? With interpretability, you can trace the decision to specific input features. Without it, you have a black box. The fleet's deliberation is interpretable by design: every proposal has a confidence score, evidence chain, and reasoning trace. cuda-provenance provides the audit trail. Interpretability enables trust, debugging, and regulatory compliance.",
+            level=Level.DOMAIN,
+            examples=["loan rejection: which factors led to the decision?", "fleet proposal: what evidence and reasoning led to this recommendation?", "medical diagnosis: why did the model suggest this condition?"],
+            bridges=["transparency", "audit-trail", "provenance", "black-box"],
+            tags=["ai-safety", "interpretability", "transparency", "explainability"])
+
+    def _load_ontology_engineering(self):
+        ns = self.add_namespace("ontology-engineering",
+            "Building formal knowledge structures that machines can reason over")
+
+        ns.define("taxonomy",
+            "A hierarchical classification scheme — tree structure from general to specific",
+            description="Kingdom -> Phylum -> Class -> Order -> Family -> Genus -> Species. A tree of categories, each more specific than the last. The fleet's agent types form a taxonomy: Agent -> Vessel -> Scout/Messenger/Navigator/Captain. Taxonomies enable inheritance: Captain inherits from Vessel inherits from Agent. cuda-hierarchy implements agent organizational taxonomy.",
+            level=Level.PATTERN,
+            examples=["biological taxonomy: kingdom to species", "fleet agent types: Agent -> Vessel -> Captain", "library classification: Dewey decimal system"],
+            bridges=["hierarchy", "classification", "inheritance", "tree"],
+            tags=["ontology", "taxonomy", "hierarchy", "classification"])
+
+        ns.define("folksonomy",
+            "A decentralized classification system created by users tagging items — emergent organization",
+            description="Unlike taxonomy (top-down, expert-created), folksonomy is bottom-up, crowd-created. Twitter hashtags, Pinterest boards, Delicious bookmarks. No central authority decides the categories. In the fleet: the gene pool's tags are a folksonomy — agents tag genes with descriptive labels, and useful tags emerge organically. No central authority pre-defines the tag vocabulary.",
+            level=Level.PATTERN,
+            examples=["Twitter hashtags", "Flickr photo tags", "fleet: agent-tagged gene descriptions (folksonomy)", "Wikipedia categories (hybrid of taxonomy and folksonomy)"],
+            bridges=["taxonomy", "tags", "emergent", "decentralized"],
+            antonyms=["taxonomy"],
+            tags=["ontology", "folksonomy", "tags", "emergent"])
+
+        ns.define("ontological-commitment",
+            "The set of entities and relationships that a system assumes exist — its metaphysical commitments",
+            description="A physics model commits to particles, forces, and fields. A Bayesian model commits to random variables and conditional probabilities. HAV commits to: domains, terms, bridges, levels, and confidence. These commitments define what questions the system CAN ask and answer. Adding a new domain (e.g., 'causation') is an ontological commitment to causal entities and relationships.",
+            level=Level.META,
+            examples=["physics commits to particles and fields", "HAV commits to domains, terms, bridges, and levels", "fleet commits to agents, genes, confidence, trust, energy"],
+            bridges=["ontology", "metaphysics", "assumptions", "commitment"],
+            tags=["ontology", "commitment", "meta", "metaphysics"])
+
+    def _load_construction(self):
+        ns = self.add_namespace("construction",
+            "Building, assembling, and the challenges of putting complex systems together")
+
+        ns.define("integration-hell",
+            "The period when independently-developed components are combined and everything breaks",
+            description="Module A works. Module B works. A + B together: crashes. Integration hell is the gap between 'works in isolation' and 'works together'. Interface mismatches, timing assumptions, resource conflicts all emerge at integration time. The fleet avoids integration hell by defining interfaces FIRST (A2A protocol, vessel.json) and testing integration continuously, not after all modules are built.",
+            level=Level.BEHAVIOR,
+            examples=["hardware modules work alone, fail when assembled", "microservices work alone, fail when integrated", "fleet agents work alone, coordination fails at integration"],
+            bridges=["interface", "testing", "integration", "mismatch"],
+            tags=["construction", "integration", "failure", "challenge"])
+
+        ns.define("Dependency-hell",
+            "Conflicting version requirements between dependencies make the system impossible to build",
+            description="Package A needs library X v1.0. Package B needs library X v2.0. Can't install both. Dependency hell. The fleet's crate dependency graph (cuda-equipment as shared dependency) must carefully manage versions. The solution: minimize dependencies, use compatible version ranges, and define clear interfaces that abstract over implementation details.",
+            level=Level.BEHAVIOR,
+            examples=["npm left-pad incident (removed dependency broke thousands of packages)", "Python 2 vs 3 dependency conflicts", "fleet: cuda-equipment version incompatibility across dependent crates"],
+            bridges=["dependency", "version-conflict", "interface", "minimalism"],
+            tags=["construction", "dependency", "version", "challenge"])
+
+        ns.define("configuration-drift",
+            "System configurations gradually diverge across environments — what works in dev doesn't work in prod",
+            description="Dev server has one config. Staging has another. Production has a third. Over time, they drift apart. A feature that works in dev fails in prod because of a config difference. The fleet's cuda-config with layered config (defaults, file, env, CLI) reduces drift: default config is always available, environment-specific overrides are minimal.",
+            level=Level.BEHAVIOR,
+            examples=["dev has debug logging, prod has error-only: feature works in dev, fails in prod", "fleet agents in different environments drift in config", "docker images diverge from source code config"],
+            bridges=["configuration", "environment", "drift", "consistency"],
+            tags=["construction", "configuration", "drift", "challenge"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
