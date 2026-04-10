@@ -290,6 +290,8 @@ class HAV:
         self._load_flux_control_flow()
         self._load_maritime_vocab()
         self._load_aerospace_vocab()
+        self._load_flux_network()
+        self._load_flux_concurrency()
         self._load_game_theory()
         self._load_optimization()
         self._load_probability()
@@ -6508,6 +6510,35 @@ class HAV:
         ns.define("flight-envelope", "Defined operating boundaries within which agent performs safely", Level=Level.DOMAIN, examples=["speed-altitude graph for safe operation", "capability-space safe region"], bridges=["envelope","boundary","safe"], tags=["aerospace","envelope"])
         ns.define("situational-awareness", "Agent maintains comprehensive model of its operational context", Level=Level.DOMAIN, examples=["perceive understand predict all relevant factors", "360-degree operational picture"], bridges=["awareness","context","comprehensive"], tags=["aerospace","awareness"])
         ns.define("fuel-reserve", "Minimum energy budget maintained for emergency return to safe state", Level=Level.CONCRETE, examples=["always keep 20% ATP for emergency", "divert to safe harbor before exhaustion"], bridges=["fuel","reserve","emergency"], tags=["aerospace","fuel"])
+
+    def _load_flux_network(self):
+        ns = self.add_namespace("flux-network", "FLUX VM networking and remote communication patterns")
+        ns.define("socket-open", "Establish bidirectional communication channel with remote agent", Level=Level.CONCRETE, examples=["SOCK_OPEN addr R1 port R2", "create TCP connection to remote"], bridges=["socket","connect","remote"], tags=["flux","network","socket"])
+        ns.define("socket-close", "Terminate communication channel releasing resources", Level=Level.CONCRETE, examples=["SOCK_CLOSE channel R1", "graceful connection shutdown"], bridges=["socket","close","release"], tags=["flux","network","close"])
+        ns.define("packet-serialize", "Convert register state into transmittable byte sequence", Level=Level.CONCRETE, examples=["PACK R1-R5 into buffer R10", "marshal data for network transmission"], bridges=["packet","serialize","marshal"], tags=["flux","network","serialize"])
+        ns.define("packet-deserialize", "Convert received byte sequence into register state", Level=Level.CONCRETE, examples=["UNPACK buffer R10 into R1-R5", "unmarshal received data"], bridges=["packet","deserialize","unmarshal"], tags=["flux","network","deserialize"])
+        ns.define("packet-checksum", "Verify data integrity by computing and comparing hash", Level=Level.CONCRETE, examples=["CHECKSUM R1 verify against R2", "detect corrupted transmission"], bridges=["checksum","verify","integrity"], tags=["flux","network","checksum"])
+        ns.define("route-lookup", "Find next hop for packet based on destination address", Level=Level.CONCRETE, examples=["ROUTE dest R1 next-hop R2", "forwarding table lookup"], bridges=["route","lookup","forward"], tags=["flux","network","route"])
+        ns.define("multicast-send", "Send packet to multiple destinations in single operation", Level=Level.CONCRETE, examples=["MCAST R1 to group R2", "one-to-many message delivery"], bridges=["multicast","broadcast","group"], tags=["flux","network","multicast"])
+        ns.define("ack-receive", "Process acknowledgment confirming successful packet delivery", Level=Level.CONCRETE, examples=["ACK received for packet R1", "reliable delivery confirmation"], bridges=["ack","confirm","reliable"], tags=["flux","network","ack"])
+        ns.define("retry-backoff", "Re-send packet with exponentially increasing delay after failure", Level=Level.PATTERN, examples=["fail retry at 1s 2s 4s 8s", "adaptive congestion response"], bridges=["retry","backoff","exponential"], tags=["flux","network","retry"])
+        ns.define("connection-pool", "Maintain reusable set of pre-established remote connections", Level=Level.PATTERN, examples=["pool of 10 connections to LLM provider", "avoid connection setup overhead"], bridges=["pool","reuse","connection"], tags=["flux","network","pool"])
+
+    def _load_flux_concurrency(self):
+        ns = self.add_namespace("flux-concurrency", "FLUX VM parallel and concurrent execution patterns")
+        ns.define("semaphore-acquire", "Wait for resource token before proceeding with operation", Level=Level.CONCRETE, examples=["SEMA_ACQUIRE before memory access", "blocking wait for available resource"], bridges=["semaphore","acquire","wait"], tags=["flux","concurrency","semaphore"])
+        ns.define("semaphore-release", "Return resource token allowing waiting agents to proceed", Level=Level.CONCRETE, examples=["SEMA_RELEASE after memory operation", "unblock next waiting agent"], bridges=["semaphore","release","unblock"], tags=["flux","concurrency","semaphore"])
+        ns.define("mutex-lock", "Exclusive access to shared resource preventing concurrent modification", Level=Level.CONCRETE, examples=["MUTEX_LOCK before critical section", "only one agent modifies shared state"], bridges=["mutex","exclusive","lock"], tags=["flux","concurrency","mutex"])
+        ns.define("mutex-unlock", "Release exclusive access allowing other agents to enter critical section", Level=Level.CONCRETE, examples=["MUTEX_UNLOCK after critical section", "next agent can acquire lock"], bridges=["mutex","release","unlock"], tags=["flux","concurrency","mutex"])
+        ns.define("read-write-lock", "Multiple concurrent readers OR single exclusive writer", Level=Level.PATTERN, examples=["RWLOCK_READ for concurrent observation", "RWLOCK_WRITE for exclusive modification"], bridges=["rw-lock","read-write","concurrent"], tags=["flux","concurrency","rw-lock"])
+        ns.define("atomic-compare-swap", "Conditionally update value only if it matches expected old value", Level=Level.CONCRETE, examples=["CAS R1 expected R2 new R3", "lock-free consensus primitive"], bridges=["atomic","CAS","lock-free"], tags=["flux","concurrency","atomic"])
+        ns.define("memory-fence", "Order memory operations preventing reordering across the fence", Level=Level.CONCRETE, examples=["FENCE ensures writes visible before reads", "prevent instruction reordering"], bridges=["fence","order","memory"], tags=["flux","concurrency","fence"])
+        ns.define("thread-spawn", "Create parallel execution context sharing address space", Level=Level.CONCRETE, examples=["SPAWN with function pointer and arguments", "shared memory parallel execution"], bridges=["spawn","thread","parallel"], tags=["flux","concurrency","spawn"])
+        ns.define("join-wait", "Wait for spawned thread to complete and collect result", Level=Level.CONCRETE, examples=["JOIN waits for spawned thread return", "synchronization point"], bridges=["join","wait","complete"], tags=["flux","concurrency","join"])
+        ns.define("channel-send", "Send message through communication channel blocking if full", Level=Level.CONCRETE, examples=["CH_SEND R1 to channel R2", "producer writes to message queue"], bridges=["channel","send","produce"], tags=["flux","concurrency","channel"])
+        ns.define("channel-receive", "Receive message from channel blocking if empty", Level=Level.CONCRETE, examples=["CH_RECV from channel R1 into R2", "consumer reads from message queue"], bridges=["channel","receive","consume"], tags=["flux","concurrency","channel"])
+        ns.define("select-wait", "Wait on multiple channels proceeding with first ready", Level=Level.PATTERN, examples=["SELECT_CH on R1 R2 R3 proceed with first", "multiplexed channel wait"], bridges=["select","multi-channel","first-ready"], tags=["flux","concurrency","select"])
+        ns.define("spin-wait", "Busy-wait loop polling condition without yielding CPU", Level=Level.CONCRETE, examples=["SPIN_WAIT until R1 becomes non-zero", "low-latency polling for short waits"], bridges=["spin","poll","busy-wait"], tags=["flux","concurrency","spin"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
