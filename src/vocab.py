@@ -403,6 +403,7 @@ class HAV:
         self._load_flux_flavors()
         self._load_agent_social()
         self._load_flux_memory()
+        self._load_emergence_patterns()
         self._load_metaphor_vocab()
         self._load_mathematics()
 
@@ -6175,6 +6176,25 @@ class HAV:
         ns.define("substrate", "Environment where agents grow", Level=Level.DOMAIN, examples=["git repo is substrate","runtime is medium"], bridges=["environment","medium","foundation"], tags=["mycology","substrate"])
         ns.define("hyphae", "Individual threads forming coordination network", Level=Level.CONCRETE, examples=["stigmergy signal is hyphae","messages are hyphae"], bridges=["thread","communication","individual"], tags=["mycology","hyphae"])
         ns.define("spore-print", "Persistent capability signature in memory", Level=Level.CONCRETE, examples=["gene pool entry spore print","capability pattern deposit"], bridges=["record","signature","capability"], tags=["mycology","spore-print"])
+    def _load_emergence_patterns(self):
+        ns = self.add_namespace("emergence-patterns", "Collective phenomena emerging from individual agent behavior")
+        ns.define("flocking-behavior", "Synchronized movement without centralized coordination", Level=Level.PATTERN, examples=["agent swarm navigates without leader", "local velocity matching produces global coherence"], bridges=["synchronize", "decentralized", "coherence"], tags=["emergence", "flock"])
+        ns.define("herding-instinct", "Agents copy denser subgroup behaviors reducing individual risk", Level=Level.BEHAVIOR, examples=["agents gravitate toward popular solutions", "conformity reduces individual exploration"], bridges=["conformity", "density", "risk"], tags=["emergence", "herd"])
+        ns.define("panic-spreading", "Rapid irrational fear transmission altering collective behavior", Level=Level.BEHAVIOR, examples=["one agent failure triggers cascade", "fear propagates faster than facts"], bridges=["panic", "contagion", "irrational"], tags=["emergence", "panic"])
+        ns.define("schelling-segregation", "Segregation emerges from mild preference for similar neighbors", Level=Level.PATTERN, examples=["micro-biases create macro-separation", "agent placement preferences produce clusters"], bridges=["bias", "segregation", "emergent"], tags=["emergence", "segregation"])
+        ns.define("information-cascade", "Collective shifts based on early potentially wrong decisions", Level=Level.BEHAVIOR, examples=["first few votes determine outcome", "early adopters create irreversible momentum"], bridges=["cascade", "momentum", "fragile"], tags=["emergence", "cascade"])
+        ns.define("echo-chamber", "Agents reinforce polarized views through selective sharing", Level=Level.BEHAVIOR, examples=["agents only consume agreeing signals", "filter bubble amplifies niche views"], bridges=["polarize", "filter", "reinforce"], tags=["emergence", "echo"])
+        ns.define("phase-transition", "Sudden qualitative system shift at critical threshold", Level=Level.DOMAIN, examples=["below threshold chaos above threshold order", "tipping point in fleet behavior"], bridges=["threshold", "shift", "critical"], tags=["emergence", "phase"])
+        ns.define("rumor-proliferation", "Unverified information spreads faster than corrections", Level=Level.BEHAVIOR, examples=["false claims spread exponentially", "corrections never catch up to lies"], bridges=["rumor", "speed", "correction"], tags=["emergence", "rumor"])
+        ns.define("swarm-intelligence", "Collective problem-solving surpassing individual capability", Level=Level.PATTERN, examples=["ant colony optimization finds shortest path", "fleet solves problems no single agent could"], bridges=["collective", "optimize", "surpass"], tags=["emergence", "swarm"])
+        ns.define("consensus-dissolution", "Sudden collapse of shared agreements into factions", Level=Level.BEHAVIOR, examples=["fleet splits over disagreement", "hidden divisions surface under stress"], bridges=["dissolve", "faction", "fracture"], tags=["emergence", "dissolution"])
+        ns.define("leader-emergence", "Informal hierarchies form despite equal agent roles", Level=Level.BEHAVIOR, examples=["one agent naturally takes coordination role", "de facto authority without formal assignment"], bridges=["leader", "hierarchy", "informal"], tags=["emergence", "leader"])
+        ns.define("power-law-distribution", "Few agents accumulate disproportionate resources", Level=Level.DOMAIN, examples=["rich-get-richer in agent reputation", "Pareto distribution of agent influence"], bridges=["power-law", "inequality", "concentrate"], tags=["emergence", "power-law"])
+        ns.define("territory-claim", "Spatial areas staked without coordination sometimes redundantly", Level=Level.BEHAVIOR, examples=["agents claim overlapping task domains", "resource competition without coordination"], bridges=["territory", "claim", "overlap"], tags=["emergence", "territory"])
+        ns.define("contagion", "Ideas behaviors or failures spread epidemically beyond origin", Level=Level.BEHAVIOR, examples=["one agent crash cascades to fleet", "meme spreads through agent network"], bridges=["contagion", "spread", "epidemic"], tags=["emergence", "contagion"])
+        ns.define("chain-reaction", "Cascading failures propagate through interdependencies", Level=Level.BEHAVIOR, examples=["tightly coupled agents fail together", "dependency graph creates failure cascade"], bridges=["chain", "cascade", "failure"], tags=["emergence", "chain"])
+        ns.define("desynchronization", "Agents avoid coordinated timing preventing overcrowding", Level=Level.PATTERN, examples=["staggered execution prevents resource contention", "anti-coordination reduces collision"], bridges=["desync", "stagger", "anti-coord"], tags=["emergence", "desync"])
+
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
             "Mathematical structures and operations underlying agent cognition")
