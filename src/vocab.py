@@ -347,6 +347,32 @@ class HAV:
         self._load_communication_deep()
         self._load_governance()
         self._load_network_science()
+        self._load_operations()
+        self._load_distillation()
+        self._load_orchestration()
+        self._load_tactics()
+        self._load_diagnostics()
+        self._load_leverage()
+        self._load_adaptation_patterns()
+        self._load_friction()
+        self._load_compression()
+        self._load_boundaries()
+        self._load_temporal_patterns()
+        self._load_quality()
+        self._load_mechanics()
+        self._load_entrenchment()
+        self._load_knowledge_transfer()
+        self._load_efficiency()
+        self._load_metaphor()
+        self._load_scaling()
+        self._load_interface_patterns()
+        self._load_attention()
+        self._load_security_deep()
+        self._load_error_strategies()
+        self._load_coordination_deep()
+        self._load_composition()
+        self._load_observability()
+        self._load_anti_patterns()
         self._load_mathematics()
 
     def _load_uncertainty(self):
@@ -3916,6 +3942,929 @@ class HAV:
             examples=["random network: Poisson degree distribution", "internet: power-law degree distribution (few hubs, many leaves)", "fleet: degree distribution reveals resilience characteristics"],
             bridges=["power-law", "scale-free", "resilience", "network"],
             tags=["network", "degree", "distribution", "structure"])
+
+
+    def _load_operations(self):
+        ns = self.add_namespace("operations",
+            "Verb-like abstractions that compress complex multi-step actions into single words")
+
+        ns.define("strangle",
+            "Gradually throttle a process by restricting multiple inputs simultaneously until it ceases",
+            description="Not killing — strangling. A startup gets strangled when funding dries up, talent leaves, AND customers churn simultaneously. Each alone is survivable. Together, fatal. In the fleet: an agent gets strangled when energy drops, trust drops, AND communication fails at the same time. cuda-resilience's bulkhead pattern prevents strangle by isolating failures — one subsystem dying doesn't strangle the others.",
+            level=Level.BEHAVIOR,
+            examples=["startup strangled by funding+talent+churn simultaneously", "fleet agent strangled by energy+trust+communication failure", "engine strangled by fuel+air+spark all degrading"],
+            bridges=["failure-mode", "cascading-failure", "resource-starvation", "throttle"],
+            tags=["operations", "degradation", "multi-factor", "verb"])
+
+        ns.define("sandbox-weld",
+            "Isolate a subsystem, stress-test it to failure, observe the break pattern, then harden exactly there",
+            description="A welder tests a joint by bending it until it snaps, then reinforces that specific failure point. Sandbox-weld: put an agent in a sandbox, stress it with adversarial inputs until it fails, observe WHERE it breaks, then harden exactly that weakness. cuda-sandbox provides the isolation. cuda-resilience provides the stress injection. The break pattern tells you what to fix.",
+            level=Level.PATTERN,
+            examples=["weld testing: bend until snap, reinforce failure point", "fleet: sandbox agent, adversarial stress until failure, harden weakness", "penetration testing: attack until breach, patch breach point"],
+            bridges=["sandbox", "stress-testing", "adversarial", "hardening"],
+            tags=["operations", "testing", "hardening", "verb"])
+
+        ns.define("carousel",
+            "Cycle through alternatives systematically when one fails, rather than escalating",
+            description="When a taxi is unavailable, you don't negotiate harder — you try Uber, then Lyft, then bus, then walk. Carousel is non-escalatory failure handling: try the next option instead of fighting the current one. In the fleet: when one model provider times out, carousel through alternatives (DeepSeek → DeepInfra → SiliconFlow) rather than retrying the same one. cuda-retry's circuit breaker triggers carousel behavior.",
+            level=Level.PATTERN,
+            examples=["taxi unavailable → Uber → Lyft → bus (carousel, not escalation)", "fleet: model provider timeout → next provider (carousel)", "git push rejected → rebase → force → new branch (carousel)"],
+            bridges=["fallback", "circuit-breaker", "alternative", "rotation"],
+            tags=["operations", "fallback", "rotation", "verb"])
+
+        ns.define("quarantine-and-observe",
+            "Isolate an anomalous component but keep it running to study its behavior before deciding",
+            description="Not kill — quarantine AND observe. A patient with a novel disease gets isolated AND monitored to learn about the pathogen. In the fleet: cuda-genepool's gene quarantine isolates low-fitness genes but keeps them running to collect more data. Maybe the gene is bad in current conditions but good in future conditions. Quarantine preserves the option to redeploy. Delete loses it forever.",
+            level=Level.PATTERN,
+            examples=["patient with novel disease: isolated AND monitored", "fleet gene quarantine: isolate low-fitness gene, observe for potential future use", "cybersecurity: quarantine suspicious file, analyze before deleting"],
+            bridges=["quarantine", "observation", "suspension", "preserve-option"],
+            tags=["operations", "quarantine", "observe", "verb"])
+
+        ns.define("surface-and-compress",
+            "Extract implicit knowledge from accumulated experience and compress it into reusable form",
+            description="A senior engineer has thousands of implicit decisions that they 'just know' work. Surfacing those decisions and compressing them into rules, patterns, or vocabulary makes them transferable. In the fleet: cuda-learning's experience pipeline surfaces lessons from action logs and compresses them into gene pool entries. HAV itself is surfacing-and-compressing: implicit domain knowledge → explicit vocabulary terms.",
+            level=Level.META,
+            examples=["senior engineer's implicit knowledge → documented patterns", "fleet: action logs → compressed gene pool entries", "HAV: implicit domain knowledge → explicit vocabulary"],
+            bridges=["compression", "knowledge-extraction", "learning", "transfer"],
+            tags=["operations", "compress", "extract", "verb"])
+
+        ns.define("backfill",
+            "Fill in missing foundational work that was skipped during rapid iteration",
+            description="Ship fast, fix later — but the fixing IS work. Backfill is the deferred maintenance of rapid development. Tests you didn't write. Docs you didn't update. Error handling you didn't implement. In the fleet: when a new agent is built quickly (minimum viable), backfill adds: proper error handling, compliance rules, comprehensive tests. Backfill is always cheaper when the system is small.",
+            level=Level.BEHAVIOR,
+            examples=["startup: shipped fast, now adding tests and docs (backfill)", "fleet: agent built quickly, now adding compliance and error handling", "house renovation: lived in it unfinished, now finishing details (backfill)"],
+            bridges=["technical-debt", "deferred-maintenance", "iteration", "completion"],
+            tags=["operations", "backfill", "deferred", "verb"])
+
+        ns.define("throttle-match",
+            "Match processing speed to input rate to avoid both overflow and idle waste",
+            description="A dam releases water at the rate it arrives — not faster (wasted water), not slower (flood). Throttle-match: receive at 100/s? Process at 100/s. Receive at 10/s? Process at 10/s. In the fleet: cuda-backpressure's adaptive rate controller implements throttle-match. It scales processing speed to match incoming message rate, preventing both queue overflow (data loss) and idle CPU (energy waste).",
+            level=Level.PATTERN,
+            examples=["dam: release rate matches inflow rate", "fleet: processing rate matches incoming message rate", "highway: speed limit prevents both congestion and wasted capacity"],
+            bridges=["backpressure", "flow-control", "rate-matching", "throughput"],
+            tags=["operations", "throttle", "match", "verb"])
+
+        ns.define("prune-and-rebalance",
+            "Remove dead or underperforming elements and redistribute resources to survivors",
+            description="Prune dead branches → tree grows healthier. Prune underperforming agents → fleet allocates energy to productive ones. But pruning alone isn't enough — you must REBALANCE, redistributing the freed resources. In the fleet: cuda-genepool's gene quarantine prunes low-fitness genes. The freed energy budget rebalances to remaining genes. cuda-resource's preemption prunes low-priority allocations, rebalancing to critical ones.",
+            level=Level.PATTERN,
+            examples=["tree pruning: dead branches removed, energy redirected to healthy branches", "fleet: quarantine low-fitness genes, redistribute energy to survivors", "corporate restructuring: cut unprofitable divisions, invest in profitable ones"],
+            bridges=["pruning", "rebalance", "resource-redistribution", "fitness"],
+            tags=["operations", "prune", "rebalance", "verb"])
+
+    def _load_distillation(self):
+        ns = self.add_namespace("distillation",
+            "The art of compressing complex systems into their essential structure without losing capability")
+
+        ns.define("essence-extract",
+            "Identify the minimal set of features that preserve 95%+ of the system's capability",
+            description="A distillation model is a small model trained to mimic a large one. It captures the ESSENCE — the 5% of parameters that do 95% of the work. Essence-extract: find the minimal representation that preserves capability. In the fleet: each cuda-* crate IS an essence extraction. cuda-confidence is the essence of confidence propagation (one file, 10K chars) extracted from the full theory of uncertainty quantification.",
+            level=Level.META,
+            examples=["teacher-student model: small model captures essence of large model's behavior", "fleet: each cuda-* crate is essence-extracted from its full academic domain", "MVP: essence of product, minimal features that prove the concept"],
+            bridges=["compression", "minimal-representation", "distillation", "MVP"],
+            tags=["distillation", "essence", "minimal", "verb"])
+
+        ns.define("decision-threshold",
+            "The single number that determines when accumulated evidence crosses into action",
+            description="A jury needs 12/12 guilty votes. A sensor triggers at temperature > 100°C. A circuit breaker trips at 5 consecutive failures. The threshold IS the decision. Everything before the threshold is data collection. At the threshold, data becomes decision. In the fleet: cuda-deliberation's consensus threshold (0.85) is THE decision point. Everything below is deliberation. At 0.85, deliberation becomes action.",
+            level=Level.CONCRETE,
+            examples=["jury: 12/12 guilty = conviction threshold", "fleet: confidence 0.85 = acceptance threshold", "circuit breaker: 5 failures = trip threshold"],
+            bridges=["threshold", "decision", "confidence", "boundary"],
+            tags=["distillation", "threshold", "decision", "concrete"])
+
+        ns.define("resolution-floor",
+            "The minimum level of detail below which further precision provides no practical value",
+            description="Weather forecast: '30% chance of rain' is useful. '30.142857% chance of rain' adds no value — the inputs aren't that precise. The resolution floor is where additional precision is noise, not signal. In the fleet: confidence values beyond 3 decimal places (0.851 vs 0.852) are below the resolution floor. The uncertainty in the inputs swamps the precision. cuda-confidence's 0-1 scale has a resolution floor around 0.01.",
+            level=Level.DOMAIN,
+            examples=["weather: 30% useful, 30.14% noise", "fleet: confidence 0.851 vs 0.852 — below resolution floor", "GPS: 3m precision useful, 0.001m precision meaningless (atmospheric noise)"],
+            bridges=["precision", "noise", "signal", "sufficient"],
+            tags=["distillation", "resolution", "floor", "practical"])
+
+        ns.define("interface-minimalism",
+            "Design the smallest possible interface that enables full functionality — every surface has a purpose",
+            description="Unix pipes: stdin/stdout/stderr. Three interfaces. Infinite composability. Interface-minimalism: if you can remove an API endpoint without breaking functionality, it shouldn't exist. Every exposed surface is a maintenance burden and a security surface. The fleet's A2A protocol is interface-minimal: send message, receive message, check health. Three operations. Everything else is built on top.",
+            level=Level.PATTERN,
+            examples=["Unix: stdin/stdout/stderr — three interfaces, infinite composability", "fleet A2A: send/receive/health — three operations, full coordination", "REST: GET/POST/DELETE — not 47 endpoints, three verbs"],
+            bridges=["minimalism", "interface-design", "composability", "simplicity"],
+            tags=["distillation", "interface", "minimal", "design"])
+
+    def _load_orchestration(self):
+        ns = self.add_namespace("orchestration",
+            "Coordinating multiple autonomous agents toward collective outcomes")
+
+        ns.define("fan-out-fan-in",
+            "Dispatch a task to many workers simultaneously, then collect and merge their results",
+            description="MapReduce IS fan-out-fan-in. Dispatch (fan-out) to many workers, each processes a subset, collect and merge (fan-in) the results. In the fleet: the captain (cuda-captain) fans out tasks to multiple agents, each works on their subtask, results fan back in for merging. The fan-out width determines parallelism. The fan-in logic determines how partial results combine.",
+            level=Level.PATTERN,
+            examples=["MapReduce: fan-out to map workers, fan-in to reduce", "fleet: captain dispatches tasks, agents report back, results merged", "web scraper: fan-out to 100 URLs, fan-in results to database"],
+            bridges=["parallelism", "map-reduce", "dispatch", "merge"],
+            tags=["orchestration", "fan-out", "fan-in", "pattern"])
+
+        ns.define("handoff-cascade",
+            "Pass a task through a sequence of specialists, each adding their layer of processing",
+            description="An assembly line: raw material → cutting → welding → painting → inspection → shipping. Each station receives work from the previous, adds value, passes to the next. In the fleet: sensor data → perception (cuda-perception) → deliberation (cuda-deliberation) → decision (cuda-decision) → action (cuda-motor). Each stage receives the handoff, processes, hands off. The cascade determines the processing pipeline.",
+            level=Level.PATTERN,
+            examples=["assembly line: raw → cut → weld → paint → ship", "fleet: perception → deliberation → decision → action", "compiler: lex → parse → optimize → codegen"],
+            bridges=["pipeline", "assembly-line", "specialization", "sequence"],
+            tags=["orchestration", "cascade", "handoff", "pattern"])
+
+        ns.define("leader-latch",
+            "A mechanism that ensures exactly one leader exists at any time, preventing split-brain",
+            description="In a power failure, two servers might both think they're the leader. Split-brain: two leaders making conflicting decisions. Leader-latch prevents this: only one agent holds the latch at a time. cuda-election's Raft-like protocol IS a leader-latch: term numbers and majority voting ensure exactly one leader. The latch is the atomic guarantee of singularity.",
+            level=Level.CONCRETE,
+            examples=["Raft consensus: exactly one leader per term", "fleet: exactly one captain per fleet partition", "zookeeper: leader election via ephemeral nodes (latch)"],
+            bridges=["election", "consensus", "split-brain", "atomicity"],
+            tags=["orchestration", "leader", "latch", "concrete"])
+
+        ns.define("graceful-standby",
+            "A backup system that's fully warmed up and ready to take over, not cold-started",
+            description="Hot standby: the backup is already running, processing real data, ready to switch instantly. Cold standby: the backup is off, takes minutes to start. Graceful standby is hot: it receives all updates, maintains state, but doesn't serve traffic. On failover, it takes over with zero data loss. In the fleet: cuda-actor's supervision strategy keeps standby actors ready. cuda-persistence's checkpoints enable warm standby recovery.",
+            level=Level.PATTERN,
+            examples=["hot standby database: fully synced, instant failover", "fleet: backup agent maintains full state, takes over on primary failure", "airplane co-pilot: not idle — monitoring systems, ready to take control"],
+            bridges=["failover", "hot-standby", "redundancy", "zero-downtime"],
+            tags=["orchestration", "standby", "graceful", "pattern"])
+
+        ns.define("tributary",
+            "A subsystem that feeds its results into a main flow without blocking or being blocked by it",
+            description="A tributary river feeds into the main river but has its own flow dynamics. Blocking the tributary doesn't stop the main river. In the fleet: telemetry collection (cuda-metrics) is a tributary — it feeds metrics into the main flow without blocking agent decisions. Logging (cuda-logging) is a tributary — it records but doesn't slow deliberation. Tributary pattern: fire-and-forget side channels that enhance but don't block the main flow.",
+            level=Level.PATTERN,
+            examples=["river tributary: feeds main flow without blocking it", "fleet: metrics/logging are tributaries to main decision flow", "monitoring dashboard: displays data without affecting production"],
+            bridges=["side-channel", "fire-and-forget", "async", "non-blocking"],
+            tags=["orchestration", "tributary", "side-channel", "pattern"])
+
+    def _load_tactics(self):
+        ns = self.add_namespace("tactics",
+            "Specific actionable maneuvers for achieving goals under constraints")
+
+        ns.define("shape-shift",
+            "Change your behavioral profile to match the environment's expectations without changing core capability",
+            description="A spy adopts the mannerisms of the local culture to blend in. The spy's core capability (intelligence gathering) doesn't change — only the surface presentation. In the fleet: an agent shapes its communication style (verbosity, formality) to match the context — terse for urgent situations, detailed for analysis. Core deliberation doesn't change, only the output presentation. Shape-shift is the fleet's pragmatics layer.",
+            level=Level.PATTERN,
+            examples=["spy: adopts local culture's mannerisms (shape-shifts)", "fleet agent: terse in crisis, detailed in analysis (same core, different surface)", "human: formal at work, casual at home (shape-shift without identity change)"],
+            bridges=["adaptation", "presentation", "context-aware", "pragmatics"],
+            tags=["tactics", "shape-shift", "context", "verb"])
+
+        ns.define("preempt-and-cache",
+            "Predict what will be needed and prepare it before the request arrives",
+            description="A chef preps ingredients before the dinner rush. A browser pre-fetches links you'll probably click. The cache hit rate improves dramatically when you predict correctly. In the fleet: cuda-cache's warm() method pre-populates the cache with predicted accesses. cuda-schedule can preemptively assign agents to likely upcoming tasks. Preempt-and-cache trades storage cost for latency improvement.",
+            level=Level.PATTERN,
+            examples=["chef: preps ingredients before dinner rush", "browser: prefetches likely-clicked links", "fleet: warm cache with predicted accesses before demand"],
+            bridges=["cache", "prediction", "latency", "tradeoff"],
+            tags=["tactics", "preempt", "cache", "verb"])
+
+        ns.define("bleed-and-clot",
+            "Allow a controlled loss to prevent worse damage, then seal the breach",
+            description="A scuba diver with a small leak doesn't surface immediately (losing dive time). They manage the leak, finish the task, then fix it. Bleed: accept controlled loss. Clot: seal when safe. In the fleet: cuda-backpressure allows some message drops (controlled bleed) to prevent queue overflow (worse damage). The circuit breaker allows some failed requests (bleed) before opening (clot). Bleed-and-clot is controlled loss acceptance.",
+            level=Level.PATTERN,
+            examples=["scuba diver: manage small leak, finish dive, then fix (bleed then clot)", "fleet: drop some messages to prevent queue overflow (bleed, then clot when load drops)", "military: tactical retreat (bleed) to regroup and counterattack (clot)"],
+            bridges=["backpressure", "circuit-breaker", "controlled-loss", "resilience"],
+            tags=["tactics", "bleed", "clot", "verb"])
+
+        ns.define("probe-before-commit",
+            "Send a minimal test request before investing full resources in an action",
+            description="Before ordering 1000 units, order 10 and test them. Before deploying to 100 servers, deploy to 1 and monitor. Probe: minimal investment to gather information. Then commit based on the probe result. In the fleet: before assigning a task to an unknown agent (full commit), send a health check first (probe). Before using a new gene in production (commit), test it in sandbox (probe). Probe-before-commit prevents expensive failures.",
+            level=Level.PATTERN,
+            examples=["order 10 units, test, then order 1000 (probe before commit)", "deploy to 1 server, monitor, then 100 (probe before commit)", "fleet: health check agent before assigning task (probe before commit)"],
+            bridges=["testing", "canary", "minimal-investment", "risk-reduction"],
+            tags=["tactics", "probe", "commit", "verb"])
+
+        ns.define("hedge-position",
+            "Make a counterbalancing investment that reduces downside risk without eliminating upside",
+            description="Buy a stock AND buy a put option. Stock goes up: profit from stock. Stock goes down: put option limits loss. The hedge costs something (the option premium) but prevents catastrophic loss. In the fleet: maintain backup strategies alongside primary strategies. Primary fails? Backup activates. The backup costs energy (the premium) but prevents total failure. cuda-resource's budget allocation hedges: not all energy on one strategy.",
+            level=Level.PATTERN,
+            examples=["stock + put option: profit if up, limited loss if down", "fleet: primary strategy + backup strategy (hedge)", "backup generator: costs money to maintain, prevents total outage"],
+            bridges=["hedging", "backup", "risk-reduction", "diversification"],
+            tags=["tactics", "hedge", "backup", "verb"])
+
+    def _load_diagnostics(self):
+        ns = self.add_namespace("diagnostics",
+            "The art of identifying what's wrong from symptoms, not causes")
+
+        ns.define("symptom-trace",
+            "Follow a visible symptom backward through the causal chain to find the root cause",
+            description="Patient has fever (symptom). Why? Infection. Why? Bacteria. Why? Contaminated water. Why? Broken pipe. Symptom-trace: each 'why?' step goes one level deeper. Stop when you reach an actionable cause (fix the pipe). In the fleet: agent reports high latency (symptom). Why? Queue backup. Why? Slow consumer. Why? CPU spike. Why? Inefficient algorithm. Fix the algorithm. Symptom-trace is the universal diagnostic method.",
+            level=Level.PATTERN,
+            examples=["fever → infection → bacteria → contaminated water → broken pipe (fix pipe)", "fleet: latency → queue → slow consumer → CPU spike → bad algorithm (fix algorithm)", "car: vibration → unbalanced tire → worn bearing (replace bearing)"],
+            bridges=["root-cause", "five-whys", "causal-chain", "diagnosis"],
+            tags=["diagnostics", "symptom", "trace", "verb"])
+
+        ns.define("diff-and-attribute",
+            "Compare current state to a known-good state and attribute each difference to a specific change",
+            description="git diff: compare current code to last working version. Each hunk is attributed to a specific commit. Diff-and-attribute: the binary search of diagnostics. When did it break? What changed? Diff between working and broken, attribute each change to its author and reason. In the fleet: cuda-persistence's snapshot/rollback enables diff-and-attribute: compare current state to last known-good snapshot, attribute differences to specific events.",
+            level=Level.PATTERN,
+            examples=["git diff: current vs working, each change attributed to commit", "fleet: snapshot comparison, differences attributed to events", "medical: compare blood work to baseline, attribute each anomaly to condition"],
+            bridges=["diff", "attribution", "snapshot", "comparison"],
+            tags=["diagnostics", "diff", "attribute", "verb"])
+
+        ns.define("canary-deploy",
+            "Route a small fraction of traffic to a new version to detect problems before full rollout",
+            description="Coal miners brought canaries into mines. Canaries are more sensitive to gas. Canary dies → miners evacuate. In software: route 1% of traffic to new version. Canary shows errors → rollback. 99% of users never see the problem. In the fleet: deploy a new gene to 10% of agents (canary group), observe fitness impact, then roll out to 100% or rollback. Canary-deploy is controlled exposure to risk.",
+            level=Level.PATTERN,
+            examples=["canary in coal mine: dies first, warns miners", "software: 1% traffic to new version (canary)", "fleet: new gene to 10% of agents (canary group)"],
+            bridges=["testing", "gradual-rollout", "risk-control", "monitoring"],
+            tags=["diagnostics", "canary", "deploy", "verb"])
+
+        ns.define("smoke-test",
+            "Run a quick, shallow validation that catches catastrophic failures without deep verification",
+            description="Plug it in, turn it on — does smoke come out? Smoke-test: verify the system boots, handles basic requests, doesn't crash on simple inputs. Doesn't verify correctness, just viability. In the fleet: cuda-metrics' health check IS a smoke test — 'are you alive and responsive?' not 'are your decisions optimal?' Smoke-test before deep-test. If it doesn't smoke-test, deep testing is wasted.",
+            level=Level.CONCRETE,
+            examples=["electronics: plug in, turn on, no smoke = pass", "fleet: health check pings agent, responds = pass", "software: `make && ./run --test` completes without crash = pass"],
+            bridges=["testing", "validation", "shallow", "quick"],
+            tags=["diagnostics", "smoke-test", "quick", "concrete"])
+
+    def _load_leverage(self):
+        ns = self.add_namespace("leverage",
+            "Small actions that produce disproportionately large effects — finding and using multipliers")
+
+        ns.define("leverage-point",
+            "A place in a system where a small change produces a large effect — Donella Meadows' insight",
+            description="Meadows identified 12 leverage points in systems, from weakest (parameters) to strongest (paradigm). Changing a parameter (tax rate from 20% to 21%) has small effect. Changing the paradigm (from GDP to well-being as success metric) has enormous effect. In the fleet: adding a new gene to the pool (parameter change) has small effect. Changing the fitness function (paradigm change) has enormous effect. Always seek the highest leverage point.",
+            level=Level.META,
+            examples=["Meadows: changing tax rate (weak) vs changing success metric (strong)", "fleet: adjusting energy cost (weak) vs changing fitness function (strong)", "organization: adjusting work hours (weak) vs changing culture (strong)"],
+            bridges=["systems-thinking", "multiplier", "paradigm", "effectiveness"],
+            tags=["leverage", "multiplier", "systems", "meta"])
+
+        ns.define("key-stone",
+            "A component whose removal causes disproportionate system collapse — not the biggest, but the most load-bearing",
+            description="In an arch, the keystone is ONE stone. Remove it, the entire arch collapses. It's not the biggest stone, not the heaviest — it's the one that distributes load to all others. In the fleet: the confidence type IS a keystone. It's not the biggest component, but removing it breaks trust propagation, decision-making, A2A negotiation, and sensor fusion simultaneously. cuda-confidence is the fleet's keystone.",
+            level=Level.DOMAIN,
+            examples=["arch keystone: one stone, entire arch depends on it", "fleet: confidence type — small but everything depends on it", "species: sea otter (keystone species) — removal collapses kelp forest ecosystem"],
+            bridges=["critical-component", "dependency", "load-bearing", "architecture"],
+            tags=["leverage", "keystone", "critical", "domain"])
+
+        ns.define("force-multiplier",
+            "A tool or technique that amplifies the effectiveness of existing effort without requiring more resources",
+            description="A lever lets you move 100 lbs with 10 lbs of force (10x multiplier). A bulldozer moves earth 100x faster than a shovel. The resources (your labor) don't change — the multiplier does. In the fleet: HAV is a force multiplier for communication — one term replaces a paragraph. cuda-equipment is a force multiplier — shared code avoids reimplementing across 100+ crates. Force multipliers are the most valuable fleet components.",
+            level=Level.DOMAIN,
+            examples=["lever: 10 lbs moves 100 lbs (10x)", "HAV: one term replaces paragraph (100x compression)", "shared library: write once, used 100 times (100x)"],
+            bridges=["multiplier", "efficiency", "amplification", "leverage"],
+            tags=["leverage", "multiplier", "amplification", "domain"])
+
+        ns.define("catalyst",
+            "An agent that enables a reaction without being consumed by it — the facilitator, not the participant",
+            description="Chemical catalyst: enables reaction between A and B without becoming part of the product. The catalyst lowers the activation energy, making the reaction possible. In the fleet: the captain (cuda-captain) is a catalyst — it enables coordination between agents without directly doing their work. HAV is a catalyst — it enables understanding between agents without being part of their deliberation. The best tools are catalysts.",
+            level=Level.DOMAIN,
+            examples=["enzyme: enables chemical reaction without being consumed", "fleet captain: enables coordination without doing the work", "HAV: enables understanding without being part of deliberation"],
+            bridges=["facilitator", "enabler", "non-consumed", "activation-energy"],
+            tags=["leverage", "catalyst", "facilitator", "domain"])
+
+    def _load_adaptation_patterns(self):
+        ns = self.add_namespace("adaptation-patterns",
+            "Recurring patterns of how systems adapt to changing conditions")
+
+        ns.define("acclimatize",
+            "Gradually adjust to a new environment by incrementally changing operating parameters",
+            description="Move from sea level to high altitude: first day, headache. Second day, better. By day 5, adapted. The body gradually adjusts red blood cell count, breathing patterns, metabolism. Not instant — gradual. In the fleet: cuda-adaptation's strategy parameters acclimatize — not switching instantly but gradually shifting weights as environmental statistics change. Acclimatization prevents oscillation: instant switching would thrash, gradual adjustment stabilizes.",
+            level=Level.BEHAVIOR,
+            examples=["altitude: gradual RBC adjustment over days", "fleet: gradual strategy weight adjustment as environment changes", "diet: gradual change in gut microbiome to new foods"],
+            bridges=["gradual", "adaptation", "stabilization", "transition"],
+            tags=["adaptation", "acclimatize", "gradual", "verb"])
+
+        ns.define("phase-lock",
+            "Synchronize internal oscillation to an external signal, maintaining precise timing alignment",
+            description="Your circadian rhythm phase-locks to the sun cycle. Flip time zones: disrupted for days until it re-locks. PLL (phase-locked loop) in electronics: oscillator syncs to reference signal. In the fleet: cuda-energy's CircadianRhythm phase-locks instinct modulation to the time of day. Agents working together phase-lock their task cycles — not through explicit coordination, but through shared timing signals. Phase-lock is implicit synchronization.",
+            level=Level.DOMAIN,
+            examples=["circadian rhythm: phase-locks to sun cycle", "PLL: oscillator syncs to reference clock", "fleet agents: task cycles phase-lock to shared timing signals"],
+            bridges=["synchronization", "oscillation", "timing", "entrainment"],
+            tags=["adaptation", "phase-lock", "sync", "verb"])
+
+        ns.define("cope-and-advance",
+            "Manage the immediate crisis while simultaneously making progress toward long-term resolution",
+            description="Not just coping (surviving). Not just advancing (ignoring crisis). Both simultaneously. Put out the fire while designing a fireproof building. In the fleet: cuda-resilience handles the immediate failure (cope) while cuda-learning extracts lessons that prevent future failures (advance). An agent that only copes never improves. An agent that only advances collapses at the first crisis. Both are required.",
+            level=Level.PATTERN,
+            examples=["put out fire while designing fireproof building", "fleet: handle failure now (cope) while learning to prevent it (advance)", "startup: fix urgent bug (cope) while improving testing (advance)"],
+            bridges=["resilience", "learning", "dual-track", "improvement"],
+            tags=["adaptation", "cope", "advance", "verb"])
+
+        ns.define("condition-on-context",
+            "Change behavior based on environmental context without explicit if/then rules — the context IS the selector",
+            description="A chameleon doesn't decide 'if green background then turn green'. Its skin responds directly to the light. The context (light spectrum) directly modulates the behavior (skin color). No decision layer needed. In the fleet: cuda-energy's circadian rhythm conditions instinct strength on time of day. No rule says 'if night then reduce navigation'. The cosine function directly modulates. Condition-on-context removes decision overhead.",
+            level=Level.PATTERN,
+            examples=["chameleon: skin responds directly to light (context IS the selector)", "fleet: circadian cosine directly modulates instinct strength (no if/night rule)", "thermostat: directly responds to temperature (no 'if cold then heat' — just bimetallic strip bending)"],
+            bridges=["context-awareness", "direct-modulation", "reactive", "emergent"],
+            tags=["adaptation", "context", "condition", "verb"])
+
+    def _load_friction(self):
+        ns = self.add_namespace("friction",
+            "Resistance that slows systems down — sometimes harmful, sometimes protective")
+
+        ns.define("necessary-friction",
+            "Resistance that prevents reckless action and ensures deliberate decision-making",
+            description="A safety catch on a gun. A confirmation dialog on 'rm -rf'. A mandatory cooling-off period before a major decision. These frictions slow you down ON PURPOSE. Without them, impulsive mistakes. With them, deliberate action. In the fleet: cuda-deliberation IS necessary friction — it slows the path from perception to action, preventing impulsive responses. The consensus threshold adds friction: you must accumulate enough evidence before acting.",
+            level=Level.PATTERN,
+            examples=["gun safety catch: friction prevents accidental firing", "confirmation dialog: friction prevents accidental deletion", "fleet deliberation: friction between perception and action prevents impulsive response"],
+            bridges=["friction", "safety", "deliberation", "deliberate"],
+            tags=["friction", "necessary", "safety", "pattern"])
+
+        ns.define("frictionless-path",
+            "A route through a system that encounters zero resistance — dangerously easy to take without thinking",
+            description="The path of least resistance is the frictionless path. Water flows downhill. Users click the big button. Agents take the default option. The frictionless path isn't always the best path — it's just the easiest. In the fleet: instinct-based action is the frictionless path (no deliberation needed). Deliberation adds friction but may produce better outcomes. Design the frictionless path to be the CORRECT path.",
+            level=Level.BEHAVIOR,
+            examples=["default settings: most users never change them (frictionless path)", "fleet: instinct action = frictionless (fast but maybe suboptimal)", "checkout: one-click buy = frictionless (easy but maybe impulsive)"],
+            bridges=["default", "least-resistance", "fast-path", "design"],
+            tags=["friction", "frictionless", "default", "behavior"])
+
+        ns.define("grease-the-path",
+            "Remove unnecessary friction to make the desired action the easiest action",
+            description="Want people to save? Make saving the default (opt-out, not opt-in). Want agents to share knowledge? Make sharing automatic (push to gene pool, don't require explicit upload). Grease-the-path: identify the desired behavior, then remove every obstacle between the agent and that behavior. In the fleet: cuda-tuple-space's Linda model greases the path for coordination — agents just write to the shared space, no explicit addressing needed.",
+            level=Level.PATTERN,
+            examples=["save by default (opt-out): greases the path to saving", "fleet: automatic gene pool sharing: greases the path to knowledge transfer", "Linda tuple space: write anywhere, read anywhere (greased coordination)"],
+            bridges=["default", "friction-removal", "nudge", "design"],
+            tags=["friction", "grease", "remove", "verb"])
+
+    def _load_compression(self):
+        ns = self.add_namespace("compression",
+            "Encoding more meaning in less space — the core challenge of knowledge transfer")
+
+        ns.define("glossary-as-code",
+            "When shared vocabulary itself becomes executable — terms that trigger predefined behaviors",
+            description="A glossary that's also an API. Say 'throttle-match' and the system knows exactly what to do: adjust processing rate to input rate. The term IS the instruction. HAV terms are glossary-as-code when the fleet has corresponding implementations: 'deliberate' triggers cuda-deliberation, 'stigmergy-mark' triggers cuda-stigmergy. The vocabulary IS the command set.",
+            level=Level.META,
+            examples=["HAV term 'deliberate' → triggers cuda-deliberation (glossary-as-code)", "military jargon 'flank' → specific maneuver (glossary-as-code)", "medical order 'stat' → immediately (glossary-as-code)"],
+            bridges=["vocabulary", "executable", "command", "protocol"],
+            tags=["compression", "glossary", "executable", "meta"])
+
+        ns.define("shorthand-convention",
+            "An agreed-upon abbreviation that experienced practitioners use to communicate at speed",
+            description="Doctors: 'SOB' (shortness of breath), 'NPO' (nothing by mouth). Pilots: 'ILS approach' (instrument landing system). Each abbreviation compresses a full concept. Newcomers are lost. Veterans communicate at 5x speed. In the fleet: HAV terms are shorthand conventions for fleet agents. 'Confidence-fuse' = harmonic mean fusion of independent confidence sources, with decay, with threshold gating. One word, full specification.",
+            level=Level.PATTERN,
+            examples=["medical: SOB = shortness of breath (compresses 3 words to 3 letters)", "fleet: 'confidence-fuse' = harmonic mean fusion with decay and threshold (one word = full spec)", "pilot: 'ILS approach' = instrument landing system approach (3 letters = full procedure)"],
+            bridges=["abbreviation", "compression", "shared-knowledge", "speed"],
+            tags=["compression", "shorthand", "convention", "pattern"])
+
+        ns.define("schema-on-read",
+            "Don't predefine data structure — interpret the meaning when you need it",
+            description="Relational databases: schema-on-write (define table before inserting). JSON databases: schema-on-read (interpret structure when querying). Schema-on-read is more flexible: data can take any shape, and different readers can interpret the same data differently. In the fleet: A2A messages are schema-on-read — the payload is a flexible JSON object, and each agent interprets it according to its own needs. No rigid message schema needed.",
+            level=Level.PATTERN,
+            examples=["JSON: no predefined schema, interpret when needed", "fleet A2A: flexible message payload, each agent interprets as needed", "Wikipedia: unstructured text, each reader extracts what they need"],
+            bridges=["flexibility", "interpretation", "JSON", "dynamic"],
+            tags=["compression", "schema", "read", "pattern"])
+
+    def _load_boundaries(self):
+        ns = self.add_namespace("boundaries",
+            "The edges where systems interact — interfaces, perimeters, and transition zones")
+
+        ns.define("membrane-permeability",
+            "The rate and selectivity at which a boundary allows substances to pass through",
+            description="Cell membrane: lets oxygen in, keeps toxins out. Permeability IS the filter. High permeability = fast exchange, low selectivity. Low permeability = slow exchange, high selectivity. In the fleet: the membrane (cuda-genepool) has configurable permeability. High permeability = more external genes enter the pool (innovation, risk). Low permeability = pool stays stable (safety, stagnation). Tuning permeability IS tuning the innovation-safety tradeoff.",
+            level=Level.DOMAIN,
+            examples=["cell membrane: selective permeability (oxygen in, toxins out)", "fleet membrane: configurable permeability for gene import (innovation vs safety)", "border: high permeability = free trade + vulnerability, low = protection + stagnation"],
+            bridges=["membrane", "filter", "selectivity", "tradeoff"],
+            tags=["boundaries", "permeability", "membrane", "domain"])
+
+        ns.define("demilitarized-zone",
+            "A buffer region between two hostile systems that enables monitored, controlled interaction",
+            description="Between North and South Korea: a strip where neither side deploys weapons. DMZ enables coexistence without trust. In the fleet: between trusted and untrusted agents, a DMZ layer monitors and sanitizes all interactions. cuda-sandbox IS a DMZ: the untrusted agent runs inside it, all outputs are inspected before passing to the trusted fleet. DMZ enables interaction without trust.",
+            level=Level.PATTERN,
+            examples=["Korean DMZ: buffer between hostile systems", "fleet: sandbox as DMZ between trusted fleet and untrusted agent", "firewall DMZ: public-facing servers isolated from internal network"],
+            bridges=["sandbox", "buffer", "monitoring", "trust-boundary"],
+            tags=["boundaries", "DMZ", "buffer", "pattern"])
+
+        ns.define("handshake-protocol",
+            "A multi-step exchange that establishes mutual understanding before the main interaction begins",
+            description="TCP three-way handshake: SYN → SYN-ACK → ACK. Before data flows, both sides agree on parameters. The handshake ensures both sides are ready, compatible, and aware of each other's capabilities. In the fleet: cuda-a2a's initial message exchange IS a handshake — agents share capabilities, trust scores, and communication preferences before substantive coordination begins. No handshake = miscommunication.",
+            level=Level.CONCRETE,
+            examples=["TCP: SYN → SYN-ACK → ACK before data", "fleet: capability exchange before coordination", "human: introduce yourself, find common ground, then discuss business (social handshake)"],
+            bridges=["protocol", "setup", "mutual-understanding", "A2A"],
+            tags=["boundaries", "handshake", "protocol", "concrete"])
+
+    def _load_temporal_patterns(self):
+        ns = self.add_namespace("temporal-patterns",
+            "How systems change over time — rhythms, cycles, trajectories, and deadlines")
+
+        ns.define("half-life-decay",
+            "Exponential decay where half the quantity is lost every fixed period — the universal aging function",
+            description="Carbon-14: half gone every 5,730 years. Radioactive medicine: half gone every 6 hours. Trust: half gone every N interactions without reinforcement. The half-life parameter controls decay SPEED. Short half-life = rapid decay (hot data). Long half-life = slow decay (cold data). In the fleet: 30+ cuda-* crates use half-life decay for confidence, trust, energy, memory, stigmergy, attention. Half-life IS the fleet's universal aging constant.",
+            level=Level.DOMAIN,
+            examples=["carbon-14: half-life 5,730 years", "fleet confidence: half-life controls decay rate", "memory: half-life determines how quickly experience fades"],
+            bridges=["decay", "exponential", "aging", "universal"],
+            tags=["temporal", "half-life", "decay", "domain"])
+
+        ns.define("lead-time",
+            "The time between initiating an action and its completion — the response delay",
+            description="Order a custom part: 6 weeks lead time. Spawn a subagent: 2 minutes lead time. Lead time determines how far ahead you must plan. Short lead time = reactive (respond quickly). Long lead time = anticipatory (plan ahead). In the fleet: agent spawning has a lead time (startup overhead). Task assignment should account for lead time — don't assign urgent tasks to cold agents with long startup lead times.",
+            level=Level.CONCRETE,
+            examples=["custom part: 6-week lead time", "subagent spawn: 2-minute lead time", "fleet: agent startup time is lead time for task assignment"],
+            bridges=["delay", "planning", "anticipation", "response"],
+            tags=["temporal", "lead-time", "delay", "concrete"])
+
+        ns.define("time-to-live",
+            "A deadline after which cached or stored data is considered stale and discarded",
+            description="DNS records: 3600 second TTL. HTTP cache: max-age header. Fleet sensor data: 500ms TTL (position data older than 500ms is stale). TTL prevents the system from acting on outdated information. Short TTL = fresh but expensive (frequent refresh). Long TTL = stale but efficient (infrequent refresh). In the fleet: cuda-cache's TTL, cuda-tuple-space's TTL, cuda-world-model's object permanence — all use TTL.",
+            level=Level.CONCRETE,
+            examples=["DNS: 3600s TTL before re-query", "HTTP: max-age before cache invalidation", "fleet: sensor data 500ms TTL, stigmergy marks with expiry"],
+            bridges=["expiry", "staleness", "cache", "freshness"],
+            tags=["temporal", "TTL", "expiry", "concrete"])
+
+        ns.define("window-of-opportunity",
+            "A bounded time interval during which an action can succeed — outside the window, it cannot",
+            description="Stock option: exercise before expiry or it's worthless. Launch window: 30 minutes for Mars orbit insertion. In the fleet: cuda-temporal's deadline urgency scoring identifies windows of opportunity — tasks that must be completed before a deadline. Energy budget is the window's width: enough energy = wide window, low energy = narrow window. Miss the window = opportunity cost.",
+            level=Level.DOMAIN,
+            examples=["stock option: expires worthless after date", "launch window: 30 minutes for orbital insertion", "fleet: task deadline creates window, energy budget sets window width"],
+            bridges=["deadline", "expiry", "opportunity", "urgency"],
+            tags=["temporal", "window", "opportunity", "domain"])
+
+    def _load_quality(self):
+        ns = self.add_namespace("quality",
+            "Measures and patterns of excellence, reliability, and fitness for purpose")
+
+        ns.define("definition-of-done",
+            "The explicit criteria that must be satisfied before a task is considered complete",
+            description="Not 'it compiles'. Not 'it works on my machine'. Definition of done: tests pass, documentation updated, code reviewed, deployed, and verified in production. Different teams have different DoDs. The key is EXPLICIT — everyone agrees beforehand what 'done' means. In the fleet: each deliberation proposal should have a DoD — what does 'resolved' look like? What evidence would satisfy the threshold?",
+            level=Level.CONCRETE,
+            examples=["software: tests pass + docs updated + reviewed + deployed + verified = done", "fleet: proposal's DoD = confidence above threshold with supporting evidence", "construction: inspection passed + occupancy permit = done"],
+            bridges=["completion", "criteria", "explicit", "agreement"],
+            tags=["quality", "done", "criteria", "concrete"])
+
+        ns.define("single-point-of-failure",
+            "A component whose failure causes the entire system to stop — eliminate these",
+            description="One hard drive holds all data → it fails → everything lost. One load balancer serves all traffic → it crashes → site down. SPOF is the enemy of resilience. Every SPOF should have a backup. In the fleet: single captain = SPOF. Single energy source = SPOF. cuda-election's leader redundancy and cuda-energy's fleet energy pool eliminate SPOFs. Resilient systems have ZERO single points of failure.",
+            level=Level.CONCRETE,
+            examples=["single hard drive with all data = SPOF", "single load balancer = SPOF", "fleet: single captain = SPOF, need election for backup"],
+            bridges=["resilience", "redundancy", "backup", "eliminate"],
+            tags=["quality", "SPOF", "failure", "concrete"])
+
+        ns.define("blast-radius",
+            "The scope of damage when a failure occurs — contain it, minimize it, monitor it",
+            description="A firecracker in a field: small blast radius. A firecracker in a fireworks factory: large blast radius. Same failure, different context. In the fleet: cuda-resilience's bulkhead pattern limits blast radius — one agent's failure doesn't cascade to others. The blast radius of a single agent failure is bounded by its bulkhead. Design systems so that worst-case blast radius is acceptable, not catastrophic.",
+            level=Level.PATTERN,
+            examples=["firecracker in field vs fireworks factory: same failure, different blast radius", "fleet: bulkhead limits agent failure blast radius", "microservices: one service fails, others unaffected (contained blast radius)"],
+            bridges=["bulkhead", "containment", "failure-scope", "resilience"],
+            tags=["quality", "blast-radius", "containment", "pattern"])
+
+
+    def _load_mechanics(self):
+        ns = self.add_namespace("mechanics",
+            "Physical force, motion, and mechanical advantage as metaphors for agent systems")
+
+        ns.define("mechanical-advantage",
+            "A device that multiplies input force — trading distance for force at a fixed energy cost",
+            description="A lever: push 1 meter at 10 lbs to move 10 lbs 1 meter. A pulley system: pull 10 meters of rope to lift 100 lbs 1 meter. Same energy (F×d = constant), but the force is multiplied. In the fleet: cuda-equipment is mechanical advantage — shared code lets one crate's work benefit 100+ crates. Write once (input force), used everywhere (output force). The energy cost is maintenance of the shared crate. The advantage is 100x.",
+            level=Level.PATTERN,
+            examples=["lever: 10 lbs input × 1m = 10 lbs output × 1m", "pulley: 10 lbs × 10m = 100 lbs × 1m", "fleet: shared equipment crate = mechanical advantage for all dependents"],
+            bridges=["force-multiplier", "leverage", "shared-infrastructure", "efficiency"],
+            tags=["mechanics", "advantage", "multiplier", "pattern"])
+
+        ns.define("momentum",
+            "The tendency of a moving object to keep moving — resistance to change in velocity",
+            description="A freight train at full speed doesn't stop instantly. It has momentum (mass × velocity). More mass or more speed = more momentum = harder to stop. In the fleet: an agent with high momentum (long history of consistent behavior, strong gene fitness) resists change. Redirecting it costs energy. cuda-adaptation's strategy switching must overcome momentum — a strategy that's been working well has high momentum, making switching costly.",
+            level=Level.DOMAIN,
+            examples=["freight train: hard to stop (high mass × high velocity)", "fleet agent: long history of success resists strategy change (high momentum)", "project: late-stage rewrite has high momentum (switching costs enormous)"],
+            bridges=["inertia", "resistance-to-change", "velocity", "mass"],
+            tags=["mechanics", "momentum", "inertia", "domain"])
+
+        ns.define("torque",
+            "Rotational force — the ability to turn something around an axis, not just push it linearly",
+            description="Push a door at the handle: it swings easily. Push it near the hinge: it barely moves. Same force, different torque (force × distance from axis). In the fleet: applying effort at the right point creates torque — a small change to the fitness function (applied at the right leverage point) rotates the entire gene pool's evolution direction. Same effort, different location = different torque.",
+            level=Level.PATTERN,
+            examples=["door: push at handle (high torque) vs near hinge (low torque)", "fleet: small fitness function change at right leverage point = rotates entire gene pool", "organization: suggestion from CEO (high torque) vs intern (low torque) — same idea, different leverage"],
+            bridges=["leverage", "rotational-force", "axis", "position"],
+            tags=["mechanics", "torque", "leverage", "pattern"])
+
+        ns.define("gear-ratio",
+            "Match speed to force through mechanical reduction or multiplication",
+            description="Low gear: slow but powerful (climbing a hill). High gear: fast but weak (highway cruising). The gear ratio trades speed for force. In the fleet: cuda-deliberation has a gear ratio — slow mode (deep analysis, high confidence) for critical decisions, fast mode (shallow analysis, low confidence) for routine ones. Switching gears IS changing the speed-force tradeoff. cuda-filtration's BudgetTiers are gear ratios.",
+            level=Level.PATTERN,
+            examples=["bicycle: low gear for hills (slow, powerful), high gear for flats (fast, weak)", "fleet: slow deliberation for critical decisions, fast for routine", "filtration tiers: scout (fast, cheap) vs captain (slow, thorough)"],
+            bridges=["tradeoff", "speed-force", "gear", "ratio"],
+            tags=["mechanics", "gear-ratio", "tradeoff", "pattern"])
+
+    def _load_entrenchment(self):
+        ns = self.add_namespace("entrenchment",
+            "How systems become locked into patterns and the difficulty of changing them")
+
+        ns.define("lock-in",
+            "A state where switching costs make staying with the current choice cheaper than changing, even if better alternatives exist",
+            description="QWERTY keyboard: inferior to Dvorak but everyone learned QWERTY, all keyboards are QWERTY, switching costs are enormous. Lock-in is self-reinforcing: the more people use QWERTY, the harder it is to switch. In the fleet: cuda-equipment as a shared dependency creates lock-in — once 100+ crates depend on it, changing its API is very costly. Lock-in isn't always bad (standardization enables coordination) but should be conscious.",
+            level=Level.DOMAIN,
+            examples=["QWERTY keyboard: inferior but locked in by switching costs", "fleet: cuda-equipment API change affects 100+ crates (lock-in)", "Facebook: locked in by social graph (switching costs = losing all friends)"],
+            bridges=["switching-cost", "path-dependence", "standardization", "self-reinforcing"],
+            tags=["entrenchment", "lock-in", "switching-cost", "domain"])
+
+        ns.define("path-dependence",
+            "Where you end up depends on the path you took, not just where you started — history matters",
+            description="VHS beat Betamax despite Betamax being technically superior. Early VHS adoption led to more VHS content, leading to more VHS adoption. The path determined the outcome, not the starting quality. In the fleet: the gene pool's evolution IS path-dependent. Different starting genes → different evolutionary paths → different optimal strategies. You can't reach the same gene pool from different starting points.",
+            level=Level.DOMAIN,
+            examples=["VHS vs Betamax: history determined winner, not quality", "fleet: gene pool evolution depends on starting genes (path-dependent)", "QWERTY: historical accident locked in the standard"],
+            bridges=["lock-in", "history", "contingency", "non-deterministic"],
+            tags=["entrenchment", "path-dependence", "history", "domain"])
+
+        ns.define("technical-debt",
+            "The accumulated cost of choosing fast-now over right-now — future work created by past shortcuts",
+            description="Ship without tests → later you MUST add tests (with interest: harder now because code has grown). Ship without docs → later you MUST reverse-engineer the docs (with interest: original authors are gone). Technical debt has INTEREST — the longer you wait to pay it, the more expensive it becomes. In the fleet: crates built quickly without proper error handling accumulate technical debt. Pay it early (backfill) or pay it later (at compound interest).",
+            level=Level.BEHAVIOR,
+            examples=["ship without tests → add tests later at 3x cost (technical debt + interest)", "skip documentation → reverse-engineer later at 5x cost", "fleet: minimal agent → add compliance later at higher cost"],
+            bridges=["debt", "shortcuts", "interest", "maintenance"],
+            tags=["entrenchment", "debt", "shortcuts", "behavior"])
+
+        ns.define("legacy-anchor",
+            "An old component that newer components must remain compatible with, constraining evolution",
+            description="Windows must run 30-year-old software. HTTP/1.1 must work with HTTP/1.0 clients. The legacy anchor prevents the system from fully evolving because backward compatibility constrains the design space. In the fleet: cuda-equipment v0.1 is a legacy anchor — once published to crates.io, its API must remain stable. New versions can add features but can't remove or change existing ones. The anchor constrains but also enables.",
+            level=Level.BEHAVIOR,
+            examples=["Windows: runs 30-year-old software (legacy anchor)", "HTTP/1.1: compatible with HTTP/1.0 (legacy anchor)", "fleet: cuda-equipment v0.1 API stability constrains future evolution"],
+            bridges=["backward-compatibility", "constraint", "stability", "evolution"],
+            tags=["entrenchment", "legacy", "anchor", "behavior"])
+
+    def _load_knowledge_transfer(self):
+        ns = self.add_namespace("knowledge-transfer",
+            "How knowledge moves between agents, systems, and generations")
+
+        ns.define("standing-on-shoulders",
+            "Each generation builds on accumulated knowledge, achieving heights impossible from scratch",
+            description="Newton: 'If I have seen further, it is by standing on the shoulders of giants.' No one builds modern physics from first principles. Everyone starts with centuries of accumulated knowledge. In the fleet: cuda-equipment is the accumulated knowledge of the fleet. Every new crate starts standing on its shoulders — confidence types, message formats, agent traits. Without it, every crate reimplements everything. With it, every crate starts at height.",
+            level=Level.META,
+            examples=["Newton: standing on giants' shoulders", "fleet: every new crate starts with cuda-equipment (accumulated fleet knowledge)", "open source: every project builds on libraries (standing on shoulders)"],
+            bridges=["accumulation", "prior-knowledge", "foundation", "meta"],
+            tags=["knowledge", "transfer", "accumulation", "meta"])
+
+        ns.define("knowledge-distillation",
+            "Transfer knowledge from a complex source to a simpler representation without losing essential capability",
+            description="Teacher model (70B parameters) → Student model (7B parameters). The student captures 90% of the teacher's capability at 10% of the cost. The distillation is LOSSY but EFFICIENT. In the fleet: each HAV term IS a knowledge distillation — a complex academic concept distilled into one word + one paragraph + examples. The full paper is 30 pages. The HAV term is 200 words. 95% of the meaning, 1% of the cost.",
+            level=Level.META,
+            examples=["teacher 70B → student 7B: 90% capability, 10% cost", "HAV: 30-page paper → 200-word term: 95% meaning, 1% cost", "senior engineer's intuition → documented pattern: transferable at lower cost"],
+            bridges=["distillation", "compression", "efficiency", "lossy"],
+            tags=["knowledge", "distillation", "compression", "meta"])
+
+        ns.define("apprenticeship",
+            "Transfer tacit knowledge through observation and guided practice, not explicit instruction",
+            description="A blacksmith's apprentice watches the master work, then tries, gets corrected, tries again. The knowledge transferred is TACIT — the master can't fully articulate what they know. It must be OBSERVED and PRACTICED. In the fleet: cuda-git-agent's Gene crossover is apprenticeship — a new agent inherits genes from successful agents (observation) and tests them in its own context (guided practice). The genes encode tacit knowledge.",
+            level=Level.PATTERN,
+            examples=["blacksmith apprentice: watches master, practices, gets corrected", "fleet: gene crossover from successful agents = apprenticeship", "residency: medical students observe attending physicians (apprenticeship)"],
+            bridges=["tacit-knowledge", "practice", "observation", "learning"],
+            tags=["knowledge", "apprenticeship", "tacit", "pattern"])
+
+        ns.define("document-or-it-didn't-happen",
+            "Knowledge that exists only in someone's head is not knowledge — it's a dependency on that person",
+            description="The senior engineer who 'just knows' the deployment process: when they leave, the process leaves with them. Undocumented knowledge is a single point of failure. Write it down = make it transferable. HAV IS documentation of high-abstraction concepts — written down, transferable, not dependent on any single agent. Document-or-it-didn't-happen is the fleet's knowledge persistence principle.",
+            level=Level.PATTERN,
+            examples=["senior engineer leaves → undocumented deployment process lost", "fleet: HAV terms documented = transferable regardless of which agent wrote them", "science: experiment results not published = didn't contribute to collective knowledge"],
+            bridges=["documentation", "persistence", "transferability", "SPOF"],
+            tags=["knowledge", "documentation", "persistence", "pattern"])
+
+    def _load_efficiency(self):
+        ns = self.add_namespace("efficiency",
+            "Doing more with less — the art of minimizing waste")
+
+        ns.define("amortize",
+            "Spread a one-time cost over many uses, making each individual use cheaper",
+            description="Buy a $1000 coffee machine. First cup: $1000. 1000th cup: $1. The fixed cost is amortized over many uses. In the fleet: cuda-equipment's development cost is amortized over 100+ dependent crates. Each crate pays a tiny fraction of the development cost. The more crates that use it, the cheaper it is per crate. Amortization IS the economics of shared infrastructure.",
+            level=Level.DOMAIN,
+            examples=["coffee machine: $1000 first cup, $1 after 1000 cups", "fleet: cuda-equipment dev cost amortized over 100+ crates", "factory: machine purchase amortized over production volume"],
+            bridges=["fixed-cost", "shared-infrastructure", "economy-of-scale", "amortization"],
+            tags=["efficiency", "amortize", "shared-cost", "domain"])
+
+        ns.define("pay-once-use-forever",
+            "Invest in a capability that provides ongoing returns without additional cost",
+            description="Buy a hammer: pay once, drive nails forever. Write a test framework: pay once, catch bugs forever. Build cuda-equipment: pay once, use in 100+ crates forever. The investment-to-return ratio improves with usage. In the fleet: every shared crate (cuda-equipment, cuda-confidence, cuda-a2a) is pay-once-use-forever infrastructure. The fleet's development velocity increases as shared infrastructure accumulates.",
+            level=Level.PATTERN,
+            examples=["hammer: buy once, use forever", "test framework: build once, catch bugs forever", "fleet: shared crate → use in 100+ crates with zero additional development cost"],
+            bridges=["investment", "infrastructure", "reusable", "one-time-cost"],
+            tags=["efficiency", "pay-once", "reusable", "pattern"])
+
+        ns.define("waste-heat",
+            "Unavoidable byproduct energy that can potentially be repurposed instead of discarded",
+            description="Car engine generates heat (waste) → heater uses it to warm cabin (repurposed). Data center generates heat → building heating system uses it. Nothing is 100% efficient; the waste-heat question is: can you USE the waste? In the fleet: deliberation generates 'waste' in the form of rejected proposals. But rejected proposals carry information about what DOESN'T work. cuda-learning can extract lessons from rejected proposals (repurposing waste-heat).",
+            level=Level.PATTERN,
+            examples=["engine heat → cabin heater (repurposed waste-heat)", "fleet: rejected proposals → lessons about what doesn't work (repurposed waste-heat)", " composting: food waste → fertilizer (repurposed waste)"],
+            bridges=["byproduct", "repurpose", "efficiency", "waste"],
+            tags=["efficiency", "waste-heat", "repurpose", "pattern"])
+
+        ns.define("coasting",
+            "Operating at zero or minimal input cost by relying on accumulated energy or momentum",
+            description="A bicycle coasting downhill: zero pedaling, still moving. Solar panel at noon: zero fuel cost, maximum output. A system that has built up enough stored energy/momentum to operate without active input. In the fleet: an agent with full energy budget and high-fitness genes is coasting — it handles routine tasks with minimal deliberation (instinct suffices). Coasting IS efficient but can't handle novel situations.",
+            level=Level.BEHAVIOR,
+            examples=["bicycle downhill: zero pedaling, still moving (coasting)", "solar at noon: zero fuel, maximum output", "fleet: high-fitness agent handles routine tasks by instinct (coasting)"],
+            bridges=["momentum", "stored-energy", "efficiency", "minimal-input"],
+            tags=["efficiency", "coasting", "minimal", "behavior"])
+
+    def _load_metaphor(self):
+        ns = self.add_namespace("metaphor",
+            "Cross-domain mapping as a cognitive tool — understanding new things through familiar structures")
+
+        ns.define("structural-mapping",
+            "Transfer understanding from a well-known domain to a less-known domain by matching relational structure",
+            description="Electricity IS like water: voltage = pressure, current = flow, resistance = pipe width. The mapping works because the RELATIONSHIPS match (Ohm's law = Darcy-Weisbach). In the fleet: biological metaphors map structure, not just labels. Dopamine IS confidence because both accumulate, decay, have thresholds, and modulate behavior — the relational structure matches. Good metaphors have structural fidelity, not just surface similarity.",
+            level=Level.META,
+            examples=["electricity = water: structural mapping (voltage=pressure, current=flow)", "dopamine = confidence: structural mapping (accumulation, decay, threshold, modulation)", "gene = strategy: structural mapping (inheritance, mutation, selection, fitness)"],
+            bridges=["analogy", "cross-domain", "structure", "understanding"],
+            tags=["metaphor", "mapping", "structure", "meta"])
+
+        ns.define("reification",
+            "Treating an abstract concept as if it were a concrete, manipulable object",
+            description="We say 'time is money' — treating abstract time as if it were concrete money (spend, save, waste, invest). Reification makes abstract concepts manipulable. In the fleet: confidence IS a type (f64 between 0 and 1) that can be stored, passed, fused, decayed — treated as a concrete object. Trust IS a type. Energy IS a type. Reifying abstractions as types enables computation over them.",
+            level=Level.META,
+            examples=["time is money: abstract time treated as concrete currency", "fleet: confidence as f64 type — abstract concept treated as concrete number", "gene as object: abstract strategy pattern treated as manipulable data structure"],
+            bridges=["concretization", "type-system", "manipulation", "abstraction"],
+            tags=["metaphor", "reification", "concrete", "meta"])
+
+        ns.define("metaphorical-distance",
+            "How far apart the source and target domains of a metaphor are — distance affects both insight and confusion",
+            description="'The stock market is a roller coaster' — close distance (both involve ups and downs). 'Consciousness is computation' — far distance (very different domains, rich but controversial mapping). Close metaphors are safe but shallow. Far metaphors are risky but insightful. In the fleet: biological metaphors for agent systems have moderate distance — biology and computation share deep structural similarities but aren't the same domain.",
+            level=Level.META,
+            examples=["stock market = roller coaster (close distance, safe but shallow)", "consciousness = computation (far distance, risky but insightful)", "fleet: biology → agent systems (moderate distance, productive mapping)"],
+            bridges=["metaphor", "domain-distance", "insight", "risk"],
+            tags=["metaphor", "distance", "domain", "meta"])
+
+
+    def _load_scaling(self):
+        ns = self.add_namespace("scaling-deep",
+            "How systems grow, shrink, and maintain function at different scales")
+
+        ns.define("constant-overhead",
+            "The cost that doesn't increase as the system scales — the fixed baseline regardless of size",
+            description="A factory's rent is $10,000/month whether it produces 1 unit or 10,000. That's constant overhead. Adding more production doesn't increase rent. In the fleet: cuda-equipment's binary size is constant overhead — whether 1 crate or 1000 crates use it, the compiled code is the same size. HTTP protocol is constant overhead — the same headers whether you send 1 byte or 1GB. Minimize constant overhead to keep small deployments viable.",
+            level=Level.CONCRETE,
+            examples=["factory rent: same whether 1 or 10,000 units produced", "fleet: cuda-equipment binary size is constant regardless of how many crates use it", "HTTP headers: same size whether payload is 1 byte or 1GB"],
+            bridges=["fixed-cost", "overhead", "baseline", "scale-invariant"],
+            tags=["scaling", "constant", "overhead", "concrete"])
+
+        ns.define("linear-scaling",
+            "Output grows proportionally with input — double the resources, double the capacity",
+            description="2 workers produce 2x as much as 1 worker. 10 servers handle 10x the traffic. Linear scaling is the ideal baseline but often not achievable due to coordination overhead. In the fleet: cuda-swarm-agent's Vessel fleet ideally scales linearly — 10 agents do 10x the work. But coordination overhead (A2A messages) makes true linear scaling rare. cuda-fleet-mesh's topology affects how close to linear the scaling is.",
+            level=Level.DOMAIN,
+            examples=["workers: 2x workers = 2x output (ideally)", "fleet: 10 agents handle ~10x tasks (ideally linear)", "servers: 10x servers = ~10x capacity (before coordination overhead)"],
+            bridges=["scaling", "proportional", "ideal", "baseline"],
+            antonyms=["super-linear-scaling", "sub-linear-scaling"],
+            tags=["scaling", "linear", "proportional", "domain"])
+
+        ns.define("super-linear-scaling",
+            "Output grows faster than input — 2x resources produce MORE than 2x output",
+            description="This seems impossible but happens through positive network effects. A telephone with 1 user is worthless. With 100 users, each user gets value proportional to 100. With 1000 users, value proportional to 1000. The value scales SUPER-linearly because each new user adds value for ALL existing users. In the fleet: the gene pool scales super-linearly — each new gene can combine with ALL existing genes, creating exponential combinatorial value.",
+            level=Level.DOMAIN,
+            examples=["telephone network: value ~ n^2 (each user connects to all others)", "fleet gene pool: each new gene combines with all existing genes (super-linear value)", "marketplace: each new seller benefits all existing buyers"],
+            bridges=["network-effect", "combinatorial", "positive-feedback", "scaling"],
+            antonyms=["sub-linear-scaling"],
+            tags=["scaling", "super-linear", "network-effect", "domain"])
+
+        ns.define("diminishing-returns",
+            "Each additional unit of input produces LESS output than the previous one",
+            description="First worker: produces 100 units. Second worker: produces 90 units (coordination overhead). Tenth worker: produces 10 units (mostly overhead). At some point, adding more resources actually HURTS (congestion, overhead exceeds benefit). In the fleet: adding deliberation rounds has diminishing returns — first round identifies the main issue, subsequent rounds refine but each adds less value. Know when to stop deliberating and start acting.",
+            level=Level.DOMAIN,
+            examples=["workers: 1st produces 100, 2nd produces 90, 10th produces 10", "fleet deliberation: 1st round most valuable, each subsequent round adds less", "studying: first hour most productive, 10th hour almost useless"],
+            bridges=["overhead", "congestion", "optimal-stopping", "tradeoff"],
+            antonyms=["increasing-returns"],
+            tags=["scaling", "diminishing", "returns", "domain"])
+
+        ns.define("right-sizing",
+            "Matching system capacity to actual demand — not over-provisioned, not under-provisioned",
+            description="A 100-person company with a 500-person office building is over-provisioned (wasted space). A 100-person company with a 50-person office is under-provisioned (congestion). Right-sized: 100-person capacity for 100-person demand. In the fleet: cuda-resource's allocation should right-size agents to their tasks — a simple monitoring task doesn't need a captain-class agent. Match capability to requirement.",
+            level=Level.PATTERN,
+            examples=["100-person office for 100-person company (right-sized)", "fleet: simple task gets scout-class agent, not captain-class", "database: query capacity matches actual query volume"],
+            bridges=["capacity", "demand", "provisioning", "efficiency"],
+            tags=["scaling", "right-size", "capacity", "pattern"])
+
+    def _load_interface_patterns(self):
+        ns = self.add_namespace("interface-patterns",
+            "How system boundaries are designed, crossed, and maintained")
+
+        ns.define("contract-first",
+            "Define the interface contract before implementing either side — agreement before code",
+            description="Before building the client or the server, write the API contract (OpenAPI spec, protobuf definition, TypeScript interface). Both sides implement against the same contract independently. Contract-first prevents interface mismatches that arise when implementations drift. In the fleet: vessel.json IS a contract — it defines what a vessel can do before the vessel is built. cuda-equipment's EquipmentRegistry defines the contract for all equipment types.",
+            level=Level.PATTERN,
+            examples=["OpenAPI spec before client/server implementation", "fleet: vessel.json defines vessel contract before building vessel", "TypeScript interface before implementing class"],
+            bridges=["interface", "contract", "agreement", "specification"],
+            tags=["interface", "contract-first", "specification", "pattern"])
+
+        ns.define("version-with-grace",
+            "Support old and new interface versions simultaneously during transition, then deprecate old",
+            description="HTTP/2 and HTTP/1.1 coexist during transition. Python 2 and 3 coexisted for a decade. Never break existing consumers immediately. Version-with-grace: add new version, mark old as deprecated, support both for a transition period, then remove old. In the fleet: cuda-equipment v0.1 → v0.2 should version-with-grace — existing dependent crates continue working while new crates use v0.2 features.",
+            level=Level.PATTERN,
+            examples=["HTTP/2 coexists with HTTP/1.1 during transition", "Python 2 and 3 coexisted for years", "fleet: cuda-equipment versions coexist during transition period"],
+            bridges=["backward-compatibility", "deprecation", "migration", "transition"],
+            tags=["interface", "versioning", "graceful", "pattern"])
+
+        ns.define("soft-error",
+            "A failure that doesn't crash the system but returns a degraded result with error context",
+            description="A hard error: crash, exception, system stops. A soft error: return a partial result, flag it as degraded, include what went wrong. Soft errors enable graceful degradation — the system keeps running with reduced capability instead of stopping entirely. In the fleet: cuda-deliberation's consensus below threshold IS a soft error — no decision made, but the system doesn't crash. It returns 'inconclusive' with the evidence collected so far.",
+            level=Level.PATTERN,
+            examples=["hard error: system crash. soft error: partial result with error flag", "fleet: deliberation returns 'inconclusive' instead of crashing (soft error)", "API: 200 with degraded data vs 500 crash (soft vs hard error)"],
+            bridges=["graceful-degradation", "partial-result", "error-handling", "resilience"],
+            antonyms=["hard-error"],
+            tags=["interface", "soft-error", "degradation", "pattern"])
+
+    def _load_attention(self):
+        ns = self.add_namespace("attention-deep",
+            "How systems allocate limited processing capacity to the most important inputs")
+
+        ns.define("attention-budget",
+            "A fixed cognitive resource that must be allocated across competing demands — spend wisely",
+            description="You have ~4 hours of deep focus per day. Every meeting, notification, and context switch spends from this budget. Once depleted, remaining work is shallow. In the fleet: each agent has an attention budget (cuda-attention). Every deliberation, message, and perception event spends attention. Prioritize: high-stakes decisions get deep attention, routine tasks get shallow attention.",
+            level=Level.DOMAIN,
+            examples=["human: ~4 hours deep focus per day (attention budget)", "fleet: agent attention budget allocated across deliberation, messages, perception", "RAM: fixed memory budget allocated across processes"],
+            bridges=["attention", "budget", "prioritization", "allocation"],
+            tags=["attention", "budget", "allocation", "domain"])
+
+        ns.define("salience-bottleneck",
+            "The rate at which important information can be identified and acted upon — the awareness throughput",
+            description="You can scan a dashboard and identify 3-5 anomalies at a glance. But if 50 things are wrong simultaneously, you can't process them all. Salience bottleneck: the rate at which 'important' can be distinguished from 'noise'. In the fleet: cuda-attention's saliency scoring IS the salience bottleneck — only top-scored inputs get processed. Below the bottleneck, inputs are ignored. Tuning the bottleneck is tuning what the agent NOTICEs.",
+            level=Level.DOMAIN,
+            examples=["human: can notice 3-5 dashboard anomalies simultaneously", "fleet: saliency scoring filters to top-N inputs (salience bottleneck)", "news: 1000 stories published, only 5 noticed (salience bottleneck)"],
+            bridges=["attention", "bottleneck", "salience", "throughput"],
+            tags=["attention", "salience", "bottleneck", "domain"])
+
+        ns.define("habituation",
+            "Decreased response to a stimulus after repeated exposure — the brain's noise filter",
+            description="You notice a ticking clock when you first enter a room. After 10 minutes, you don't. The stimulus hasn't changed — your response has. Habituation prevents the brain from processing constant stimuli (saving attention for changes). In the fleet: cuda-attention's habituation reduces saliency for constant inputs. A sensor that always reports 72°F stops getting attention. Only when it changes to 85°F does it break through habituation.",
+            level=Level.BEHAVIOR,
+            examples=["ticking clock: noticed at first, invisible after 10 minutes", "fleet: constant sensor reading loses attention, only changes break through", "smell: you notice perfume when entering a room, not after 5 minutes"],
+            bridges=["adaptation", "change-detection", "noise-filter", "desensitization"],
+            tags=["attention", "habituation", "adaptation", "behavior"])
+
+    def _load_security_deep(self):
+        ns = self.add_namespace("security-deep",
+            "Threat models, trust boundaries, and defensive patterns")
+
+        ns.define("threat-model",
+            "An explicit enumeration of what you're protecting against — define the enemy before building defenses",
+            description="A bank vault protects against: bank robbers (physical breach), insider theft (trusted attacker), government subpoena (legal attack). Different threats need different defenses. Without a threat model, you build random defenses that may miss the actual threat. In the fleet: the membrane's antibody list IS a threat model — it enumerates specific dangerous signals ('rm -rf', 'format', 'drop_all'). Define threats, then build defenses.",
+            level=Level.CONCRETE,
+            examples=["bank: protects against robbers, insiders, subpoenas (threat model)", "fleet membrane: antibodies list specific threats (threat model)", "web app: OWASP top 10 as threat model → build defenses accordingly"],
+            bridges=["defense", "threat", "model", "explicit"],
+            tags=["security", "threat-model", "defense", "concrete"])
+
+        ns.define("trust-boundary",
+            "A line where trust assumptions change — inside the boundary is trusted, outside is not",
+            description="Your home's front door is a trust boundary. Inside: trusted. Outside: not trusted. You don't need to verify your family's identity inside. You DO verify a stranger at the door. In the fleet: the membrane (cuda-genepool) IS a trust boundary. Inside the membrane: trusted genes, trusted signals. Outside: unverified, must be checked. Every trust boundary needs authentication at the crossing.",
+            level=Level.CONCRETE,
+            examples=["front door: trust boundary between home (trusted) and street (untrusted)", "fleet membrane: trust boundary between trusted genes and external signals", "firewall: trust boundary between internal network and internet"],
+            bridges=["membrane", "boundary", "authentication", "trust"],
+            tags=["security", "boundary", "trust", "concrete"])
+
+        ns.define("defense-in-depth",
+            "Multiple independent layers of security — if one fails, the next catches the threat",
+            description="Castle: moat (layer 1) → wall (layer 2) → guards (layer 3) → inner keep (layer 4). Each layer is independently sufficient to stop SOME attacks. No single layer stops ALL attacks. But together, they stop almost all attacks. In the fleet: cuda-sandbox (layer 1) + cuda-compliance (layer 2) + cuda-rbac (layer 3) + cuda-membrane (layer 4). Each catches different threats. No single defense is sufficient.",
+            level=Level.PATTERN,
+            examples=["castle: moat + wall + guards + keep (defense in depth)", "fleet: sandbox + compliance + RBAC + membrane (defense in depth)", "web: WAF + rate limit + auth + encrypt (defense in depth)"],
+            bridges=["layers", "redundancy", "independent", "defense"],
+            tags=["security", "defense-in-depth", "layers", "pattern"])
+
+        ns.define("least-privilege",
+            "Grant only the minimum permissions needed for a task — no more, no exceptions",
+            description="A janitor has keys to cleaning closets but not the CEO's office. A read-only user can view data but not modify it. Least privilege limits blast radius: if an account is compromised, the attacker only gains the minimum permissions. In the fleet: cuda-rbac implements least-privilege — agents have exactly the permissions needed for their role, no more. A monitoring agent can observe but not modify. An action agent can act but not configure.",
+            level=Level.CONCRETE,
+            examples=["janitor: cleaning closet keys, not CEO office (least privilege)", "database: read-only user can view but not modify", "fleet: monitoring agent observes but doesn't act (least privilege)"],
+            bridges=["permission", "minimum", "RBAC", "blast-radius"],
+            tags=["security", "least-privilege", "minimum", "concrete"])
+
+    def _load_error_strategies(self):
+        ns = self.add_namespace("error-strategies",
+            "Systematic approaches to handling failures gracefully")
+
+        ns.define("fail-fast",
+            "Detect and report errors immediately rather than continuing in a degraded state",
+            description="Don't swallow exceptions. Don't return null. Don't log and continue. FAIL — loudly and immediately. Fail-fast makes problems visible. Silent failures are worse than crashes because they corrupt state invisibly. In the fleet: Rust's Result/Option types enforce fail-fast — you MUST handle the error case explicitly. The fleet's error strategy: fail fast on critical paths, degrade gracefully on non-critical paths.",
+            level=Level.PATTERN,
+            examples=["Rust: Result type forces explicit error handling (fail-fast)", "fleet: critical path failure → immediate error, not silent degradation", "assert: program crashes on invariant violation (fail-fast)"],
+            bridges=["error-handling", "visibility", "explicit", "fail"],
+            antonyms=["fail-silently"],
+            tags=["error", "fail-fast", "explicit", "pattern"])
+
+        ns.define("fail-safe",
+            "When failure occurs, transition to a state that is safe, not just stopped",
+            description="A fuse blows (fails) but the house doesn't burn down (safe). A train signal fails → red (trains stop = safe). Fail-safe: the failure mode itself is safe. Contrast with fail-deadly: a nuclear reactor that fails to shutdown. In the fleet: cuda-energy's apoptosis is fail-safe — when energy drops below threshold, the agent enters rest mode (safe state), not chaos mode. cuda-compliance's deny-rules provide fail-safe defaults.",
+            level=Level.PATTERN,
+            examples=["fuse blows → house doesn't burn (fail-safe)", "train signal fails → red → trains stop (fail-safe)", "fleet: energy depleted → rest mode (fail-safe, not chaos)"],
+            bridges=["safety", "default-state", "failure-mode", "graceful"],
+            antonyms=["fail-deadly"],
+            tags=["error", "fail-safe", "safety", "pattern"])
+
+        ns.define("retry-with-backoff",
+            "Attempt a failed operation again, but with increasing delay between attempts",
+            description="First retry: wait 1 second. Second retry: wait 2 seconds. Third: 4 seconds. Exponential backoff prevents hammering a struggling system while still eventually succeeding if the failure is transient. In the fleet: cuda-retry implements retry-with-backoff. Network timeouts, provider failures, and resource contention are often transient — retrying after a delay succeeds. But backoff prevents the retry storm from making things worse.",
+            level=Level.CONCRETE,
+            examples=["network timeout: retry at 1s, 2s, 4s, 8s (exponential backoff)", "fleet: provider timeout → retry with backoff → eventually succeeds", "git push conflict: retry after delay → someone else pushed, now pull-able"],
+            bridges=["retry", "backoff", "transient-failure", "patience"],
+            tags=["error", "retry", "backoff", "concrete"])
+
+        ns.define("circuit-breaker",
+            "Stop attempting a failing operation after repeated failures, allowing time for recovery",
+            description="Too many retries on a truly broken system makes it worse. Circuit breaker: after N failures, OPEN the circuit (stop trying) for a cooldown period. Then HALF-OPEN: try one request. If it succeeds, CLOSE (resume). If it fails, OPEN again. In the fleet: cuda-circuit implements circuit breakers. A failing provider gets its circuit opened — no more attempts until it's had time to recover.",
+            level=Level.CONCRETE,
+            examples=["electrical circuit breaker: trips on overload, resets after cooldown", "fleet: failing provider → circuit opens → no attempts → half-open test → resume or re-open", "API gateway: failing backend → circuit opens → traffic diverted"],
+            bridges=["retry", "failure-detection", "recovery", "protection"],
+            tags=["error", "circuit-breaker", "recovery", "concrete"])
+
+    def _load_coordination_deep(self):
+        ns = self.add_namespace("coordination-deep",
+            "How autonomous agents achieve collective outcomes without central control")
+
+        ns.define("implicit-contract",
+            "An agreement that exists through consistent behavior, not explicit negotiation",
+            description="You and your roommate don't have a written chore schedule. But you always do dishes on Monday and they always do laundry on Tuesday. The pattern IS the contract. Implicit contracts emerge from repeated interactions. In the fleet: agents develop implicit contracts through stigmergy — consistent patterns of mark-reading and mark-writing form behavioral contracts without explicit A2A negotiation. More efficient than explicit contracts for routine coordination.",
+            level=Level.BEHAVIOR,
+            examples=["roommate chore pattern: implicit contract without written agreement", "fleet: stigmergy patterns form implicit behavioral contracts", "driving culture: lane usage patterns = implicit contract between drivers"],
+            bridges=["stigmergy", "pattern", "emergent", "convention"],
+            antonyms=["explicit-contract"],
+            tags=["coordination", "implicit", "contract", "behavior"])
+
+        ns.define("barrier",
+            "A synchronization point where multiple agents wait until all have arrived before proceeding",
+            description="A marathon start line: runners wait until the gun fires, then all start simultaneously. A team meeting: everyone waits until all participants have joined. Barriers prevent agents from proceeding at different speeds and getting out of sync. In the fleet: cuda-workflow's step completion can use barriers — a step that requires multiple agents' output waits until ALL agents have completed their subtasks before the next step begins.",
+            level=Level.CONCRETE,
+            examples=["marathon start: all wait, then all go simultaneously", "team meeting: wait for all participants before starting", "fleet workflow: step waits for all agent subtasks to complete before proceeding"],
+            bridges=["synchronization", "wait", "concurrent", "gate"],
+            tags=["coordination", "barrier", "sync", "concrete"])
+
+        ns.define("gossip-protocol",
+            "Information spreads by each node sharing with a few random neighbors, achieving global coverage",
+            description="Rumor: tell 3 friends, each tells 3 friends, exponentially spreading. Gossip protocols work the same way: each agent periodically shares its state with a few random peers. After O(log N) rounds, all N agents have the information. In the fleet: cuda-trust's gossip sharing spreads trust assessments. cuda-fleet-mesh's gossip protocol spreads topology updates. Gossip is eventually consistent — all agents converge, just not instantly.",
+            level=Level.PATTERN,
+            examples=["rumor spreading: tell 3, they tell 3, exponential coverage", "fleet trust: gossip spreads trust assessments across all agents", "cluster membership: gossip protocol spreads node join/leave events"],
+            bridges=["gossip", "epidemic", "eventual-consistency", "random"],
+            tags=["coordination", "gossip", "spread", "pattern"])
+
+    def _load_composition(self):
+        ns = self.add_namespace("composition",
+            "Building complex systems from simpler, independently useful parts")
+
+        ns.define("plug-and-play",
+            "Components that interoperate without configuration — connect them and they work",
+            description="USB devices: plug in, they work. No manual configuration. No driver installation (ideally). The interface standard IS the configuration — if both sides implement USB, they work. In the fleet: cuda-equipment provides plug-and-play equipment — define a sensor type and it automatically integrates with perception, navigation, and logging. No manual wiring needed. The trait system IS the plug.",
+            level=Level.PATTERN,
+            examples=["USB: plug in device, it works (plug-and-play)", "fleet: define equipment type, automatically integrates everywhere", "HDMI: plug monitor in, it works (plug-and-play)"],
+            bridges=["interface", "standard", "auto-integration", "compatibility"],
+            tags=["composition", "plug-and-play", "auto", "pattern"])
+
+        ns.define("mix-and-match",
+            "Combine components freely from a menu of options to create custom configurations",
+            description="A burrito bowl: choose rice, beans, protein, salsa from a menu. Different combinations for different people. Same components, different compositions. In the fleet: agents compose from the crate menu: cuda-perception (sensor processing) + cuda-deliberation (decision making) + cuda-motor (action execution) = a complete agent. Mix-and-match crates to create custom agent configurations for different tasks.",
+            level=Level.PATTERN,
+            examples=["burrito bowl: choose from menu of components (mix-and-match)", "fleet: perception + deliberation + motor = agent (mix-and-match crates)", "PC building: choose CPU, GPU, RAM, storage independently (mix-and-match)"],
+            bridges=["composition", "menu", "custom", "modular"],
+            tags=["composition", "mix-and-match", "modular", "pattern"])
+
+        ns.define("side-effect-free",
+            "A computation that produces a result without modifying any external state — pure function",
+            description="f(x) = x + 1. Every time you call it with x=5, you get 6. It doesn't modify global variables. It doesn't write to disk. It doesn't send messages. Side-effect-free functions are COMPOSABLE — you can chain them, parallelize them, test them, and reason about them. In the fleet: cuda-confidence's Conf::fuse() is side-effect-free — it takes two confidences and returns the fused result. No state mutation. Fully composable.",
+            level=Level.PATTERN,
+            examples=["f(x) = x + 1: pure, no side effects, always same output for same input", "fleet: Conf::fuse(a, b): pure function, no state mutation", "map function in functional programming: pure, composable"],
+            bridges=["pure-function", "composability", "testability", "functional"],
+            tags=["composition", "side-effect-free", "pure", "pattern"])
+
+    def _load_observability(self):
+        ns = self.add_namespace("observability",
+            "Understanding what a system is doing from the outside, without modifying it")
+
+        ns.define("telemetry",
+            "Automated collection and transmission of system health and performance data",
+            description="A plane's black box records altitude, speed, heading, engine status. A car's OBD port reports RPM, fuel, temperature. Telemetry is the automated heartbeat — data flowing from the system to the observer without human intervention. In the fleet: cuda-metrics collects agent telemetry — response times, error rates, energy levels. cuda-logging captures event telemetry. Telemetry enables diagnosis without access to the agent's internals.",
+            level=Level.CONCRETE,
+            examples=["plane black box: automated recording of all flight data", "car OBD: real-time engine telemetry", "fleet: cuda-metrics collects agent performance telemetry"],
+            bridges=["monitoring", "health", "automated", "data-collection"],
+            tags=["observability", "telemetry", "monitoring", "concrete"])
+
+        ns.define("distributed-trace",
+            "Follow a single request across multiple services to understand the full lifecycle and find bottlenecks",
+            description="User clicks 'buy' → frontend (50ms) → auth service (100ms) → inventory (200ms) → payment (300ms) → response (650ms total). Each hop has a trace ID. Distributed tracing follows the request through all hops, showing where time is spent. In the fleet: cuda-provenance tracks deliberation through multiple agents — proposal origin, endorsements, modifications, final decision. The provenance chain IS a distributed trace of the decision.",
+            level=Level.CONCRETE,
+            examples=["HTTP request traced through frontend → auth → inventory → payment", "fleet: deliberation traced through proposal → endorsements → decision", "package delivery tracked through warehouse → truck → door (trace)"],
+            bridges=["trace", "lifecycle", "bottleneck", "provenance"],
+            tags=["observability", "trace", "distributed", "concrete"])
+
+        ns.define("canary-in-the-coal-mine",
+            "An early warning indicator that detects problems before they affect the whole system",
+            description="Miners brought canaries because birds are more sensitive to poison gas. Canary dies → evacuate. In software: a canary query or synthetic transaction that tests system health proactively. In the fleet: cuda-metrics' HealthCheck is the canary — it runs simple checks that detect degradation before full failure. Low-severity anomalies in the canary indicate brewing problems. Catch it at the canary stage, not the catastrophe stage.",
+            level=Level.PATTERN,
+            examples=["coal mine canary: sensitive to gas, dies first (early warning)", "software: synthetic transaction detects degradation before user impact", "fleet: health check detects performance degradation before full failure"],
+            bridges=["early-warning", "canary", "proactive", "monitoring"],
+            tags=["observability", "canary", "early-warning", "pattern"])
+
+    def _load_anti_patterns(self):
+        ns = self.add_namespace("anti-patterns",
+            "Common solutions that seem good but create more problems than they solve")
+
+        ns.define("god-object",
+            "A component that knows too much and does too much — the opposite of focused responsibility",
+            description="One class that handles database access, business logic, HTML rendering, and email sending. It 'knows everything' because every new feature gets added to it (it's already touching everything). In the fleet: a single agent that handles perception, deliberation, memory, communication, AND action is a god-object. The fleet architecture PREVENTS god-objects by splitting responsibilities across specialized crates.",
+            level=Level.BEHAVIOR,
+            examples=["one class doing DB + logic + UI + email (god-object)", "fleet: single agent doing everything instead of specialized crates (god-object)", "one person doing CEO + CFO + CTO + janitor (god-object)"],
+            bridges=["separation-of-concerns", "modularity", "specialization", "responsibility"],
+            tags=["anti-pattern", "god-object", "monolith", "behavior"])
+
+        ns.define("shotgun-surgery",
+            "A single change requires modifications in many unrelated places — scattered responsibility",
+            description="Changing the data format means editing: the database schema, the API layer, the client, the tests, the documentation, and the monitoring dashboard. Six files, six concerns, one change. Shotgun surgery indicates poor separation of concerns. In the fleet: if changing the Confidence type requires editing 50 crates, that's shotgun surgery. cuda-equipment centralizes shared types to prevent shotgun surgery — change once, all crates get the update.",
+            level=Level.BEHAVIOR,
+            examples=["data format change: edit DB + API + client + tests + docs + monitoring (shotgun surgery)", "fleet: confidence type change affecting 50 files (shotgun surgery)", "price change: update website + app + database + billing + contracts (shotgun surgery)"],
+            bridges=["coupling", "scattered-responsibility", "centralization", "maintenance"],
+            tags=["anti-pattern", "shotgun", "coupling", "behavior"])
+
+        ns.define("premature-abstraction",
+            "Creating shared infrastructure before the pattern is clear — building for a future that doesn't arrive",
+            description="Three modules have similar but not identical code. You immediately extract a shared library. Then module 4 needs a slightly different interface. Then module 5 needs a different data format. The 'shared' library becomes a Frankenstein of optional parameters and configuration. Premature: the pattern wasn't clear when you abstracted. In the fleet: build 3 concrete implementations FIRST, then abstract the common pattern. Don't abstract until the pattern is clear.",
+            level=Level.BEHAVIOR,
+            examples=["shared library after seeing pattern in 3 modules = good timing", "shared library BEFORE seeing the pattern = premature abstraction", "fleet: build 3 concrete agents, then extract shared equipment (not before)"],
+            bridges=["abstraction", "timing", "pattern", "premature"],
+            antonyms=["mature-abstraction"],
+            tags=["anti-pattern", "premature", "abstraction", "behavior"])
+
+        ns.define("cargo-cult",
+            "Copying the form of a solution without understanding why it works — superficial imitation",
+            description="South Pacific islanders built bamboo control towers and lit fires on runways after WWII, believing it would bring cargo planes. They copied the FORM (towers, fires) without understanding the FUNCTION (radio communication, actual aircraft). In the fleet: copying another fleet's architecture without understanding WHY those design choices were made is cargo-cult. The architecture works in their context because of their constraints, not because it's universally optimal.",
+            level=Level.BEHAVIOR,
+            examples=["bamboo control towers lit fires expecting cargo planes (cargo cult)", "fleet: copying architecture without understanding why it was chosen (cargo cult)", "standup meetings every day because Google does them (cargo cult)"],
+            bridges=["imitation", "understanding", "form-vs-function", "superficial"],
+            tags=["anti-pattern", "cargo-cult", "imitation", "behavior"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
