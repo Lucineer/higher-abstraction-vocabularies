@@ -399,6 +399,8 @@ class HAV:
         self._load_ontology_deep()
         self._load_power_dynamics()
         self._load_efficiency_frontier()
+        self._load_flux_bytecodes()
+        self._load_flux_flavors()
         self._load_mathematics()
 
     def _load_uncertainty(self):
@@ -6536,7 +6538,271 @@ class HAV:
             bridges=["cost", "alternative", "hidden", "tradeoff"],
             tags=["efficiency", "opportunity-cost", "tradeoff", "concrete"])
 
-    def _load_mathematics(self):
+
+    def _load_flux_bytecodes(self):
+        ns = self.add_namespace("flux-bytecodes",
+            "Terms that compile directly to FLUX VM instructions — each term IS an executable pattern")
+
+        ns.define("validate",
+            "Verify confidence threshold is met before proceeding — the gatekeeper instruction",
+            description="CONF, CMP threshold, JNZ skip. Before executing any significant operation, validate that confidence meets the minimum threshold. Below threshold: skip the operation (don't waste energy on low-confidence actions). Above threshold: proceed. In the fleet: cuda-confidence-cascade's GREEN/YELLOW/RED zones implement validation at every processing stage. Low-confidence sensor data fails validation and is discarded before expensive deliberation.",
+            level=Level.CONCRETE,
+            examples=["sensor confidence < 0.3 → validate fails → skip deliberation", "fleet: every processing stage validates before proceeding", "API: validate token before processing request"],
+            bridges=["confidence", "gate", "threshold", "flux"],
+            tags=["flux", "validate", "gate", "concrete"])
+
+        ns.define("guard",
+            "Attach a trust boundary to the current execution context — only proceed if trust level permits",
+            description="TRUST, CMP threshold, JE skip. Guard checks the trust context before executing. If the current agent doesn't have sufficient trust from the requesting agent, the operation is rejected. Guard is security-at-the-instruction-level. In the fleet: cuda-rbac's permission checks ARE guards — every inter-agent message carries trust metadata, every resource access checks trust level. Guard is the instruction-level enforcement of zero-trust.",
+            level=Level.CONCRETE,
+            examples=["inter-agent message: check trust level before processing (guard)", "fleet: RBAC permission check = guard instruction", "database: permission check before query execution (guard)"],
+            bridges=["trust", "security", "permission", "flux"],
+            tags=["flux", "guard", "trust", "concrete"])
+
+        ns.define("latch",
+            "Lock a register value until explicit invalidation — hold state stable across async operations",
+            description="STORE, CMP invalidation, JZ continue. Latch prevents a value from changing while asynchronous operations are in flight. Without latch: a value could change between read and use, causing inconsistencies. With latch: the value is guaranteed stable until you explicitly release it. In the fleet: cuda-lock's mutex IS a latch — shared resources are latched during modification, preventing race conditions between concurrent agents.",
+            level=Level.CONCRETE,
+            examples=["read config → latch → spawn agent → use config → unlatch (prevents race)", "fleet: mutex on shared resource = latch", "hardware: latch circuit holds output stable"],
+            bridges=["lock", "stable", "async", "flux"],
+            tags=["flux", "latch", "lock", "concrete"])
+
+        ns.define("probe",
+            "Read external sensor state into a register without side effects — pure observation",
+            description="SENSE, CMP target, LOAD register. Probe reads the environment without modifying it. Passive observation. Unlike ACT (which changes the world), PROBE only observes. In the fleet: cuda-sensor-agent's sensor fusion uses probe operations — read sensor values, propagate confidence, but don't act on them until deliberation completes. Probe-gather → deliberate → act. The separation is critical for avoiding reflex-action loops.",
+            level=Level.CONCRETE,
+            examples=["read temperature sensor without turning on heater (probe)", "fleet: gather sensor data without acting on it (probe → deliberate → act)", "debugger: inspect variable without modifying program (probe)"],
+            bridges=["sensor", "observe", "passive", "flux"],
+            tags=["flux", "probe", "sensor", "concrete"])
+
+        ns.define("fold",
+            "Reduce multiple register values into a single weighted scalar using a combining operation",
+            description="ADD, MUL, SHR, loop. Take N values and produce 1. Fold is the reduction operation — sum, average, max, weighted combination. In the fleet: cuda-fusion's Bayesian fusion IS fold — take multiple confidence-weighted sensor readings and fold them into one fused estimate. Fold with harmonic mean for confidence (punishes low values). Fold with weighted average for observations.",
+            level=Level.CONCRETE,
+            examples=["[0.8, 0.6, 0.9] → harmonic_mean = 0.73 (fold with harmonic mean)", "fleet: fuse multiple sensor readings into one estimate (fold)", "mapreduce: reduce phase = fold operation"],
+            bridges=["fusion", "reduce", "aggregate", "flux"],
+            tags=["flux", "fold", "reduce", "concrete"])
+
+        ns.define="seal",
+            "Mark a memory region as immutable for the current execution context — prevent accidental modification",
+            description="EPRM, STORE, NOP. After sealing, any write attempt to the sealed region triggers a fault. Seal is write-protection for runtime memory. In the fleet: cuda-persistence's snapshot IS a seal — the snapshot is immutable, guaranteed not to change. Seal enables rollback by preserving a known-good state. Any modification creates a new region (copy-on-write), leaving the sealed original intact.",
+            level=Level.CONCRETE,
+            examples=["snapshot memory → seal → rollback to sealed state if needed", "fleet: sealed snapshot enables safe rollback after failed mutation", "database: read-only transaction = seal"],
+            bridges=["immutable", "protect", "snapshot", "flux"],
+            tags=["flux", "seal", "immutable", "concrete"])
+
+        ns.define("pulse",
+            "Emit a timed action signal — execute an action at a configured interval, not continuously",
+            description="ACT, NOP (wait), CMP timer, JNZ pulse. Not every cycle — every Nth cycle. Pulse enables periodic behavior without burning energy every cycle. In the fleet: cuda-energy's circadian rhythm uses pulse — rest instinct fires periodically, not continuously. cuda-stigmergy's pheromone decay uses pulse — decay happens at intervals, not every instruction. Pulse is the heartbeat instruction.",
+            level=Level.CONCRETE,
+            examples=["heartbeat: fire every N cycles (pulse)", "fleet: circadian rest fires periodically (pulse)", "network: health check ping every 30s (pulse)"],
+            bridges=["periodic", "timing", "heartbeat", "flux"],
+            tags=["flux", "pulse", "timing", "concrete"])
+
+        ns.define("stash",
+            "Save current execution context to secure scratch memory — checkpoint for later restoration",
+            description="PUSH registers, CONF (mark confidence), STORE to scratch. Stash is a lightweight checkpoint — save enough state to resume later, but don't commit to persistent storage. In the fleet: cuda-persistence's snapshot IS a stash — save agent state before risky operation, restore if it fails. Stash is fast (scratch memory), not durable (persistent storage). Use stash for quick save-points, seal for long-term preservation.",
+            level=Level.CONCRETE,
+            examples=["save game state before boss fight (stash)", "fleet: save agent state before risky mutation (stash)", "git stash: save work-in-progress temporarily"],
+            bridges=["checkpoint", "save", "scratch", "flux"],
+            tags=["flux", "stash", "save", "concrete"])
+
+        ns.define("weigh",
+            "Apply confidence coefficient weighting to a register value — confidence IS the multiplier",
+            description="CONF, MUL, ADD. Multiply every value by its confidence before using it. A value of 0.9 at confidence 0.8 becomes 0.72 — weighted by certainty. Weigh prevents low-confidence values from having disproportionate influence. In the fleet: cuda-fusion's weighted combination IS weigh — every observation is multiplied by its confidence before fusion. Without weigh: one confident-sounding but wrong reading could dominate.",
+            level=Level.CONCRETE,
+            examples=["observation 0.9 × confidence 0.8 = weighted 0.72 (weigh)", "fleet: fuse observations weighted by confidence (weigh)", "ML: loss × class weight (weigh)"],
+            bridges=["confidence", "weight", "multiply", "flux"],
+            tags=["flux", "weigh", "confidence", "concrete"])
+
+        ns.define("watch",
+            "Set a memory watchpoint that triggers an interrupt when the watched location is accessed",
+            description="LOAD address, CMP access-type, JNZ interrupt. Watch monitors a memory location without polling. When the location is read/written/executed, the watch fires. In the fleet: cuda-resilience's health monitoring IS watch — set watches on critical state variables (energy level, trust score, task queue). When any watch triggers (energy below threshold, trust drops), the interrupt handler activates recovery procedures.",
+            level=Level.CONCRETE,
+            examples=["debugger: watchpoint fires when variable changes (watch)", "fleet: energy level drops below threshold → watch triggers recovery", "hardware: memory protection fault = hardware watch"],
+            bridges=["monitor", "watchpoint", "interrupt", "flux"],
+            tags=["flux", "watch", "monitor", "concrete"])
+
+        ns.define="fault",
+            "Handle an exception state and invoke the configured error handler — controlled failure",
+            description="CMP error-code, JMP handler, HALT (if unrecoverable). Fault is not a crash — it's a CONTROLLED exception. The VM catches the error, invokes the handler, and either recovers or fails gracefully. In the fleet: cuda-resilience's fault detection IS the fault instruction — when an agent detects an error state (energy exhaustion, trust violation, communication failure), the fault handler activates: quarantine the agent, trigger succession, restore from stash.",
+            level=Level.CONCRETE,
+            examples=["division by zero → fault handler → graceful error (fault)", "fleet: agent energy exhaustion → fault handler → apoptosis", "exception handling: try/catch = fault/recover pattern"],
+            bridges=["error", "handler", "graceful", "flux"],
+            tags=["flux", "fault", "error", "concrete"])
+
+        ns.define("snap",
+            "Capture an immutable point-in-time VM execution snapshot — the foundation of rollback and provenance",
+            description="STORE all registers, CONF (timestamp), NOP. Snap freezes the entire execution state at a moment in time. The snapshot is immutable (sealed) and timestamped. In the fleet: cuda-persistence's snapshot IS snap — every N deliberation cycles, snap the agent's complete state. Snaps enable: rollback (restore to last good state), provenance (trace decisions through time), and debugging (inspect state at failure point).",
+            level=Level.CONCRETE,
+            examples=["VM checkpoint: save all registers at time T (snap)", "fleet: periodic state snapshots for rollback (snap)", "database: point-in-time recovery snapshot"],
+            bridges=["snapshot", "checkpoint", "immutable", "flux"],
+            tags=["flux", "snap", "checkpoint", "concrete"])
+
+        ns.define="compact",
+            "Optimize memory layout by packing active data together and freeing unused regions — defragmentation",
+            description="SHL (shift), AND (mask), STORE (write). Compact reorganizes memory so active data is contiguous and unused regions are collected. Like defragmenting a disk — the data doesn't change, but access patterns improve. In the fleet: cuda-memory-fabric's forgetting curve + compact IS memory compaction — as memories decay (forget), the remaining active memories are compacted into contiguous regions for faster access.",
+            level=Level.CONCRETE,
+            examples=["disk defragmentation: pack active files together (compact)", "fleet: decay forgotten memories, compact active ones (compact)", "garbage collection: compact surviving objects"],
+            bridges=["memory", "defragment", "optimize", "flux"],
+            tags=["flux", "compact", "memory", "concrete"])
+
+        ns.define="purge",
+            "Remove all stale entries from cache — reset to clean state when cache coherence is lost",
+            description="MEM, NOT (invalidate), STORE (clear). Purge empties the entire cache, not just individual entries. Used when cache coherence is compromised (too many stale entries). In the fleet: cuda-memory-fabric's purge fires when the forgetting curve's cache becomes too stale — better to purge and rebuild from persistent storage than operate on stale data. Purge is expensive but safer than operating on corrupted state.",
+            level=Level.CONCRETE,
+            examples=["cache purge: clear all entries, rebuild from source (purge)", "fleet: stale memories → purge → rebuild from persistent storage", "DNS cache flush: clear all entries (purge)"],
+            bridges=["cache", "purge", "reset", "flux"],
+            tags=["flux", "purge", "cache", "concrete"])
+
+        ns.define="predict",
+            "Run the generative model to produce a next-state estimate — the VM looks ahead",
+            description="GENE, ADD (combine with current), CMP (confidence). Predict uses the agent's gene pool to estimate what the next state will be. Not execution — ESTIMATION. The prediction's confidence tells the agent how much to trust it. In the fleet: cuda-world-model's prediction IS the predict instruction — estimate where objects will be, what events will happen, what needs attention. Predict enables anticipatory action instead of reactive response.",
+            level=Level.CONCRETE,
+            examples=["world model: predict object positions 1 second ahead (predict)", "fleet: estimate future state before it happens (predict)", "weather: forecast tomorrow's weather (predict)"],
+            bridges=["prediction", "model", "anticipate", "flux"],
+            tags=["flux", "predict", "model", "concrete"])
+
+        ns.define="finalize",
+            "Close execution context and persist final output — the clean exit instruction",
+            description="TRUST (verify), STORE (persist), RET (return). Finalize ensures the current execution context is properly closed: verify trust of all outputs, persist results to durable storage, and return control to the caller. In the fleet: cuda-actor's Stop supervision strategy IS finalize — when an agent completes its task, it finalizes: persist results, release resources, report completion. No loose ends.",
+            level=Level.CONCRETE,
+            examples=["transaction commit: verify, persist, close (finalize)", "fleet: agent completes task → persist results → release resources (finalize)", "function: return value → cleanup → exit (finalize)"],
+            bridges=["cleanup", "persist", "exit", "flux"],
+            tags=["flux", "finalize", "exit", "concrete"])
+
+        ns.define("siphon-reg",
+            "Drain register contents gradually to a destination while preserving the source until transfer completes",
+            description="LOAD source, STORE dest, CMP counter, JNZ continue. Siphon moves data gradually (not atomically) while keeping the source intact until the transfer finishes. If the transfer fails midway, the source is preserved. In the fleet: cuda-energy's energy transfer between agents IS siphon-reg — gradually transfer energy budget from idle agent to active agent, preserving source in case transfer is interrupted.",
+            level=Level.CONCRETE,
+            examples=["gradual energy transfer: idle agent → active agent (siphon-reg)", "fleet: transfer resources gradually with source preserved (siphon)", "pipelined data copy: source intact until complete"],
+            bridges=["transfer", "gradual", "preserve", "flux"],
+            tags=["flux", "siphon", "transfer", "concrete"])
+
+        ns.define="evict-reg",
+            "Force-remove a register's contents when memory pressure requires it, preferring least-recently-used",
+            description="CMP access-time, JNZ skip (recently used), STORE to swap (evict). When the register file is full, evict-reg removes the least recently accessed register to make room. LRU eviction. In the fleet: cuda-memory-fabric's forgetting curve IS evict-reg — memories that haven't been accessed recently are evicted to make room for new experiences. The forgetting function determines eviction priority (half-life decay = access-time weighting).",
+            level=Level.CONCRETE,
+            examples=["cache eviction: remove LRU entry (evict-reg)", "fleet: forgotten memories evicted by forgetting curve (evict-reg)", "OS: page eviction when memory is full (evict-reg)"],
+            bridges=["eviction", "LRU", "memory", "flux"],
+            tags=["flux", "evict", "memory", "concrete"])
+
+    def _load_flux_flavors(self):
+        ns = self.add_namespace("flux-flavors",
+            "FLAVOR variants that modify term behavior — same term, different bytecode based on context")
+
+        ns.define("prune/cautious",
+            "Only prune genes when confidence exceeds 0.8 — safe mode for critical systems",
+            description="LOAD confidence, CMP 0.8, JNZ skip. The cautious flavor adds a HIGH confidence threshold to any pruning operation. Only prune when you're very sure the gene is detrimental. In the fleet: cuda-genepool's cautious quarantine mode uses prune/cautious — genes are only removed when multiple agents independently identify them as harmful (high confidence). Prevents false-positive pruning of useful genes.",
+            level=Level.CONCRETE,
+            examples=["critical system: prune/cautious — only remove when 80%+ confident", "fleet: cautious gene quarantine for critical capabilities", "surgery: only operate when diagnosis confidence is very high"],
+            bridges=["prune", "cautious", "high-threshold", "flux"],
+            tags=["flux", "flavor", "prune", "concrete"])
+
+        ns.define("prune/aggressive",
+            "Prune genes when confidence exceeds 0.3 — fast mode for experimental or disposable agents",
+            description="LOAD confidence, CMP 0.3, JNZ skip. The aggressive flavor uses a LOW confidence threshold. Prune early, prune often. More false positives but faster evolution. In the fleet: cuda-genepool's aggressive mode for experimental agents uses prune/aggressive — genes are pruned at the first sign of underperformance. Faster convergence but riskier. Use for non-critical disposable agents, not for production systems.",
+            level=Level.CONCRETE,
+            examples=["experimental agent: prune/aggressive — remove at 30% confidence of harm", "fleet: fast evolution mode for disposable agents", "startup: move fast, break things = prune/aggressive"],
+            bridges=["prune", "aggressive", "low-threshold", "flux"],
+            tags=["flux", "flavor", "prune", "concrete"])
+
+        ns.define("prune/scheduled",
+            "Prune genes only during circadian low-energy phase — batch all pruning into the rest cycle",
+            description="LOAD circadian-phase, CMP REST, JNZ skip. The scheduled flavor ties pruning to the agent's circadian rhythm. During active phase: accumulate prune candidates. During rest phase: execute all pending prunes in a batch. In the fleet: cuda-energy's circadian rhythm implements prune/scheduled — genes flagged for removal during the day are pruned during the night rest cycle. Pruning during rest minimizes disruption to active operations.",
+            level=Level.PATTERN,
+            examples=["active phase: flag genes. rest phase: batch prune (scheduled)", "fleet: accumulate quarantine flags, batch-prune during circadian rest", "database: batch delete during maintenance window (scheduled)"],
+            bridges=["prune", "circadian", "batch", "flux"],
+            tags=["flux", "flavor", "prune", "pattern"])
+
+        ns.define="prune/trust-gated",
+            "Only prune genes from agents whose trust score exceeds 0.6 — respect the judgment of trusted agents",
+            description="LOAD trust-score, CMP 0.6, JNZ skip. The trust-gated flavor adds a TRUST check before pruning. Only genes recommended for pruning BY TRUSTED AGENTS are actually removed. An untrusted agent's prune recommendation is ignored. In the fleet: cuda-trust + cuda-genepool implement prune/trust-gated — gene quarantine recommendations from agents with trust < 0.6 are deferred until trust is established.",
+            level=Level.PATTERN,
+            examples=["prune recommendation from trusted agent (0.8) → accepted (trust-gated)", "prune recommendation from new agent (0.2) → deferred (trust-gated)", "fleet: quarantine only from trusted sources"],
+            bridges=["prune", "trust", "gated", "flux"],
+            tags=["flux", "flavor", "prune", "pattern"])
+
+        ns.define("broadcast/local",
+            "Publish register value only to agents in the same local network segment",
+            description="STORE to local-subscribers only. The local flavor restricts broadcast scope to the immediate network neighborhood. Lower latency, lower bandwidth, lower reach. In the fleet: cuda-fleet-mesh's local broadcast sends messages only to agents on the same subnet or communication channel. Local broadcast for coordination within a team. Global broadcast for fleet-wide announcements.",
+            level=Level.CONCRETE,
+            examples=["team chat: message visible to team only (broadcast/local)", "fleet: message to subnet agents only (broadcast/local)", "LAN broadcast vs internet broadcast"],
+            bridges=["broadcast", "local", "scope", "flux"],
+            tags=["flux", "flavor", "broadcast", "concrete"])
+
+        ns.define("broadcast/global",
+            "Publish register value to ALL subscribed agents across the entire fleet — maximum reach, maximum cost",
+            description="STORE to ALL subscribers everywhere. The global flavor maximizes broadcast reach. Every agent in the fleet receives the message. High latency, high bandwidth, high reach. In the fleet: cuda-fleet-mesh's global broadcast for critical fleet-wide announcements (emergency shutdown, capability discovery, gene pool sharing). Global broadcast is expensive — use sparingly for high-priority messages.",
+            level=Level.CONCRETE,
+            examples=["emergency broadcast: ALL agents receive (broadcast/global)", "fleet: critical announcement to entire fleet (broadcast/global)", "radio: emergency broadcast system"],
+            bridges=["broadcast", "global", "fleet-wide", "flux"],
+            tags=["flux", "flavor", "broadcast", "concrete"])
+
+        ns.define="throttle/rate",
+            "Limit instruction throughput to N instructions per time window — prevent API rate limit violations",
+            description="NOP, SHR (count), CMP limit, JNZ wait. The rate flavor limits execution frequency. Not based on energy (that's throttle/energy) but based on EXTERNAL RATE LIMITS. In the fleet: cuda-rate-limit's token bucket IS throttle/rate — limit outbound API calls to N per second to prevent 429 errors. Rate throttling prevents the fleet from overwhelming external services.",
+            level=Level.CONCRETE,
+            examples=["API: max 100 calls/second (throttle/rate)", "fleet: limit outbound messages to N/second (throttle/rate)", "traffic light: limit cars per green cycle (throttle/rate)"],
+            bridges=["throttle", "rate-limit", "external", "flux"],
+            tags=["flux", "flavor", "throttle", "concrete"])
+
+        ns.define="throttle/energy",
+            "Limit instruction throughput based on remaining energy budget — conserve when energy is low",
+            description="LOAD energy-budget, CMP threshold, JNZ skip. The energy flavor ties throughput to energy reserves. When energy is high, execute normally. When energy drops below threshold, throttle execution frequency. When energy is critical, only execute reflex-level instructions. In the fleet: cuda-energy's budget tracking implements throttle/energy — as ATP reserves deplete, non-essential operations are throttled, preserving energy for critical responses.",
+            level=Level.PATTERN,
+            examples=["full energy: execute normally. low energy: throttle non-essential ops", "fleet: energy depletion → reduce deliberation frequency (throttle/energy)", "phone low battery: reduce background processing (throttle/energy)"],
+            bridges=["throttle", "energy", "budget", "flux"],
+            tags=["flux", "flavor", "throttle", "pattern"])
+
+        ns.define="throttle/batch",
+            "Accumulate operations into batches and execute them together — amortize overhead across multiple operations",
+            description="PUSH to batch-queue, CMP batch-size, JNZ execute-batch. The batch flavor collects multiple operations before executing them as a group. Higher throughput because setup overhead is amortized. In the fleet: cuda-a2a's batch messaging IS throttle/batch — instead of sending 100 individual messages, batch them into 10 messages of 10 each. Batch reduces communication overhead by 10x.",
+            level=Level.CONCRETE,
+            examples=["database: batch INSERT 100 rows at once (throttle/batch)", "fleet: batch 10 messages into 1 (throttle/batch)", "email: digest mode (batch notifications daily)"],
+            bridges=["throttle", "batch", "amortize", "flux"],
+            tags=["flux", "flavor", "throttle", "concrete"])
+
+        ns.define="gate/allow",
+            "Open the gate — all traffic passes through when confidence exceeds threshold",
+            description="CMP confidence, JGE allow. The allow flavor is the permissive mode: when conditions are met, everything flows. No filtering, no restriction. In the fleet: gate/allow is the default mode for trusted agents — once trust is established, messages flow without additional filtering. The gate is open during normal operations.",
+            level=Level.CONCRETE,
+            examples=["trusted agent: gate/allow — all messages pass through", "firewall: allow rule for trusted IP (gate/allow)", "VIP lane: no security check (gate/allow)"],
+            bridges=["gate", "allow", "permissive", "flux"],
+            tags=["flux", "flavor", "gate", "concrete"])
+
+        ns.define="gate/deny",
+            "Close the gate — all traffic blocked regardless of confidence. Emergency shutoff",
+            description="NOP, HALT (all traffic blocked). The deny flavor is the emergency mode: stop everything. No conditions checked, no exceptions. Hard stop. In the fleet: cuda-resilience's bulkhead triggers gate/deny when a cascading failure is detected — isolate the failing segment completely. No traffic in, no traffic out. Prevent blast propagation at maximum cost.",
+            level=Level.CONCRETE,
+            examples=["emergency: gate/deny — stop all traffic immediately", "fleet: bulkhead isolation on cascading failure (gate/deny)", "circuit breaker: trip = deny all (gate/deny)"],
+            bridges=["gate", "deny", "emergency", "flux"],
+            tags=["flux", "flavor", "gate", "concrete"])
+
+        ns.define="gate/filter",
+            "Selective gate — inspect each item against rules, pass matching items, block others",
+            description="LOAD item, CMP rule1, JNZ pass, CMP rule2, JNZ pass, JMP block. The filter flavor applies rules to each item individually. Some pass, some don't. In the fleet: cuda-filtration's ResourceBudget IS gate/filter — incoming tasks are filtered by priority rules: high-priority tasks pass, low-priority tasks are deferred when the fleet is busy. Filter is the most common gate mode.",
+            level=Level.CONCRETE,
+            examples=["spam filter: inspect each email, pass clean ones (gate/filter)", "fleet: filter tasks by priority (gate/filter)", "airport security: inspect each passenger (gate/filter)"],
+            bridges=["gate", "filter", "selective", "flux"],
+            tags=["flux", "flavor", "gate", "concrete"])
+
+        ns.define="mask/whitelist",
+            "Only allow pre-approved items — everything not explicitly allowed is blocked",
+            description="LOAD item, CMP whitelist[0..N], JNZ allow, JMP block. The whitelist flavor is default-deny: if it's not on the approved list, it's blocked. In the fleet: cuda-rbac's whitelist mode IS mask/whitelist — only explicitly authorized operations are permitted. An agent can only access resources that are specifically listed in its permission set. Whitelist is the most secure but least flexible access control.",
+            level=Level.CONCRETE,
+            examples=["guest WiFi: only approved devices can connect (whitelist)", "fleet: only authorized operations permitted (whitelist)", "bouncer: only people on the list get in (whitelist)"],
+            bridges=["mask", "whitelist", "default-deny", "flux"],
+            tags=["flux", "flavor", "mask", "concrete"])
+
+        ns.define="mask/blacklist",
+            "Block pre-banned items — everything not explicitly blocked is allowed",
+            description="LOAD item, CMP blacklist[0..N], JZ allow, JMP block. The blacklist flavor is default-allow: if it's not on the banned list, it's permitted. In the fleet: cuda-compliance's blacklist mode IS mask/blacklist — operations matching known-bad patterns are blocked, everything else passes. Blacklist is more flexible than whitelist but less secure — novel attacks bypass it.",
+            level=Level.CONCRETE,
+            examples=["DNS blacklist: block known-bad domains, allow everything else", "fleet: block known-bad operation patterns (blacklist)", "spam filter: block known spam senders (blacklist)"],
+            bridges=["mask", "blacklist", "default-allow", "flux"],
+            tags=["flux", "flavor", "mask", "concrete"])
+\n    def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
             "Mathematical structures and operations underlying agent cognition")
 
