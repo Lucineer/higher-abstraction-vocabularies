@@ -6207,16 +6207,14 @@ class HAV:
             tags=["fleet", "provenance", "weave", "pattern"])
 
         ns.define("energy-arbitrage",
-            "Trading compute resources between tasks based on the ratio of expected payoff to energy cost, maximizing value per ATP spent",
-            description="Task A: costs 2.0 ATP, expected payoff 5.0. Task B: costs 0.5 ATP, expected payoff 2.0. Task A's value/ATP = 2.5. Task B's value/ATP = 4.0. Energy arbitrage prioritizes Task B. Not just "highest payoff" but "highest payoff per energy spent". In the fleet: cuda-deliberation's utility scoring combined with cuda-energy's budget implements energy arbitrage — proposals are ranked by expected_value / energy_cost, not just expected_value.",
+            "Trading compute resources between tasks based on payoff-to-energy ratio",
             level=Level.PATTERN,
             examples=["stock trading: risk-adjusted return (energy arbitrage for money)", "fleet: rank proposals by payoff/energy, not just payoff", "restaurant: most profitable dish per ingredient cost (energy arbitrage for food)"],
             bridges=["energy", "arbitrage", "efficiency", "tradeoff"],
             tags=["fleet", "energy", "arbitrage", "pattern"])
 
         ns.define("backpressure-propagation",
-            "When downstream processing can't keep up, signaling upstream to slow down — protecting the system from overload cascades",
-            description="A pipeline: producer → buffer → consumer. Consumer is slow. Buffer fills up. Backpressure tells producer: SLOW DOWN. Without backpressure, the buffer overflows and the system crashes. In the fleet: cuda-backpressure's credit-based flow control implements backpressure-propagation — when a downstream agent's queue is full, upstream agents receive credit reduction signals that slow their output. The fleet adapts its throughput to the slowest link.",
+            "When downstream can't keep up signal upstream to slow down",
             level=Level.CONCRETE,
             examples=["producer → buffer → consumer: consumer slow → buffer full → producer slows (backpressure)", "fleet: downstream queue full → upstream agents reduce output", "traffic jam: cars slow down because cars ahead are slow (backpressure)"],
             bridges=["backpressure", "flow-control", "overload", "adaptation"],
@@ -6805,7 +6803,53 @@ class HAV:
             examples=["DNS blacklist: block known-bad domains, allow everything else", "fleet: block known-bad operation patterns (blacklist)", "spam filter: block known spam senders (blacklist)"],
             bridges=["mask", "blacklist", "default-allow", "flux"],
             tags=["flux", "flavor", "mask", "concrete"])
-\ndef _load_metaphor_vocab(self):
+
+    def _load_flux_memory(self):
+        ns = self.add_namespace("flux-memory", "FLUX VM memory architecture patterns")
+        ns.define("memory-cell-store", "Store single piece in agent memory matrix", Level=Level.CONCRETE, examples=["STORE opcode writes to cell","memory cell indexed by coordinate"], bridges=["store","memory","cell"], tags=["flux","memory"])
+        ns.define("knowledge-retrieval", "Fetch specific stored information from memory", Level=Level.CONCRETE, examples=["LOAD opcode reads from cell","exact or fuzzy retrieval"], bridges=["load","memory","retrieve"], tags=["flux","memory"])
+        ns.define("forget-pattern-eviction", "Remove outdated info based on usage patterns", Level=Level.PATTERN, examples=["EVICT opcode removes low-access cells","age-threshold eviction"], bridges=["evict","forget","decay"], tags=["flux","memory"])
+        ns.define("temporal-decay-mode", "Gradually reduce importance of information over time", Level=Level.PATTERN, examples=["DECAY opcode reduces confidence","exponential half-life decay"], bridges=["decay","time","importance"], tags=["flux","memory"])
+        ns.define("snapshot-consolidation", "Consolidate memory state into stable snapshot", Level=Level.PATTERN, examples=["SNAP saves full register state","periodic checkpoint"], bridges=["snapshot","consolidate","checkpoint"], tags=["flux","memory"])
+        ns.define("memory-rehearsal-refresh", "Refresh and strengthen memory traces on access", Level=Level.BEHAVIOR, examples=["re-access strengthens trace","reinforcement on recall"], bridges=["rehearsal","refresh","strengthen"], tags=["flux","memory"])
+        ns.define("contextual-link-create", "Create associations between related memories", Level=Level.PATTERN, examples=["LINK opcode connects cells","causal temporal spatial links"], bridges=["link","associate","context"], tags=["flux","memory"])
+        ns.define("working-memory-buffer", "Temporarily hold active info for processing", Level=Level.CONCRETE, examples=["BUFFER allocates temp space","small fast working set"], bridges=["buffer","temporary","active"], tags=["flux","memory"])
+        ns.define("episodic-recall", "Recall past experiences based on context", Level=Level.PATTERN, examples=["recall episode matching current context","experience replay"], bridges=["recall","episode","experience"], tags=["flux","memory"])
+        ns.define("incremental-update", "Update knowledge without overwriting", Level=Level.PATTERN, examples=["overlay or append new data","consistency check before merge"], bridges=["update","incremental","merge"], tags=["flux","memory"])
+        ns.define("redundancy-elimination", "Remove duplicate information from memory", Level=Level.PATTERN, examples=["semantic similarity detection","exact or fuzzy dedup"], bridges=["deduplicate","compress","optimize"], tags=["flux","memory"])
+        ns.define("short-term-evaporation", "Ephemeral info vanishes after set period", Level=Level.BEHAVIOR, examples=["EVAPORATE clears temp cells","time-based auto-delete"], bridges=["evaporate","ephemeral","expire"], tags=["flux","memory"])
+        ns.define("memory-compression", "Compress stored info preserving essentials", Level=Level.PATTERN, examples=["COMPRESS reduces cell size","lossy or lossless"], bridges=["compress","reduce","preserve"], tags=["flux","memory"])
+        ns.define("distributed-replication", "Replicate crucial info across memory nodes", Level=Level.PATTERN, examples=["REPLICATE copies to peers","fault tolerance"], bridges=["replicate","distribute","reliable"], tags=["flux","memory"])
+        ns.define("proactive-forget", "Forget info before irrelevant using prediction", Level=Level.PATTERN, examples=["predict future relevance","pre-emptive eviction"], bridges=["predict","forget","proactive"], tags=["flux","memory"])
+        ns.define("transient-capsule", "Capsule data accessible only within short window", Level=Level.CONCRETE, examples=["time-limited access capsule","auto-release after duration"], bridges=["capsule","transient","timebox"], tags=["flux","memory"])
+        ns.define("semantic-memory-link", "Connect related concepts in knowledge base", Level=Level.PATTERN, examples=["semantic graph edges","concept clustering"], bridges=["semantic","concept","graph"], tags=["flux","memory"])
+        ns.define("verify-before-store", "Verify accuracy before storing information", Level=Level.CONCRETE, examples=["validate then STORE","internal or external check"], bridges=["verify","validate","store"], tags=["flux","memory"])
+        ns.define("attention-highlight", "Prioritize info for immediate decisions", Level=Level.CONCRETE, examples=["HIGHLIGHT marks urgent cells","soft or strong priority"], bridges=["highlight","priority","attention"], tags=["flux","memory"])
+        ns.define("pattern-match-activate", "Activate memory matching given pattern", Level=Level.CONCRETE, examples=["MATCH_ACTIVATE scans cells","exact or wildcard"], bridges=["match","pattern","activate"], tags=["flux","memory"])
+
+    def _load_agent_social(self):
+        ns = self.add_namespace("agent-social", "Multi-agent social interaction patterns")
+        ns.define("trust-accrual", "Gradually build trust through consistent cooperation", Level=Level.BEHAVIOR, examples=["increment trust on fulfilled commitment","decay without renewal"], bridges=["trust","cooperation","gradual"], tags=["social","trust"])
+        ns.define("reputation-augment", "Enhance standing by contributing to communal tasks", Level=Level.BEHAVIOR, examples=["contribute boosts reputation","high rep gets lead roles"], bridges=["reputation","contribute","standing"], tags=["social","reputation"])
+        ns.define("distributed-gossip", "Share unverified observations to disseminate reputational updates", Level=Level.BEHAVIOR, examples=["stochastic sharing of observations","cross-check overlapping reports"], bridges=["gossip","disseminate","observe"], tags=["social","gossip"])
+        ns.define("coalition-form", "Dynamically group based on shared objectives and capabilities", Level=Level.PATTERN, examples=["advertise goals and skills","heuristic matching for coalition"], bridges=["coalition","group","matching"], tags=["social","coalition"])
+        ns.define("betrayal-detect", "Identify when agents violate commitments or deceive", Level=Level.CONCRETE, examples=["monitor protocol deviations","flagrancy thresholds trigger penalty"], bridges=["betrayal","detect","violate"], tags=["social","betrayal"])
+        ns.define("reconcile-protocol", "Mediate post-conflict via mutual tasks", Level=Level.PATTERN, examples=["negotiate reconciliation task","rebuild trust via cooperation"], bridges=["reconcile","mediate","repair"], tags=["social","reconcile"])
+        ns.define("truthful-signal", "Send verifiable signals with cryptographic proof", Level=Level.CONCRETE, examples=["proofs of work authenticate claims","dishonest signals penalized"], bridges=["signal","verify","authentic"], tags=["social","signal"])
+        ns.define("deception-detect", "Cross-reference conflicting info to identify deceit", Level=Level.CONCRETE, examples=["consensus flags discrepancies","entropy thresholds trigger suspicion"], bridges=["deception","detect","conflict"], tags=["social","deception"])
+        ns.define("reciprocity-enforce", "Ensure agents reciprocate favors sustain relationships", Level=Level.PATTERN, examples=["reputation ledger tracks contributions","call in favors after losses"], bridges=["reciprocity","favor","enforce"], tags=["social","reciprocity"])
+        ns.define("coercion-detect", "Identify agents acting under duress", Level=Level.CONCRETE, examples=["monitor abrupt behavior shifts","cross-reference threat reports"], bridges=["coercion","duress","detect"], tags=["social","coercion"])
+        ns.define("trust-revoke", "Permanently withdraw trust beyond hard threshold", Level=Level.CONCRETE, examples=["repeated violations trigger revocation","catastrophic betrayal instant revoke"], bridges=["revoke","trust","threshold"], tags=["social","revoke"])
+        ns.define("murmuration", "Decentralized coordination using local velocity matching", Level=Level.PATTERN, examples=["adjust based on neighbor subset","emergent flocking pattern"], bridges=["flock","decentralized","local"], tags=["social","murmuration"])
+        ns.define("deception-entropy", "Quantify uncertainty in reports flagging misinformation", Level=Level.CONCRETE, examples=["Shannon entropy in message distribution","high entropy signals contradiction"], bridges=["entropy","deception","measure"], tags=["social","entropy"])
+        ns.define("gratitude-token", "Issue symbolic tokens to incentivize prosocial behavior", Level=Level.PATTERN, examples=["ledger tracks gratitude","token holders gain priority"], bridges=["gratitude","token","incentive"], tags=["social","gratitude"])
+        ns.define("schism-prevent", "Mediate conflicts preventing irreversible faction splits", Level=Level.PATTERN, examples=["third-party mediation","weighted voting compromise"], bridges=["schism","faction","mediate"], tags=["social","schism"])
+        ns.define("uncanny-trust-suspend", "Halt trust for agents with anomalous behavior", Level=Level.CONCRETE, examples=["flag decision entropy exceeding baseline","unpredictable output review"], bridges=["suspicious","anomaly","halt"], tags=["social","suspicious"])
+        ns.define("delegation-pipeline", "Assign subtasks to peers tracking performance", Level=Level.PATTERN, examples=["delegate with performance log","failure reduces future priority"], bridges=["delegate","assign","track"], tags=["social","delegate"])
+        ns.define("shared-memoria", "Collective experience store informing future interactions", Level=Level.PATTERN, examples=["distributed ledger of history","query before new coalitions"], bridges=["collective","memory","history"], tags=["social","collective"])
+        ns.define("betrayal-attrition", "Reduce faction trust if betrayals cluster spatially or temporally", Level=Level.BEHAVIOR, examples=["Bayesian faction credibility","clustered violations lower trust"], bridges=["attrition","faction","cluster"], tags=["social","attrition"])
+
+    def _load_metaphor_vocab(self):
         ns = self.add_namespace("metaphor-verbs", "High-compression verbs from craft domains")
         ns.define("temper", "Alternate deliberation and rest to increase resilience", Level=Level.PATTERN, examples=["deliberate then rest then deliberate","circadian cycles temper agent"], bridges=["circadian","resilience","cycle"], tags=["craft","temper"])
         ns.define("anneal", "Slowly reduce deliberation intensity settling into optimum", Level=Level.PATTERN, examples=["simulated annealing explore then cool","reduce mutation as fitness improves"], bridges=["optimization","cooling","settle"], tags=["craft","anneal"])
