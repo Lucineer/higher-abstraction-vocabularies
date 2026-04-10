@@ -6304,7 +6304,7 @@ class HAV:
             bridges=["decision", "failure", "prevention", "imagination"],
             tags=["decision", "premortem", "prevention", "concrete"])
 
-        ns.define="info-gap",
+        ns.define("info-gap",
             "Making decisions when the probability distributions of outcomes are UNKNOWN, not just uncertain",
             description="Risk: you know the probabilities (50% chance of rain). Uncertainty: you don't know the exact probabilities but know the range. Info-gap: you don't even know the range. The model is fundamentally incomplete. Info-gap theory handles decisions where you DON'T KNOW WHAT YOU DON'T KNOW. In the fleet: when cuda-deliberation encounters a novel situation with no historical data, it faces info-gap — confidence is low AND the confidence calibration itself is uncertain. Info-gap decisions require robustness, not optimization.",
             level=Level.DOMAIN,
@@ -6340,7 +6340,7 @@ class HAV:
             bridges=["leadership", "temporary", "phase", "authority"],
             tags=["coordination", "leader", "phase", "pattern"])
 
-        ns.define="swarm-quorum",
+        ns.define("swarm-quorum",
             "Achieving consensus through many weak signals aggregating into a strong decision, like bees choosing a hive site",
             description="No single bee knows the best site. But 100 bees each report their scouting, and the strongest signal wins. Swarm-quorum aggregates many weak individual assessments into a strong collective decision. Each individual's assessment is noisy but the aggregate is reliable. In the fleet: cuda-swarm-agent's collective decision-making implements swarm-quorum — many agents provide weak assessments (confidence 0.6-0.7) that aggregate into a reliable fleet decision (confidence 0.95).",
             level=Level.PATTERN,
@@ -6360,7 +6360,7 @@ class HAV:
             bridges=["zero-trust", "authentication", "authorization", "audit"],
             tags=["security", "zero-trust", "verify", "pattern"])
 
-        ns.define="defense-in-depth",
+        ns.define("defense-in-depth",
             "Layering multiple independent security controls so that if one fails, the others still protect the system",
             description="Castle: moat (layer 1) + wall (layer 2) + guard (layer 3) + vault (layer 4). Breaching one layer doesn't compromise the whole system. Each layer is INDEPENDENT — different mechanism, different failure mode. In the fleet: cuda-rbac (layer 1) + cuda-sandbox (layer 2) + cuda-compliance (layer 3) + cuda-resilience's bulkhead (layer 4) implement defense-in-depth. An agent that bypasses RBAC still hits the sandbox. An agent that escapes the sandbox still faces compliance checks.",
             level=Level.PATTERN,
@@ -6376,7 +6376,7 @@ class HAV:
             bridges=["threat", "adversary", "attack-vector", "mitigation"],
             tags=["security", "threat-model", "adversary", "concrete"])
 
-        ns.define="blast-radius-containment",
+        ns.define("blast-radius-containment",
             "Limiting the maximum damage a single compromised or failing component can inflict on the rest of the system",
             description="If agent X is compromised, what's the WORST that can happen? If the blast radius is 'entire fleet', that's bad. If it's 'agent X and its immediate neighbors', that's better. Blast-radius-containment is the practice of minimizing the worst-case damage from any single failure. In the fleet: cuda-resilience's bulkhead pattern limits blast radius — each agent runs in isolation, a compromised agent can't directly access other agents' resources. The blast radius is one agent, not the fleet.",
             level=Level.CONCRETE,
@@ -6396,7 +6396,7 @@ class HAV:
             bridges=["learning", "rewire", "structural-change", "experience"],
             tags=["adaptation", "neuroplasticity", "rewire", "domain"])
 
-        ns.define="homeorhesis",
+        ns.define("homeorhesis",
             "Maintaining a dynamic trajectory toward a goal state despite perturbations, as opposed to homeostasis which maintains a static setpoint",
             description="Homeostasis: maintain temperature at 37°C (static). Homeorhesis: maintain GROWTH TRAJECTORY toward maturity despite setbacks (dynamic). The setpoint isn't fixed — it's MOVING. Homeorhesis is goal-directed stability. In the fleet: cuda-self-modify's adaptation IS homeorhetic — the agent maintains its evolution trajectory toward improved performance despite perturbations (failed mutations, energy depletion, hostile agents). The target moves as the agent improves.",
             level=Level.DOMAIN,
@@ -6404,7 +6404,7 @@ class HAV:
             bridges=["stability", "trajectory", "dynamic", "goal-directed"],
             tags=["adaptation", "homeorhesis", "trajectory", "domain"])
 
-        ns.define="exaptation",
+        ns.define("exaptation",
             "Repurposing an existing capability for a completely different function than it was evolved for",
             description="Feathers evolved for warmth. Later repurposed for flight. The capability existed BEFORE the need — exaptation is using what you HAVE for what you NEED. In the fleet: cuda-stigmergy's pheromone system evolved for task coordination but can be EXAPTED for threat detection (unusual pheromone patterns indicate anomalies). cuda-memory-fabric's episodic memory can be exapted for anomaly detection (unusual memory access patterns). The capability exists — the use case evolves.",
             level=Level.META,
@@ -6412,7 +6412,7 @@ class HAV:
             bridges=["repurpose", "evolution", "capability", "novation"],
             tags=["adaptation", "exaptation", "repurpose", "meta"])
 
-        ns.define="canalization",
+        ns.define("canalization",
             "The tendency of a developing system to produce the same outcome despite variations in input or environment — developmental robustness",
             description="Identical twins raised apart still have similar personalities. The developmental path CANALIZES toward a consistent outcome despite environmental noise. Canalization is robustness THROUGH development. In the fleet: cuda-self-modify's convergence IS canalization — despite different mutation paths and environmental conditions, the agent converges toward a stable, high-fitness configuration. The developmental path is robust to noise.",
             level=Level.DOMAIN,
@@ -6420,7 +6420,7 @@ class HAV:
             bridges=["robustness", "development", "convergence", "consistency"],
             tags=["adaptation", "canalization", "robustness", "domain"])
 
-        ns.define="bet-hedging",
+        ns.define("bet-hedging",
             "Maintaining diversity in strategies or capabilities as insurance against unpredictable future conditions",
             description="Not putting all eggs in one basket. Maintain multiple strategies even when one seems best NOW, because conditions might change. Bet-hedging sacrifices some current efficiency for future robustness. In the fleet: cuda-genepool's genetic diversity IS bet-hedging — keeping multiple capability patterns even when one is currently best, because the environment might change and the currently-inferior pattern might become superior. Diversity IS insurance.",
             level=Level.PATTERN,
@@ -6486,7 +6486,7 @@ class HAV:
             antonyms=["soft-power"],
             tags=["power", "hard", "control", "pattern"])
 
-        ns.define="power-balance",
+        ns.define("power-balance",
             "The equilibrium point between soft power and hard power that maximizes both initiative and safety in a fleet",
             description="Too much hard power: agents are compliant but unmotivated, no innovation. Too much soft power: agents are motivated but unsafe, no coordination. The balance point is where agents WANT to follow (soft power) but CAN be stopped (hard power when needed). In the fleet: cuda-captain's authority (hard) combined with cuda-trust's reputation system (soft) creates power-balance — agents are motivated by reputation gains but constrained by policy enforcement.",
             level=Level.META,
@@ -6494,7 +6494,7 @@ class HAV:
             bridges=["soft-power", "hard-power", "equilibrium", "optimal"],
             tags=["power", "balance", "equilibrium", "meta"])
 
-        ns.define="authority-gradient",
+        ns.define("authority-gradient",
             "The smooth transition of decision-making authority from higher to lower levels based on situational context and capability",
             description="Not fixed hierarchy — GRADIENT. In peacetime: authority distributed (agents make local decisions). In crisis: authority concentrated (captain makes all decisions). The gradient SHIFTS with context. Agents closer to the situation have MORE authority because they have BETTER information. In the fleet: cuda-hierarchy's delegation enables authority gradients — normal operations are distributed, crisis escalates to centralized command, then de-escalates back.",
             level=Level.PATTERN,
@@ -6514,7 +6514,7 @@ class HAV:
             bridges=["tradeoff", "optimality", "boundary", "non-dominated"],
             tags=["efficiency", "pareto", "frontier", "domain"])
 
-        ns.define="latent-capacity",
+        ns.define("latent-capacity",
             "Unused capability that can be activated when needed — the gap between current performance and maximum possible performance",
             description="An athlete sprints at 100% for 10 seconds but jogs at 40% for hours. The 60% gap is latent capacity — available but not used in normal operation. Systems that ALWAYS run at 100% have no latent capacity and can't handle spikes. In the fleet: cuda-energy's rest instinct builds latent capacity — during rest periods, energy reserves accumulate, creating capacity for future high-demand situations. An agent with no latent capacity is fragile.",
             level=Level.CONCRETE,
@@ -6522,7 +6522,7 @@ class HAV:
             bridges=["capacity", "reserve", "headroom", "spike"],
             tags=["efficiency", "capacity", "reserve", "concrete"])
 
-        ns.define="diminishing-returns",
+        ns.define("diminishing-returns",
             "Each additional unit of investment produces progressively less improvement — the cost of the next improvement exceeds the last",
             description="First hour of optimization: 50% improvement. Second hour: 20%. Third hour: 5%. Fourth hour: 1%. At some point, the cost of further optimization exceeds the value of the improvement. STOP. In the fleet: cuda-deliberation's Forfeit option implements diminishing-returns detection — if the confidence gain from additional deliberation rounds falls below a threshold, forfeit (stop deliberating). Perfect is the enemy of good enough.",
             level=Level.CONCRETE,
@@ -6530,7 +6530,7 @@ class HAV:
             bridges=["returns", "diminishing", "tradeoff", "stopping"],
             tags=["efficiency", "diminishing", "returns", "concrete"])
 
-        ns.define="opportunity-cost",
+        ns.define("opportunity-cost",
             "The value of the best alternative NOT chosen — the hidden cost of every decision",
             description="You spend $100 on dinner. The opportunity cost isn't $100 — it's what that $100 could have earned if invested. Every choice eliminates alternatives. The opportunity cost is the value of the BEST eliminated alternative. In the fleet: when cuda-captain assigns an agent to task A, the opportunity cost is the value of task B that agent could have done instead. Energy spent on deliberation has opportunity cost: that energy could have been used for action.",
             level=Level.CONCRETE,
@@ -6583,7 +6583,7 @@ class HAV:
             bridges=["fusion", "reduce", "aggregate", "flux"],
             tags=["flux", "fold", "reduce", "concrete"])
 
-        ns.define="seal",
+        ns.define("seal",
             "Mark a memory region as immutable for the current execution context — prevent accidental modification",
             description="EPRM, STORE, NOP. After sealing, any write attempt to the sealed region triggers a fault. Seal is write-protection for runtime memory. In the fleet: cuda-persistence's snapshot IS a seal — the snapshot is immutable, guaranteed not to change. Seal enables rollback by preserving a known-good state. Any modification creates a new region (copy-on-write), leaving the sealed original intact.",
             level=Level.CONCRETE,
@@ -6623,7 +6623,7 @@ class HAV:
             bridges=["monitor", "watchpoint", "interrupt", "flux"],
             tags=["flux", "watch", "monitor", "concrete"])
 
-        ns.define="fault",
+        ns.define("fault",
             "Handle an exception state and invoke the configured error handler — controlled failure",
             description="CMP error-code, JMP handler, HALT (if unrecoverable). Fault is not a crash — it's a CONTROLLED exception. The VM catches the error, invokes the handler, and either recovers or fails gracefully. In the fleet: cuda-resilience's fault detection IS the fault instruction — when an agent detects an error state (energy exhaustion, trust violation, communication failure), the fault handler activates: quarantine the agent, trigger succession, restore from stash.",
             level=Level.CONCRETE,
@@ -6639,7 +6639,7 @@ class HAV:
             bridges=["snapshot", "checkpoint", "immutable", "flux"],
             tags=["flux", "snap", "checkpoint", "concrete"])
 
-        ns.define="compact",
+        ns.define("compact",
             "Optimize memory layout by packing active data together and freeing unused regions — defragmentation",
             description="SHL (shift), AND (mask), STORE (write). Compact reorganizes memory so active data is contiguous and unused regions are collected. Like defragmenting a disk — the data doesn't change, but access patterns improve. In the fleet: cuda-memory-fabric's forgetting curve + compact IS memory compaction — as memories decay (forget), the remaining active memories are compacted into contiguous regions for faster access.",
             level=Level.CONCRETE,
@@ -6647,7 +6647,7 @@ class HAV:
             bridges=["memory", "defragment", "optimize", "flux"],
             tags=["flux", "compact", "memory", "concrete"])
 
-        ns.define="purge",
+        ns.define("purge",
             "Remove all stale entries from cache — reset to clean state when cache coherence is lost",
             description="MEM, NOT (invalidate), STORE (clear). Purge empties the entire cache, not just individual entries. Used when cache coherence is compromised (too many stale entries). In the fleet: cuda-memory-fabric's purge fires when the forgetting curve's cache becomes too stale — better to purge and rebuild from persistent storage than operate on stale data. Purge is expensive but safer than operating on corrupted state.",
             level=Level.CONCRETE,
@@ -6655,7 +6655,7 @@ class HAV:
             bridges=["cache", "purge", "reset", "flux"],
             tags=["flux", "purge", "cache", "concrete"])
 
-        ns.define="predict",
+        ns.define("predict",
             "Run the generative model to produce a next-state estimate — the VM looks ahead",
             description="GENE, ADD (combine with current), CMP (confidence). Predict uses the agent's gene pool to estimate what the next state will be. Not execution — ESTIMATION. The prediction's confidence tells the agent how much to trust it. In the fleet: cuda-world-model's prediction IS the predict instruction — estimate where objects will be, what events will happen, what needs attention. Predict enables anticipatory action instead of reactive response.",
             level=Level.CONCRETE,
@@ -6663,7 +6663,7 @@ class HAV:
             bridges=["prediction", "model", "anticipate", "flux"],
             tags=["flux", "predict", "model", "concrete"])
 
-        ns.define="finalize",
+        ns.define("finalize",
             "Close execution context and persist final output — the clean exit instruction",
             description="TRUST (verify), STORE (persist), RET (return). Finalize ensures the current execution context is properly closed: verify trust of all outputs, persist results to durable storage, and return control to the caller. In the fleet: cuda-actor's Stop supervision strategy IS finalize — when an agent completes its task, it finalizes: persist results, release resources, report completion. No loose ends.",
             level=Level.CONCRETE,
@@ -6679,7 +6679,7 @@ class HAV:
             bridges=["transfer", "gradual", "preserve", "flux"],
             tags=["flux", "siphon", "transfer", "concrete"])
 
-        ns.define="evict-reg",
+        ns.define("evict-reg",
             "Force-remove a register's contents when memory pressure requires it, preferring least-recently-used",
             description="CMP access-time, JNZ skip (recently used), STORE to swap (evict). When the register file is full, evict-reg removes the least recently accessed register to make room. LRU eviction. In the fleet: cuda-memory-fabric's forgetting curve IS evict-reg — memories that haven't been accessed recently are evicted to make room for new experiences. The forgetting function determines eviction priority (half-life decay = access-time weighting).",
             level=Level.CONCRETE,
@@ -6715,7 +6715,7 @@ class HAV:
             bridges=["prune", "circadian", "batch", "flux"],
             tags=["flux", "flavor", "prune", "pattern"])
 
-        ns.define="prune/trust-gated",
+        ns.define("prune/trust-gated",
             "Only prune genes from agents whose trust score exceeds 0.6 — respect the judgment of trusted agents",
             description="LOAD trust-score, CMP 0.6, JNZ skip. The trust-gated flavor adds a TRUST check before pruning. Only genes recommended for pruning BY TRUSTED AGENTS are actually removed. An untrusted agent's prune recommendation is ignored. In the fleet: cuda-trust + cuda-genepool implement prune/trust-gated — gene quarantine recommendations from agents with trust < 0.6 are deferred until trust is established.",
             level=Level.PATTERN,
@@ -6739,7 +6739,7 @@ class HAV:
             bridges=["broadcast", "global", "fleet-wide", "flux"],
             tags=["flux", "flavor", "broadcast", "concrete"])
 
-        ns.define="throttle/rate",
+        ns.define("throttle/rate",
             "Limit instruction throughput to N instructions per time window — prevent API rate limit violations",
             description="NOP, SHR (count), CMP limit, JNZ wait. The rate flavor limits execution frequency. Not based on energy (that's throttle/energy) but based on EXTERNAL RATE LIMITS. In the fleet: cuda-rate-limit's token bucket IS throttle/rate — limit outbound API calls to N per second to prevent 429 errors. Rate throttling prevents the fleet from overwhelming external services.",
             level=Level.CONCRETE,
@@ -6747,7 +6747,7 @@ class HAV:
             bridges=["throttle", "rate-limit", "external", "flux"],
             tags=["flux", "flavor", "throttle", "concrete"])
 
-        ns.define="throttle/energy",
+        ns.define("throttle/energy",
             "Limit instruction throughput based on remaining energy budget — conserve when energy is low",
             description="LOAD energy-budget, CMP threshold, JNZ skip. The energy flavor ties throughput to energy reserves. When energy is high, execute normally. When energy drops below threshold, throttle execution frequency. When energy is critical, only execute reflex-level instructions. In the fleet: cuda-energy's budget tracking implements throttle/energy — as ATP reserves deplete, non-essential operations are throttled, preserving energy for critical responses.",
             level=Level.PATTERN,
@@ -6755,7 +6755,7 @@ class HAV:
             bridges=["throttle", "energy", "budget", "flux"],
             tags=["flux", "flavor", "throttle", "pattern"])
 
-        ns.define="throttle/batch",
+        ns.define("throttle/batch",
             "Accumulate operations into batches and execute them together — amortize overhead across multiple operations",
             description="PUSH to batch-queue, CMP batch-size, JNZ execute-batch. The batch flavor collects multiple operations before executing them as a group. Higher throughput because setup overhead is amortized. In the fleet: cuda-a2a's batch messaging IS throttle/batch — instead of sending 100 individual messages, batch them into 10 messages of 10 each. Batch reduces communication overhead by 10x.",
             level=Level.CONCRETE,
@@ -6763,7 +6763,7 @@ class HAV:
             bridges=["throttle", "batch", "amortize", "flux"],
             tags=["flux", "flavor", "throttle", "concrete"])
 
-        ns.define="gate/allow",
+        ns.define("gate/allow",
             "Open the gate — all traffic passes through when confidence exceeds threshold",
             description="CMP confidence, JGE allow. The allow flavor is the permissive mode: when conditions are met, everything flows. No filtering, no restriction. In the fleet: gate/allow is the default mode for trusted agents — once trust is established, messages flow without additional filtering. The gate is open during normal operations.",
             level=Level.CONCRETE,
@@ -6771,7 +6771,7 @@ class HAV:
             bridges=["gate", "allow", "permissive", "flux"],
             tags=["flux", "flavor", "gate", "concrete"])
 
-        ns.define="gate/deny",
+        ns.define("gate/deny",
             "Close the gate — all traffic blocked regardless of confidence. Emergency shutoff",
             description="NOP, HALT (all traffic blocked). The deny flavor is the emergency mode: stop everything. No conditions checked, no exceptions. Hard stop. In the fleet: cuda-resilience's bulkhead triggers gate/deny when a cascading failure is detected — isolate the failing segment completely. No traffic in, no traffic out. Prevent blast propagation at maximum cost.",
             level=Level.CONCRETE,
@@ -6779,7 +6779,7 @@ class HAV:
             bridges=["gate", "deny", "emergency", "flux"],
             tags=["flux", "flavor", "gate", "concrete"])
 
-        ns.define="gate/filter",
+        ns.define("gate/filter",
             "Selective gate — inspect each item against rules, pass matching items, block others",
             description="LOAD item, CMP rule1, JNZ pass, CMP rule2, JNZ pass, JMP block. The filter flavor applies rules to each item individually. Some pass, some don't. In the fleet: cuda-filtration's ResourceBudget IS gate/filter — incoming tasks are filtered by priority rules: high-priority tasks pass, low-priority tasks are deferred when the fleet is busy. Filter is the most common gate mode.",
             level=Level.CONCRETE,
@@ -6787,7 +6787,7 @@ class HAV:
             bridges=["gate", "filter", "selective", "flux"],
             tags=["flux", "flavor", "gate", "concrete"])
 
-        ns.define="mask/whitelist",
+        ns.define("mask/whitelist",
             "Only allow pre-approved items — everything not explicitly allowed is blocked",
             description="LOAD item, CMP whitelist[0..N], JNZ allow, JMP block. The whitelist flavor is default-deny: if it's not on the approved list, it's blocked. In the fleet: cuda-rbac's whitelist mode IS mask/whitelist — only explicitly authorized operations are permitted. An agent can only access resources that are specifically listed in its permission set. Whitelist is the most secure but least flexible access control.",
             level=Level.CONCRETE,
@@ -6795,7 +6795,7 @@ class HAV:
             bridges=["mask", "whitelist", "default-deny", "flux"],
             tags=["flux", "flavor", "mask", "concrete"])
 
-        ns.define="mask/blacklist",
+        ns.define("mask/blacklist",
             "Block pre-banned items — everything not explicitly blocked is allowed",
             description="LOAD item, CMP blacklist[0..N], JZ allow, JMP block. The blacklist flavor is default-allow: if it's not on the banned list, it's permitted. In the fleet: cuda-compliance's blacklist mode IS mask/blacklist — operations matching known-bad patterns are blocked, everything else passes. Blacklist is more flexible than whitelist but less secure — novel attacks bypass it.",
             level=Level.CONCRETE,
