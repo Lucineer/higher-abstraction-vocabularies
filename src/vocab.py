@@ -6848,7 +6848,7 @@ class HAV:
         ns.define("substrate", "Environment where agents grow", Level=Level.DOMAIN, examples=["git repo is substrate","runtime is medium"], bridges=["environment","medium","foundation"], tags=["mycology","substrate"])
         ns.define("hyphae", "Individual threads forming coordination network", Level=Level.CONCRETE, examples=["stigmergy signal is hyphae","messages are hyphae"], bridges=["thread","communication","individual"], tags=["mycology","hyphae"])
         ns.define("spore-print", "Persistent capability signature in memory", Level=Level.CONCRETE, examples=["gene pool entry spore print","capability pattern deposit"], bridges=["record","signature","capability"], tags=["mycology","spore-print"])
-    def _load_mathematics(self:
+    def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
             "Mathematical structures and operations underlying agent cognition")
 
