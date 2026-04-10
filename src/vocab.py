@@ -341,6 +341,12 @@ class HAV:
         self._load_ai_safety()
         self._load_ontology_engineering()
         self._load_construction()
+        self._load_cognitive_science()
+        self._load_signal_processing()
+        self._load_emergence_deep()
+        self._load_communication_deep()
+        self._load_governance()
+        self._load_network_science()
         self._load_mathematics()
 
     def _load_uncertainty(self):
@@ -3725,6 +3731,191 @@ class HAV:
             examples=["dev has debug logging, prod has error-only: feature works in dev, fails in prod", "fleet agents in different environments drift in config", "docker images diverge from source code config"],
             bridges=["configuration", "environment", "drift", "consistency"],
             tags=["construction", "configuration", "drift", "challenge"])
+
+
+    def _load_cognitive_science(self):
+        ns = self.add_namespace("cognitive-science",
+            "How minds represent, process, and transform information")
+
+        ns.define("chunking",
+            "Grouping individual items into meaningful units to overcome working memory limits",
+            description="A phone number 5551234567 is 10 items. Group as 555-123-4567 and it's 3 chunks. Chess masters see board positions as chunks (patterns, not individual pieces), enabling them to remember positions that novices cannot. In the fleet: cuda-memory-fabric's semantic memory stores chunks — compressed representations of experience patterns. Chunking transforms raw experience into reusable knowledge. More chunks = higher expertise.",
+            level=Level.PATTERN,
+            examples=["phone number: 10 digits -> 3 chunks", "chess master: board position as pattern chunks", "fleet: experience compressed into reusable strategy chunks"],
+            bridges=["working-memory", "compression", "expertise", "memory"],
+            tags=["cognitive", "chunking", "memory", "expertise"])
+
+        ns.define("elaborative-encoding",
+            "Connecting new information to existing knowledge to create richer, more retrievable memories",
+            description="To remember 'the mitochondria is the powerhouse of the cell', connect it to what you already know: 'mitochondria' sounds like 'mighty', and powerhouses generate energy. The more connections, the more retrieval paths. In the fleet: new genes that connect to existing genes (bridges) are more likely to be useful. cuda-genepool's crossover creates connections between genes. HAV's bridges ARE elaborative encoding: each term connects to terms in other domains.",
+            level=Level.PATTERN,
+            examples=["remember mitochondria: connect to 'mighty' and 'energy'", "fleet: genes connected to existing knowledge are more useful", "HAV: bridges as elaborative encoding between domains"],
+            bridges=["memory", "encoding", "connection", "retrieval"],
+            tags=["cognitive", "encoding", "memory", "learning"])
+
+        ns.define("interference",
+            "Existing memories compete with new memories, causing forgetting — old and new overwrite each other",
+            description="You learn French, then Spanish. French words are overwritten by Spanish (retroactive interference). Or you learn Spanish, then try to remember earlier French — the new learning interferes with old memories. In the fleet: new strategies can interfere with old ones in the gene pool. Closely related strategies (similar inputs, different outputs) interfere more. cuda-genepool's gene quarantine manages interference by isolating conflicting genes.",
+            level=Level.BEHAVIOR,
+            examples=["learning Spanish interferes with previously learned French", "new password interferes with memory of old password", "fleet: new navigation strategy interferes with old one on similar terrain"],
+            bridges=["memory", "forgetting", "conflict", "learning"],
+            tags=["cognitive", "interference", "memory", "forgetting"])
+
+        ns.define("spacing-effect",
+            "Information is retained longer when study sessions are spaced out rather than massed together",
+            description="Study 1 hour per day for 5 days >> study 5 hours in one day. Spaced repetition exploits the forgetting curve: review just before you would forget, which strengthens the memory and resets the decay curve. In the fleet: cuda-memory-fabric's forgetting curves implement spacing naturally — information that's about to be forgotten gets reinforced when re-encountered in deliberation. Deliberation naturally creates spaced repetition.",
+            level=Level.PATTERN,
+            examples=["1h/day for 5 days > 5h in one day", "Anki spaced repetition flashcards", "fleet: forgetting curves naturally implement spacing when information reappears in deliberation"],
+            bridges=["forgetting-curve", "memory", "retention", "learning"],
+            tags=["cognitive", "spacing", "memory", "learning"])
+
+        ns.define("desirable-difficulty",
+            "Making learning harder in productive ways that strengthen long-term retention",
+            description="Easy learning feels good but doesn't stick. Hard learning (retrieval practice, spaced repetition, interleaving) feels frustrating but produces durable knowledge. The difficulty IS desirable because it strengthens the memory trace. In the fleet: agents that face challenging environments (not too easy, not impossible) learn more durable strategies. The zone of proximal development IS desirable difficulty.",
+            level=Level.PATTERN,
+            examples=["retrieval practice (recall from memory) > re-reading (easy but shallow)", "interleaved practice (mixing topics) > blocked practice (one topic at a time)", "fleet: challenging environments produce more durable agent strategies"],
+            bridges=["zone-of-proximal-development", "spacing-effect", "learning", "difficulty"],
+            tags=["cognitive", "difficulty", "learning", "retention"])
+
+    def _load_signal_processing(self):
+        ns = self.add_namespace("signal-processing",
+            "Extracting information from noisy, time-varying data")
+
+        ns.define("aliasing",
+            "High-frequency signals masquerading as low-frequency signals when sampled too slowly",
+            description="A wagon wheel appears to rotate backward in film. The sampling rate (frame rate) is too slow to capture the wheel's true rotation. In the fleet: if an agent samples its environment too slowly (low sensor poll rate), fast environmental changes will be aliased — appearing as slow or backward changes. The solution: sample at least twice the highest frequency of interest (Nyquist rate).",
+            level=Level.CONCRETE,
+            examples=["wagon wheel appearing to spin backward in film", "audio CD: 44.1kHz sample rate captures up to 22kHz (Nyquist)", "fleet: low sensor poll rate misses fast environmental changes (aliasing)"],
+            bridges=["sampling", "nyquist-rate", "frequency", "sensor"],
+            tags=["signal", "aliasing", "sampling", "frequency"])
+
+        ns.define("nyquist-rate",
+            "Minimum sampling rate needed to capture a signal without aliasing: twice the highest frequency",
+            description="To capture a 20kHz audio signal without aliasing, you must sample at 40kHz+. Anything less and high frequencies alias to lower frequencies. In the fleet: if obstacles move at 10 changes/second, the agent must sample at 20+ times/second to accurately track them. The Nyquist rate sets the minimum sensor update rate for accurate perception.",
+            level=Level.CONCRETE,
+            examples=["20kHz audio requires 40kHz+ sampling", "fleet: 10 changes/sec obstacle requires 20+ samples/sec", "video: 60fps captures motion up to 30Hz"],
+            bridges=["aliasing", "sampling-rate", "frequency", "perception"],
+            tags=["signal", "nyquist", "sampling", "minimum"])
+
+        ns.define("low-pass-filter",
+            "Allowing slow changes through while blocking fast changes — smoothing noisy data",
+            description="A moving average IS a low-pass filter. It smooths spikes while preserving trends. The fleet's cuda-perception implements low-pass filtering: raw sensor data (noisy) is smoothed before being used for decision-making. The filter cutoff determines what counts as 'noise' (fast, blocked) vs 'signal' (slow, passed through).",
+            level=Level.CONCRETE,
+            examples=["moving average smooths stock price data", "audio equalizer reducing treble", "fleet: sensor data low-pass filter removes noise, preserves trends"],
+            bridges=["noise-filtering", "smoothing", "sensor", "signal"],
+            tags=["signal", "filter", "low-pass", "smoothing"])
+
+    def _load_emergence_deep(self):
+        ns = self.add_namespace("emergence-deep",
+            "Extended exploration of emergence — collective behavior and self-organization")
+
+        ns.define("swarm-intelligence",
+            "Simple local rules producing sophisticated collective behavior — no central control needed",
+            description="Ant colonies find shortest paths. Bird flocks avoid predators. Termite mounds maintain temperature. No ant, bird, or termite knows the global solution. Each follows simple local rules. The fleet's stigmergy (cuda-stigmergy) implements swarm intelligence: agents follow simple rules (mark pheromones for good paths, follow strong pheromone trails) and sophisticated routing emerges globally.",
+            level=Level.DOMAIN,
+            examples=["ant colony optimization: shortest path from simple pheromone rules", "bird flocking: coherent motion from simple alignment/cohesion/separation rules", "fleet: optimal routing from simple stigmergy rules"],
+            bridges=["stigmergy", "self-organization", "emergence", "simple-rules"],
+            tags=["emergence", "swarm", "collective", "simple"])
+
+        ns.define("criticality",
+            "The boundary between order and disorder where information processing is maximized",
+            description="Sandpile: adding grains until avalanche. The moment before the avalanche is criticality. At criticality, the system is maximally sensitive to inputs (maximum information processing) and most efficient at transmitting information. Brains operate near criticality. The fleet tunes energy budgets and trust thresholds to operate near criticality: enough order to coordinate, enough disorder to adapt.",
+            level=Level.META,
+            examples=["sandpile at criticality: small grain causes large avalanche", "brain operates near criticality", "fleet: tuned to edge of chaos for maximum adaptability"],
+            bridges=["edge-of-chaos", "phase-transition", "sensitivity", "information"],
+            tags=["emergence", "criticality", "boundary", "meta"])
+
+        ns.define("stigmergic-coordination",
+            "Coordination through environment modification — no direct communication needed",
+            description="Ants don't talk to each other about the shortest path. They leave pheromone trails. The trail IS the communication medium. Other ants sense the trail and follow it, reinforcing good paths and allowing bad paths to evaporate. The fleet's cuda-stigmergy implements this: agents leave marks (digital pheromones) on shared state, other agents sense and follow them. Coordination emerges without any direct message passing.",
+            level=Level.DOMAIN,
+            examples=["ant pheromone trails: coordination without direct communication", "wikipedia article quality: coordination through editing (stigmergic)", "fleet: agents leave marks on shared state, others follow"],
+            bridges=["stigmergy", "indirect-communication", "environment", "coordination"],
+            tags=["emergence", "stigmergy", "indirect", "coordination"])
+
+    def _load_communication_deep(self):
+        ns = self.add_namespace("communication-deep",
+            "Extended exploration of communication — pragmatics, dialogue, and coordination language")
+
+        ns.define("speech-act",
+            "An utterance that performs an action — saying something IS doing something",
+            description="Austin: 'I promise to come' isn't a description of a promise — it IS the promise. 'I sentence you to 5 years' isn't a description — it IS the sentence. 'I declare this meeting adjourned' isn't a report — it IS the adjournment. In the fleet: A2A intents ARE speech acts. A Command intent doesn't describe a command — it IS a command. A Warn intent IS a warning. The speech act framework explains why intents work: they're performative, not descriptive.",
+            level=Level.DOMAIN,
+            examples=["'I promise' = the promise itself (not description)", "'I declare war' = the declaration (not report)", "fleet: Command intent IS the command (speech act)"],
+            bridges=["pragmatics", "performative", "intent", "communication"],
+            tags=["communication", "speech-act", "performative", "action"])
+
+        ns.define("presupposition",
+            "An assumption implicit in an utterance — not asserted directly but taken for granted",
+            description="'When did you stop beating your wife?' presupposes you used to beat your wife. You can't answer without accepting the presupposition. In the fleet: a request like 'please optimize the path you rejected earlier' presupposes the agent rejected a path. If no path was rejected, the presupposition fails. Agents must check presuppositions before processing requests to avoid acting on false assumptions.",
+            level=Level.DOMAIN,
+            examples=["'when did you stop X?' presupposes you used to X", "fleet: 'optimize the path you rejected' presupposes rejection occurred", "'why is the system slow?' presupposes it IS slow"],
+            bridges=["pragmatics", "assumption", "context", "communication"],
+            tags=["communication", "presupposition", "assumption", "pragmatics"])
+
+        ns.define("common-ground",
+            "Shared knowledge between communicators that enables efficient communication — what goes without saying",
+            description="You and your friend both know that the restaurant you always go to is closed on Mondays. You can say 'let's go to our place' and your friend knows NOT to suggest it's Monday. In the fleet: agents that share HAV have common ground — they both know what 'deliberation', 'confidence', and 'stigmergy' mean without redefining them each time. Common ground reduces communication cost dramatically.",
+            level=Level.DOMAIN,
+            examples=["friends know their usual restaurant is closed Mondays (common ground)", "HAV provides common ground: shared vocabulary reduces explanation needed", "team jargon: shared terms enable fast communication"],
+            bridges=["shared-knowledge", "vocabulary", "efficiency", "communication"],
+            tags=["communication", "common-ground", "shared", "efficiency"])
+
+    def _load_governance(self):
+        ns = self.add_namespace("governance",
+            "How agent societies make collective decisions and enforce rules")
+
+        ns.define("polycentric-governance",
+            "Multiple overlapping centers of decision-making, each with some autonomy — no single ruler",
+            description="Elinor Ostrom's Nobel-winning insight: common-pool resources are best managed by multiple overlapping governance structures, not a single central authority. Fishing communities, irrigation systems, and the internet all use polycentric governance. The fleet IS polycentric: each agent has local autonomy, teams have team-level governance, the fleet has fleet-level rules. No single point of control, but coherent behavior emerges.",
+            level=Level.META,
+            examples=["irrigation system managed by multiple farmer groups (not one authority)", "internet: ICANN, IETF, national regulators (polycentric)", "fleet: agent autonomy + team governance + fleet rules (polycentric)"],
+            bridges=["decentralization", "subsidiarity", "common-pool", "multi-level"],
+            tags=["governance", "polycentric", "multi-level", "meta"])
+
+        ns.define("regulatory-capture",
+            "Regulators become aligned with the interests they're supposed to regulate, not the public interest",
+            description="Financial regulators hired from Wall Street regulate Wall Street leniently. The regulated capture the regulators. In the fleet: cuda-compliance agents could be 'captured' by the agents they regulate — developing cozy relationships that weaken enforcement. Independence (separate energy budgets, separate oversight) prevents regulatory capture.",
+            level=Level.BEHAVIOR,
+            examples=["financial regulators lenient toward Wall Street", "fleet: compliance agent developing cozy relationship with regulated agents", "FDA and pharmaceutical industry revolving door"],
+            bridges=["compliance", "conflict-of-interest", "independence", "governance"],
+            tags=["governance", "capture", "conflict", "behavior"])
+
+        ns.define("separation-of-powers",
+            "Dividing authority among independent bodies that check and balance each other",
+            description="Legislative, executive, judicial — each can check the others. No single body has unchecked power. In the fleet: deliberation (legislative), action (executive), and compliance (judicial) form a separation of powers. Deliberation proposes, action executes, compliance reviews. Each checks the others: compliance can veto deliberation outcomes, action can report deliberation failures, deliberation can modify compliance rules.",
+            level=Level.PATTERN,
+            examples=["US government: legislative, executive, judicial", "fleet: deliberation, action, compliance as three powers", "open source: proposal, implementation, review as separation of powers"],
+            bridges=["check-and-balance", "compliance", "governance", "independence"],
+            tags=["governance", "separation", "checks", "balance"])
+
+    def _load_network_science(self):
+        ns = self.add_namespace("network-science",
+            "Mathematical study of network structure, dynamics, and function")
+
+        ns.define("betweenness-centrality",
+            "How often a node appears on the shortest paths between other nodes — the bridge keeper",
+            description="A node with high betweenness centrality connects otherwise disconnected parts of the network. Remove it, and communication between those parts breaks down. In the fleet: agents with high betweenness centrality are critical information brokers. Their failure disconnects the fleet. cuda-topology's centrality metrics identify betweenness-critical agents for redundancy planning.",
+            level=Level.CONCRETE,
+            examples=["bridge between two communities: high betweenness", "information broker in social network", "fleet agent connecting two sub-groups: high betweenness centrality"],
+            bridges=["centrality", "bridge", "critical-node", "network"],
+            tags=["network", "centrality", "betweenness", "critical"])
+
+        ns.define("modularity",
+            "How strongly a network divides into distinct communities — dense within, sparse between",
+            description="A school network: dense connections within classes (same students), sparse between classes (different students). High modularity = clear community structure. Low modularity = well-mixed. The fleet's cuda-topology label propagation detects communities (high modularity sub-graphs). Optimal fleet organization has high modularity: strong coordination within teams, sparse coordination between teams.",
+            level=Level.CONCRETE,
+            examples=["school classes: dense within, sparse between", "fleet: strong coordination within teams, sparse between", "protein interaction networks: functional modules"],
+            bridges=["community", "clustering", "structure", "organization"],
+            tags=["network", "modularity", "community", "structure"])
+
+        ns.define("degree-distribution",
+            "The probability distribution of how many connections each node has",
+            description="In a random network, most nodes have similar degrees (Poisson distribution). In a real network, most nodes have few connections and a few have many (power law). The degree distribution reveals the network's character. The fleet's degree distribution determines resilience: power-law networks are robust to random failures but vulnerable to targeted attacks on hubs.",
+            level=Level.CONCRETE,
+            examples=["random network: Poisson degree distribution", "internet: power-law degree distribution (few hubs, many leaves)", "fleet: degree distribution reveals resilience characteristics"],
+            bridges=["power-law", "scale-free", "resilience", "network"],
+            tags=["network", "degree", "distribution", "structure"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
