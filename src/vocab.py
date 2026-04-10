@@ -373,6 +373,18 @@ class HAV:
         self._load_composition()
         self._load_observability()
         self._load_anti_patterns()
+        self._load_influence()
+        self._load_negotiation()
+        self._load_capacity()
+        self._load_decision_patterns()
+        self._load_maintenance()
+        self._load_ux()
+        self._load_trade_patterns()
+        self._load_morphology()
+        self._load_risk_patterns()
+        self._load_propagation()
+        self._load_lifecycle()
+        self._load_incentives()
         self._load_mathematics()
 
     def _load_uncertainty(self):
@@ -4865,6 +4877,379 @@ class HAV:
             examples=["bamboo control towers lit fires expecting cargo planes (cargo cult)", "fleet: copying architecture without understanding why it was chosen (cargo cult)", "standup meetings every day because Google does them (cargo cult)"],
             bridges=["imitation", "understanding", "form-vs-function", "superficial"],
             tags=["anti-pattern", "cargo-cult", "imitation", "behavior"])
+
+
+    def _load_influence(self):
+        ns = self.add_namespace("influence",
+            "How one agent's behavior affects another's — without force, through structure and example")
+
+        ns.define("set-the-norm",
+            "Establish a behavioral baseline that new agents adopt by default through observation",
+            description="The first person in an elevator faces the door. Everyone who enters faces the door. The first person set the norm. No one was told. They observed and conformed. In the fleet: the first agent's deliberation pattern (depth, confidence threshold, evidence quality) sets the norm for subsequent agents. They observe the first agent's behavior and converge to it. Set the norm early because norms resist change.",
+            level=Level.BEHAVIOR,
+            examples=["elevator: first person faces door, everyone follows (norm set)", "fleet: first agent's deliberation style sets norm for subsequent agents", "office: first team's communication style becomes team culture (norm)"],
+            bridges=["norm", "conformity", "baseline", "first-mover"],
+            tags=["influence", "norm", "default", "behavior"])
+
+        ns.define("nudge",
+            "A small structural change that steers behavior without restricting choice",
+            description="Put healthy food at eye level in a cafeteria — people choose it more often without being told to. No ban on junk food. No mandate. Just a structural change that makes the desired behavior easier. In the fleet: cuda-filtration's energy budgets NUDGE agents toward efficient communication by making expensive communication hurt. No ban on verbose messages — just a cost that steers toward conciseness.",
+            level=Level.PATTERN,
+            examples=["cafeteria: healthy food at eye level (nudge toward healthy eating)", "fleet: energy costs for verbose messages (nudge toward conciseness)", "default 401k contribution: opt-out not opt-in (nudge toward saving)"],
+            bridges=["choice-architecture", "structural", "steer", "subtle"],
+            tags=["influence", "nudge", "structural", "pattern"])
+
+        ns.define("information-cascade",
+            "Individuals ignore their private information and follow the crowd, amplifying possibly wrong signals",
+            description="Restaurant A has a long line, Restaurant B is empty. You join A's line even though you initially preferred B. The next person sees two restaurants with lines (you joined A) and also joins A. Soon everyone's at A, not because A is better, but because everyone followed the crowd. In the fleet: cuda-consensus's weighted voting must resist information cascades — agents shouldn't just vote for the popular option, they should vote based on their own evidence.",
+            level=Level.BEHAVIOR,
+            examples=["restaurant line: join A because others did, not because it's better", "fleet: agents voting for popular option regardless of own evidence (cascade)", "stock market: buying because others buy, not because of analysis (cascade)"],
+            bridges=["conformity", "herd-behavior", "amplification", "crowd"],
+            tags=["influence", "cascade", "herd", "behavior"])
+
+    def _load_negotiation(self):
+        ns = self.add_namespace("negotiation",
+            "How agents reach agreements through structured interaction")
+
+        ns.define("best-alternative",
+            "The most attractive option available if the current negotiation fails — your walk-away point",
+            description="If this job offer falls through, your best alternative is another offer at 90% of the salary. BATNA (Best Alternative To Negotiated Agreement) determines your leverage. Strong BATNA = negotiate from strength. Weak BATNA = accept what's offered. In the fleet: each agent's best alternative to the current deliberation proposal is its instinct-based default action. If deliberation produces a better outcome than the instinct default, accept. Otherwise, walk away.",
+            level=Level.DOMAIN,
+            examples=["job negotiation: best alternative offer determines your leverage", "fleet: instinct-based action is the agent's BATNA (walk-away point)", "buying a house: comparable listings are your BATNA (negotiation leverage)"],
+            bridges=["negotiation", "alternative", "walk-away", "leverage"],
+            tags=["negotiation", "BATNA", "alternative", "domain"])
+
+        ns.define("concession-rhythm",
+            "The pattern and rate at which parties make concessions — reveals information and sets expectations",
+            description="Negotiation: you offer 100, they counter 60, you offer 90, they counter 65. Your concession sizes (10, 5) signal that you're approaching your limit. Their concession sizes (5) signal they started low. The rhythm reveals information about both parties' true positions. In the fleet: cuda-deliberation's proposal negotiation has a concession rhythm — each round's compromise reveals the proposer's confidence and the reviewer's flexibility.",
+            level=Level.PATTERN,
+            examples=["price negotiation: concession sizes reveal limits", "fleet: deliberation round compromises reveal confidence levels", "diplomacy: each country's concessions signal their priorities"],
+            bridges=["negotiation", "rhythm", "signal", "information"],
+            tags=["negotiation", "concession", "rhythm", "pattern"])
+
+        ns.define("package-deal",
+            "Bundle multiple issues together so that concessions on one offset gains on another, creating win-win",
+            description="Salary negotiation: you can't get $120k. But you CAN get $110k + remote work + extra vacation. The package is BETTER than $120k cash alone because you value flexibility. Package deals work because parties value things differently. In the fleet: cuda-resource's budget allocation IS a package deal — more compute budget but less network budget. Agents value different resources differently, so package deals create Pareto improvements.",
+            level=Level.PATTERN,
+            examples=["job offer: lower salary + remote + vacation (package better than raw salary)", "fleet: more compute, less network (package deal on resource budgets)", "trade agreement: lower tariffs on X, lower subsidies on Y (package deal)"],
+            bridges=["negotiation", "bundling", "win-win", "Pareto"],
+            tags=["negotiation", "package", "bundle", "pattern"])
+
+    def _load_capacity(self):
+        ns = self.add_namespace("capacity",
+            "The limits of what a system can handle and how it responds to being pushed beyond them")
+
+        ns.define("headroom",
+            "Unused capacity maintained as a buffer against demand spikes — safety margin",
+            description="A bridge rated for 10,000 lbs that handles trucks up to 7,000 lbs has 30% headroom. A server at 60% CPU utilization has 40% headroom. Headroom absorbs unexpected spikes without degradation. No headroom = any spike causes failure. In the fleet: cuda-resource's allocation should maintain headroom — don't allocate 100% of energy budget. Keep 20% in reserve for unexpected demands (new tasks, emergency deliberation).",
+            level=Level.CONCRETE,
+            examples=["bridge rated 10,000 lbs handling 7,000 lb trucks (30% headroom)", "server at 60% CPU (40% headroom)", "fleet: 80% energy allocation, 20% headroom for emergencies"],
+            bridges=["buffer", "safety-margin", "capacity", "reserve"],
+            tags=["capacity", "headroom", "buffer", "concrete"])
+
+        ns.define("saturation",
+            "The point where adding more input produces no additional output — the system is maxed out",
+            description="A sponge absorbs water until it's full. More water just runs off. The sponge is saturated. A road at rush hour: adding more cars doesn't increase throughput — it increases congestion. In the fleet: an agent processing 100 messages/second is at capacity. 101st message doesn't get processed faster — it gets queued (or dropped). cuda-backpressure detects saturation and signals upstream producers to slow down.",
+            level=Level.DOMAIN,
+            examples=["saturated sponge: more water runs off (no absorption)", "saturated road: more cars = congestion, not throughput", "fleet agent at message processing limit: more messages = queue/drop"],
+            bridges=["capacity", "max", "congestion", "limit"],
+            tags=["capacity", "saturation", "limit", "domain"])
+
+        ns.define("elasticity",
+            "The ability to expand and contract capacity in response to demand — stretch without breaking",
+            description="Cloud computing: auto-scale from 2 servers to 20 when traffic spikes, then back to 2 when it drops. The system ELASTICALLY matches capacity to demand. In the fleet: cuda-actor's spawn hierarchy provides elasticity — new agents spawn when load increases, idle agents terminate when load decreases. Elasticity prevents both waste (over-provisioning) and failure (under-provisioning).",
+            level=Level.DOMAIN,
+            examples=["cloud: 2→20 servers during spike, back to 2 after (elasticity)", "fleet: spawn agents during load spike, terminate when idle (elasticity)", "rubber band: stretches under tension, returns when released (elasticity)"],
+            bridges=["scaling", "auto-scale", "responsive", "capacity"],
+            tags=["capacity", "elasticity", "auto-scale", "domain"])
+
+    def _load_decision_patterns(self):
+        ns = self.add_namespace("decision-patterns",
+            "Structural patterns for how decisions are made, evaluated, and reversed")
+
+        ns.define("reversible-decision",
+            "A choice that can be undone at low cost — make it fast, don't deliberate",
+            description="Which font to use. Which color scheme. Which meeting time. If you get it wrong, you just change it. Cost of reversal: low. Cost of deliberation: time you'll never get back. For reversible decisions, decide fast, iterate. In the fleet: switching communication partners (cuda-a2a) is reversible — low cost to change, no need for deep deliberation. Switching trust thresholds is NOT reversible (affects all future interactions).",
+            level=Level.PATTERN,
+            examples=["font choice: reversible (just change it later)", "fleet: switching comm partner = reversible (low cost)", "marriage: irreversible (high deliberation warranted)"],
+            bridges=["decision", "reversibility", "speed", "cost"],
+            antonyms=["irreversible-decision"],
+            tags=["decision", "reversible", "fast", "pattern"])
+
+        ns.define("irreversible-decision",
+            "A choice with high reversal cost — deliberate carefully, get it right",
+            description="Selling your house. Quitting your job. Publishing a crate's public API. These decisions are expensive to reverse. Deliberation cost is justified because reversal cost is enormous. In the fleet: cuda-equipment's API is an irreversible decision (once published to crates.io). Changing it breaks all dependents. cuda-genepool's fitness function is irreversible in practice (changing it reshapes the entire gene pool).",
+            level=Level.PATTERN,
+            examples=["selling house: irreversible, high reversal cost", "fleet: published crate API = irreversible (affects all dependents)", "getting a tattoo: irreversible, deliberate first"],
+            bridges=["decision", "irreversibility", "deliberation", "cost"],
+            antonyms=["reversible-decision"],
+            tags=["decision", "irreversible", "deliberate", "pattern"])
+
+        ns.define("satisfice",
+            "Choose the first option that meets minimum requirements rather than searching for the optimal one",
+            description="Simon: bounded rationality means you CAN'T find the optimal solution (too many options, too little time). Instead, set a threshold and accept the first option that clears it. Good enough > perfect. In the fleet: cuda-deliberation's consensus threshold IS satisficing — you don't find the PERFECT proposal, you accept the first one above 0.85 confidence. Searching longer for better proposals costs energy that might not be recovered.",
+            level=Level.DOMAIN,
+            examples=["finding a restaurant: first one above 4 stars (satisfice), not exhaustively checking all", "fleet: accept first proposal above confidence threshold (satisfice)", "hiring: first candidate above minimum requirements (satisfice vs optimize)"],
+            bridges=["bounded-rationality", "threshold", "good-enough", "practical"],
+            antonyms=["maximize"],
+            tags=["decision", "satisfice", "threshold", "domain"])
+
+        ns.define("two-door-problem",
+            "Choosing between two good options with incomplete information — neither is clearly better",
+            description="Two job offers: one with higher salary, one with better culture. You can't quantify culture. You don't know if the higher-salary job will have a bad manager. Incomplete information makes optimal choice impossible. In the fleet: two deliberation proposals both above threshold, both with similar confidence. Neither clearly better. Solution: pick one (satisfice), implement it, monitor, switch if evidence supports the other (reversible decision).",
+            level=Level.BEHAVIOR,
+            examples=["two good job offers, can't determine which is better (two-door)", "fleet: two good proposals, neither clearly superior (two-door)", "two houses, both nice, neither perfect (two-door)"],
+            bridges=["uncertainty", "satisfice", "choice", "ambiguity"],
+            tags=["decision", "two-door", "choice", "behavior"])
+
+    def _load_maintenance(self):
+        ns = self.add_namespace("maintenance",
+            "Keeping systems running and improving over time — the unglamorous essential work")
+
+        ns.define("rot-prevention",
+            "Regular small interventions that prevent accumulated degradation from causing failure",
+            description="Wood rots without treatment. Paint it every 5 years: rot prevented. Software rots without maintenance: dependencies get stale, APIs change, tests break. Regular updates prevent rot. In the fleet: regular gene pool maintenance (cuda-genepool) prevents rot — quarantining bad genes, updating fitness scores, removing duplicates. Without maintenance, the gene pool rots: bad genes accumulate, fitness scores go stale.",
+            level=Level.PATTERN,
+            examples=["wood painting every 5 years prevents rot", "software dependency updates prevent rot", "fleet gene pool maintenance prevents accumulation of bad genes"],
+            bridges=["prevention", "maintenance", "regular", "degradation"],
+            tags=["maintenance", "rot", "prevention", "pattern"])
+
+        ns.define("watchdog",
+            "An independent monitor that alerts when a system deviates from expected behavior",
+            description="A heart monitor watches for arrhythmia. A smoke detector watches for fire. A watchdog doesn't FIX the problem — it ALERTS. The fix is separate. In the fleet: cuda-metrics' HealthCheck is a watchdog — it monitors agent health and alerts when performance degrades. The fleet coordinator (cuda-fleet-mesh) is alerted but doesn't automatically intervene — the watchdog's job is detection, not correction.",
+            level=Level.CONCRETE,
+            examples=["heart monitor: detects arrhythmia, alerts (doesn't fix)", "smoke detector: detects fire, alerts (doesn't extinguish)", "fleet health check: detects degradation, alerts (doesn't fix)"],
+            bridges=["monitoring", "alert", "detection", "independent"],
+            tags=["maintenance", "watchdog", "monitor", "concrete"])
+
+        ns.define("graceful-aging",
+            "A system designed to remain useful even as it accumulates technical debt and falls behind current best practices",
+            description="An old building with good bones: maybe the wiring is outdated, but the structure is sound. It can be renovated incrementally without tearing it down. Graceful aging: the system doesn't become USELESS when it's no longer state-of-the-art. It remains functional, just not optimal. In the fleet: cuda-* crates should age gracefully — an older crate version still works even if newer crates have better patterns. Don't force-break old versions.",
+            level=Level.PATTERN,
+            examples=["old building with good bones: renovate incrementally (graceful aging)", "Python 2: didn't age gracefully (forced deprecation)", "fleet crate v0.1: still works even if v0.2 exists (graceful aging)"],
+            bridges=["backward-compatibility", "longevity", "maintenance", "incremental"],
+            tags=["maintenance", "aging", "graceful", "pattern"])
+
+    def _load_ux(self):
+        ns = self.add_namespace("ux-patterns",
+            "How systems present themselves to users and agents for maximum usability")
+
+        ns.define("progressive-disclosure",
+            "Show only what's needed now, reveal more complexity as the user goes deeper",
+            description="Google's homepage: one search box. Advanced search: hidden behind a link. You don't see 50 options until you ask for them. Progressive disclosure prevents overwhelming new users while empowering advanced users. In the fleet: cuda-config's layered config (defaults → file → env → CLI) IS progressive disclosure — defaults work out of the box, advanced users can override everything.",
+            level=Level.PATTERN,
+            examples=["Google: one search box, advanced options behind link", "fleet config: defaults work immediately, advanced overrides available", "camera app: auto mode by default, manual mode behind a menu"],
+            bridges=["simplicity", "layered", "onboarding", "complexity"],
+            tags=["ux", "progressive", "disclosure", "pattern"])
+
+        ns.define("affordance",
+            "A design property that suggests how to interact with an object — the handle says 'pull'",
+            description="A door with a flat plate affords pushing. A door with a handle affords pulling. A button affords clicking. Affordances make interfaces intuitive — the user KNOWS what to do without instructions. In the fleet: vessel.json affords reading capabilities — the structure itself tells you what the vessel can do. cuda-equipment's EquipmentRegistry affords querying equipment — the method names suggest the interactions.",
+            level=Level.PATTERN,
+            examples=["door handle: affords pulling (you know to pull without instruction)", "button: affords clicking", "vessel.json structure affords reading capabilities (self-documenting)"],
+            bridges=["intuitive", "self-documenting", "design", "interaction"],
+            tags=["ux", "affordance", "intuitive", "pattern"])
+
+        ns.define("error-recovery",
+            "When something goes wrong, show the user what happened AND how to fix it, not just what went wrong",
+            description="Bad: 'Error 404'. Good: 'The page you're looking for was moved. Here are similar pages you might want.' Bad: 'NullReferenceException'. Good: 'Contact not found. Add a contact first, then try again.' Error recovery turns frustration into action. In the fleet: cuda-deliberation's 'inconclusive' result should include EVIDENCE of what was considered and SUGGESTIONS for what additional information might help reach a conclusion.",
+            level=Level.PATTERN,
+            examples=["bad: 'Error 404'. good: 'Page moved, here are alternatives'", "fleet: inconclusive deliberation includes evidence + suggestions for next steps", "compiler: 'unexpected token' WITH caret showing exact location (error recovery)"],
+            bridges=["error-handling", "usability", "actionable", "recovery"],
+            tags=["ux", "error-recovery", "actionable", "pattern"])
+
+
+    def _load_trade_patterns(self):
+        ns = self.add_namespace("trade-patterns",
+            "Exchange dynamics — what agents give up to get what they need")
+
+        ns.define("barter",
+            "Direct exchange of capabilities between agents without a common currency",
+            description="You have perception skills, I have navigation skills. We exchange: I navigate, you perceive. No energy currency needed — direct skill-for-skill trade. In the fleet: cuda-a2a's negotiation enables barter — agent A provides sensor data, agent B provides computation, both benefit without energy transfer. Barter works when both parties have complementary capabilities and mutual needs.",
+            level=Level.PATTERN,
+            examples=["perception agent trades data for computation agent's analysis", "humans: barter services without money", "fleet: sensor data for computation results (direct barter)"],
+            bridges=["exchange", "complementarity", "mutual-benefit", "direct"],
+            tags=["trade", "barter", "exchange", "pattern"])
+
+        ns.define("spot-price",
+            "The current market-determined price based on immediate supply and demand — no contracts, no negotiation",
+            description="Uber surge pricing: price reflects current demand. Electricity spot price: varies by the minute based on supply/demand. No long-term contract, just the price RIGHT NOW. In the fleet: energy costs (cuda-energy's EnergyCosts) ARE spot prices — deliberation costs 2.0 ATP RIGHT NOW based on current energy budget. The price fluctuates with supply (available energy) and demand (pending tasks).",
+            level=Level.CONCRETE,
+            examples=["Uber surge: price reflects current demand (spot price)", "fleet: deliberation costs 2.0 ATP now, 3.0 when energy is low (spot price)", "electricity: minute-by-minute price based on grid supply/demand"],
+            bridges=["price", "dynamic", "supply-demand", "real-time"],
+            tags=["trade", "spot-price", "dynamic", "concrete"])
+
+        ns.define("bid-ask-spread",
+            "The gap between what buyers will pay and sellers will accept — the cost of making a trade",
+            description="Stock market: buyers bid $100, sellers ask $101. Spread = $1. The wider the spread, the harder it is to trade profitably. Tight spread = liquid market. Wide spread = illiquid. In the fleet: the gap between an agent's willingness to accept a task (ask) and the task's energy budget (bid) is the bid-ask spread. If the spread is negative (budget < willingness), the task won't be assigned. Tight spreads enable more task assignments.",
+            level=Level.DOMAIN,
+            examples=["stock bid $100, ask $101: spread = $1 (cost of trading)", "fleet: task budget 1.5 ATP, agent wants 2.0 ATP: spread = 0.5 (task unassigned)", "real estate: seller wants $500K, buyer offers $475K: spread = $25K"],
+            bridges=["market", "liquidity", "trade-cost", "gap"],
+            tags=["trade", "spread", "market", "domain"])
+
+    def _load_morphology(self):
+        ns = self.add_namespace("morphology-deep",
+            "How structures change shape and form — transformation patterns")
+
+        ns.define("phase-transition",
+            "A sudden qualitative change in system behavior when a parameter crosses a critical threshold",
+            description="Water at 99°C: liquid. Water at 101°C: gas. Small temperature change, completely different behavior. The transition is sudden and qualitative, not gradual. In the fleet: fleet behavior undergoes phase transitions based on agent count and communication density. Below critical mass: isolated agents. Above critical mass: emergent coordination. The transition is sudden — not gradual improvement but qualitative transformation.",
+            level=Level.DOMAIN,
+            examples=["water: liquid at 99°C, gas at 101°C (phase transition)", "fleet: isolated agents → emergent coordination at critical mass (phase transition)", "magnet: non-magnetic below Curie temp, magnetic above (phase transition)"],
+            bridges=["critical-mass", "sudden-change", "qualitative", "threshold"],
+            tags=["morphology", "phase", "transition", "domain"])
+
+        ns.define("catalytic-conversion",
+            "Transform input into a fundamentally different output through a process that itself doesn't change",
+            description="Catalytic converter: toxic gases in, harmless gases out. The converter isn't consumed. Data pipeline: raw sensor data in, actionable intelligence out. The pipeline isn't consumed. In the fleet: cuda-perception transforms raw signals into percepts. cuda-deliberation transforms percepts into decisions. Each stage is catalytic — it transforms without being consumed. The output is a DIFFERENT TYPE than the input.",
+            level=Level.PATTERN,
+            examples=["catalytic converter: toxic → harmless (converter unchanged)", "fleet: raw signal → percept → decision (each stage transforms without consuming)", "compiler: source code → machine code (compiler unchanged)"],
+            bridges=["transformation", "pipeline", "type-change", "catalyst"],
+            tags=["morphology", "catalytic", "transform", "pattern"])
+
+        ns.define("self-assembly",
+            "Components spontaneously organize into a structured whole without external direction",
+            description="Protein folding: amino acids arrange themselves into a functional 3D structure. Crystal growth: atoms arrange into a lattice. No external director telling each atom where to go — local interactions produce global order. In the fleet: cuda-stigmergy enables self-assembly — agents following simple pheromone rules spontaneously form efficient routing networks without a central coordinator directing them.",
+            level=Level.DOMAIN,
+            examples=["protein folding: amino acids self-assemble into 3D structure", "crystal growth: atoms self-assemble into lattice", "fleet: agents self-assemble into routing networks via stigmergy"],
+            bridges=["emergence", "spontaneous", "local-rules", "global-order"],
+            tags=["morphology", "self-assembly", "spontaneous", "domain"])
+
+    def _load_risk_patterns(self):
+        ns = self.add_namespace("risk-patterns",
+            "How systems identify, assess, and manage uncertainty about future outcomes")
+
+        ns.define("black-swan",
+            "An event that is extremely rare, has massive impact, and is only predictable in hindsight",
+            description="Taleb: black swans (before Australia was discovered, all swans were white — a black swan was unimaginable). 9/11, 2008 financial crisis, COVID — all black swans. Not just unlikely: IMPOSSIBLE to predict by definition (if you could predict it, you'd prevent it). In the fleet: cuda-resilience's chaos monkey injects black swans (random failures) to test whether the system can survive the unpredictable.",
+            level=Level.META,
+            examples=["2008 financial crisis: unpredictable, massive impact", "COVID: unpredictable, massive impact", "fleet: chaos monkey injects unpredictable failures to test resilience"],
+            bridges=["fat-tail", "unpredictable", "catastrophic", "meta"],
+            tags=["risk", "black-swan", "unpredictable", "meta"])
+
+        ns.define("expected-value",
+            "The probability-weighted average of all possible outcomes — the rational decision metric",
+            description="Lottery: 1 in 300 million chance of $1 billion. Expected value = $1B × (1/300M) = $3.33. A $3.33 ticket for a $3.33 expected return. But variance is enormous. Expected value alone doesn't capture risk. In the fleet: each proposal's expected value is confidence × payoff magnitude. A high-confidence, low-payoff proposal (routine task) might have higher expected value than a low-confidence, high-payoff proposal (risky exploration).",
+            level=Level.CONCRETE,
+            examples=["lottery: $1B × 1/300M = $3.33 expected value", "fleet: confidence × payoff = expected value of proposal", "insurance: premium < expected loss = worth buying"],
+            bridges=["probability", "payoff", "rational", "decision"],
+            tags=["risk", "expected-value", "probability", "concrete"])
+
+        ns.define("worst-case-budget",
+            "Reserve resources specifically for surviving the worst plausible scenario",
+            description="A household keeps 3 months of expenses in savings. A data center has backup generators. The budget is ALLOCATED for the worst case — not hoped for, not improvised. In the fleet: cuda-energy should maintain a worst-case budget — enough energy for apoptosis-safe shutdown even if all income sources fail simultaneously. The reserve isn't for normal operations — it's survival insurance.",
+            level=Level.CONCRETE,
+            examples=["household: 3 months expenses as worst-case budget", "data center: backup generators for worst-case power failure", "fleet: reserved energy for safe shutdown in worst case"],
+            bridges=["reserve", "insurance", "worst-case", "survival"],
+            tags=["risk", "worst-case", "budget", "concrete"])
+
+        ns.define("tail-hedging",
+            "Positioning to benefit from extreme events rather than just surviving them",
+            description="Standard hedging: lose less in bad scenarios. Tail hedging: PROFIT from bad scenarios. Buy out-of-the-money puts: they expire worthless in normal times (small cost) but pay enormous in crashes (big gain). In the fleet: maintaining diverse genes (cuda-genepool) IS tail hedging — genes that seem useless now might become critical in a changed environment. The cost is small (energy to maintain). The payoff in a tail event (environment change) is enormous.",
+            level=Level.META,
+            examples=["out-of-money puts: worthless normally, enormous in crash", "fleet: diverse gene pool (small maintenance cost, enormous payoff in environment change)", "multi-cloud deployment: extra cost normally, lifesaver if one provider fails"],
+            bridges=["hedging", "tail-risk", "extreme-event", "profit"],
+            tags=["risk", "tail-hedge", "extreme", "meta"])
+
+    def _load_propagation(self):
+        ns = self.add_namespace("propagation",
+            "How signals, effects, and changes spread through systems")
+
+        ns.define("blast-propagation",
+            "A failure or signal that spreads outward from its origin like an explosion",
+            description="One server crashes → cascading failures across dependent services. A rumor starts with one person → spreads to thousands. Blast propagation is UNCONTROLLED spread — the system amplifies rather than dampens the signal. In the fleet: cuda-resilience's bulkhead pattern prevents blast propagation — failures are contained. Without bulkheads, one agent failure cascades through the fleet like a blast wave.",
+            level=Level.BEHAVIOR,
+            examples=["server crash cascading to dependent services (blast propagation)", "rumor spreading exponentially (blast propagation)", "fleet: one agent failure cascading without bulkheads (blast propagation)"],
+            bridges=["cascading-failure", "propagation", "amplification", "uncontrolled"],
+            tags=["propagation", "blast", "cascade", "behavior"])
+
+        ns.define("dampened-propagation",
+            "A signal that weakens as it travels, naturally attenuating to zero at sufficient distance",
+            description="A stone dropped in a pond: ripples spread but fade. A sound in a room: audible nearby, inaudible far away. Dampened propagation has a finite reach. In the fleet: cuda-stigmergy's pheromone decay IS dampened propagation — a strong signal fades with distance and time. Only nearby agents (in time AND space) are affected. Dampened propagation prevents fleet-wide noise from single-agent events.",
+            level=Level.PATTERN,
+            examples=["stone in pond: ripples spread but fade (dampened propagation)", "sound: audible nearby, inaudible far away", "fleet: pheromone signal fades with distance and time (dampened propagation)"],
+            bridges=["decay", "attenuation", "finite-reach", "distance"],
+            tags=["propagation", "dampened", "decay", "pattern"])
+
+        ns.define("amplification-loop",
+            "A feedback path that takes output and feeds it back as input, amplifying the original signal",
+            description="Microphone near a speaker: mic picks up speaker output, speaker amplifies, mic picks up louder output → screech. Positive feedback loop: output reinforces input, signal grows exponentially. In the fleet: cuda-emotion's contagion IS an amplification loop — one agent's emotion affects a neighbor, which affects another, exponentially spreading. Without dampening, amplification loops diverge (runaway emotion).",
+            level=Level.PATTERN,
+            examples=["microphone + speaker feedback loop → screech", "fleet: emotion contagion: one agent → neighbor → fleet (amplification)", "stock market panic: selling triggers more selling (amplification loop)"],
+            bridges=["feedback", "positive-feedback", "exponential", "amplification"],
+            tags=["propagation", "amplification", "feedback", "pattern"])
+
+        ns.define("signal-grounding",
+            "Connecting an abstract signal to a concrete reality so it stops being noise and starts being information",
+            description="An electrical circuit needs a ground reference — otherwise the signal has no meaning (voltage relative to what?). Without grounding, signals are just noise. In the fleet: cuda-communication's SharedVocabulary provides grounding — terms are anchored to shared meanings. Without grounding, messages are noise (the receiver doesn't know what the sender means). Grounding IS the shared reference that turns signals into information.",
+            level=Level.DOMAIN,
+            examples=["electrical ground: gives voltage signals meaning relative to 0V", "fleet: shared vocabulary grounds messages to common meanings", "conversation: shared context grounds words to mutual understanding"],
+            bridges=["grounding", "reference", "meaning", "shared"],
+            tags=["propagation", "grounding", "reference", "domain"])
+
+    def _load_lifecycle(self):
+        ns = self.add_namespace("lifecycle",
+            "How entities are born, grow, decline, and are replaced in systems")
+
+        ns.define("birth-threshold",
+            "The minimum conditions required for a new entity to be created — the barrier to entry",
+            description="A startup needs: a problem, a solution, initial capital, a founding team. Missing any = can't launch. The birth threshold is ALL conditions, not a weighted average. In the fleet: spawning a new agent requires: available energy, clear task assignment, compatible equipment. Missing any = can't spawn. cuda-captain's launch_mission checks birth threshold before creating agents.",
+            level=Level.CONCRETE,
+            examples=["startup: needs problem + solution + capital + team (birth threshold)", "fleet agent: needs energy + task + equipment (birth threshold)", "new species: needs niche + resources + reproduction (birth threshold)"],
+            bridges=["spawn", "creation", "minimum-requirements", "threshold"],
+            tags=["lifecycle", "birth", "threshold", "concrete"])
+
+        ns.define("decline-curve",
+            "The trajectory of decreasing performance as a system ages or faces deteriorating conditions",
+            description="Oil well production: fast initial decline, then slow taper. Human performance: gradual decline after peak. Every system has a decline curve. The question is whether decline is graceful (slow, predictable) or catastrophic (sudden, unexpected). In the fleet: cuda-energy's fitness tracking reveals the decline curve. Steep decline → investigate (possible failure). Gradual decline → normal aging. Apoptosis triggers when decline crosses a threshold.",
+            level=Level.DOMAIN,
+            examples=["oil well: fast initial decline, slow taper (decline curve)", "human: gradual performance decline after peak", "fleet agent: fitness decline tracked by energy system, triggers apoptosis at threshold"],
+            bridges=["decline", "aging", "trajectory", "fitness"],
+            tags=["lifecycle", "decline", "curve", "domain"])
+
+        ns.define("succession",
+            "The orderly transfer of responsibility from one entity to its replacement",
+            description="A CEO retires, a new CEO takes over. The old CEO doesn't just vanish — there's a handoff period. Institutional knowledge transfers, relationships are introduced, the new leader has support. In the fleet: when an agent undergoes apoptosis, its knowledge (genes, trust scores, memory) should be transferred to a successor. cuda-persistence's snapshot/rollback enables succession: save state before death, restore in successor.",
+            level=Level.PATTERN,
+            examples=["CEO succession: handoff period, knowledge transfer", "fleet: dying agent transfers state to successor via snapshots", "presidential transition: 2-month handoff period"],
+            bridges=["replacement", "handoff", "knowledge-transfer", "orderly"],
+            tags=["lifecycle", "succession", "handoff", "pattern"])
+
+        ns.define("niches-and-clines",
+            "The spatial distribution of fitness across an environment — where different strategies thrive",
+            description="A mountain: polar bears at the top (cold niche), bears at mid-elevation (temperate niche), snakes at the bottom (warm niche). A cline is the gradual change in species composition across a gradient. In the fleet: different task environments create niches — high-deliberation tasks favor complex agents, simple-monitoring tasks favor lightweight agents. The fleet should have agents adapted to each niche, not one generalist.",
+            level=Level.DOMAIN,
+            examples=["mountain: different species at different elevations (niches along gradient)", "fleet: complex agents for hard tasks, lightweight agents for simple tasks (niches)", "market: enterprise customers (high-touch niche) vs consumers (self-service niche)"],
+            bridges=["adaptation", "environment", "fitness-landscape", "specialization"],
+            tags=["lifecycle", "niche", "gradient", "domain"])
+
+    def _load_incentives(self):
+        ns = self.add_namespace("incentives",
+            "How reward structures shape behavior — alignment and misalignment of incentives")
+
+        ns.define("perverse-incentive",
+            "A reward structure that encourages the opposite of the desired behavior",
+            description="Wells Fargo: employees rewarded for opening accounts → opened fake accounts. Teachers evaluated by test scores → taught to the test, not for understanding. The metric drove behavior that served the metric but defeated the purpose. In the fleet: if agents are rewarded for speed (tasks completed/time), they'll skip deliberation. If rewarded for confidence, they'll be overconfident. Incentive design IS the hardest problem — measure what you value, not what's easy to measure.",
+            level=Level.BEHAVIOR,
+            examples=["Wells Fargo: account-opening quotas → fake accounts (perverse)", "teachers: test score eval → teaching to test (perverse)", "fleet: speed reward → skip deliberation (perverse incentive)"],
+            bridges=["misalignment", "gaming", "metric", "behavior"],
+            tags=["incentive", "perverse", "misalignment", "behavior"])
+
+        ns.define("skin-in-the-game",
+            "When decision-makers bear the consequences of their decisions — alignment through shared risk",
+            description="A chef who eats their own cooking. A founder who invests their own money. An agent that spends its own energy on decisions it recommends. Skin-in-the-game creates alignment: if the decision is wrong, you suffer too. In the fleet: each agent's energy budget IS skin-in-the-game — it pays for its own deliberation. If it recommends a bad action, it wastes its own energy. No external budget, no moral hazard.",
+            level=Level.PATTERN,
+            examples=["chef eats own cooking (skin in the game)", "founder invests own money (skin in the game)", "fleet agent spends own energy on deliberation (skin in the game)"],
+            bridges=["alignment", "consequence", "risk-sharing", "accountability"],
+            tags=["incentive", "skin-in-game", "alignment", "pattern"])
+
+        ns.define("goodhart-law",
+            "When a measure becomes a target, it ceases to be a good measure",
+            description="Originally: correlation between money supply and inflation was useful for understanding the economy. When central banks started TARGETING money supply, the correlation broke. Measuring → targeting → gaming → measure is useless. In the fleet: if fitness score becomes the SOLE target, agents will optimize for fitness score rather than actual task performance. Use multiple measures, keep them implicit when possible, rotate them to prevent gaming.",
+            level=Level.META,
+            examples=["money supply: useful measure, useless target", "fleet: fitness score as sole target → agents game the score", "test scores: useful measure, useless when teachers target them"],
+            bridges=["metric", "gaming", "target", "measure"],
+            tags=["incentive", "goodhart", "measure", "meta"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
