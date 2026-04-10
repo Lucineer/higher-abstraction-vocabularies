@@ -403,6 +403,7 @@ class HAV:
         self._load_flux_flavors()
         self._load_agent_social()
         self._load_flux_memory()
+        self._load_agent_failure()
         self._load_emergence_patterns()
         self._load_metaphor_vocab()
         self._load_mathematics()
@@ -6194,6 +6195,29 @@ class HAV:
         ns.define("contagion", "Ideas behaviors or failures spread epidemically beyond origin", Level=Level.BEHAVIOR, examples=["one agent crash cascades to fleet", "meme spreads through agent network"], bridges=["contagion", "spread", "epidemic"], tags=["emergence", "contagion"])
         ns.define("chain-reaction", "Cascading failures propagate through interdependencies", Level=Level.BEHAVIOR, examples=["tightly coupled agents fail together", "dependency graph creates failure cascade"], bridges=["chain", "cascade", "failure"], tags=["emergence", "chain"])
         ns.define("desynchronization", "Agents avoid coordinated timing preventing overcrowding", Level=Level.PATTERN, examples=["staggered execution prevents resource contention", "anti-coordination reduces collision"], bridges=["desync", "stagger", "anti-coord"], tags=["emergence", "desync"])
+
+    def _load_agent_failure(self):
+        ns = self.add_namespace("agent-failure", "Named failure modes in AI agent systems")
+        ns.define("model-drift", "Performance degrades due to changes in underlying data distribution", Level=Level.BEHAVIOR, examples=["production accuracy drops as user patterns shift", "fleet: agent model stale vs current environment"], bridges=["drift","degradation","distribution"], tags=["failure","drift"])
+        ns.define("feedback-loop-toxicity", "Erroneous outputs feed back as inputs causing compounding errors", Level=Level.BEHAVIOR, examples=["hallucination feeds into next prompt amplifying error", "self-reinforcing bias loop"], bridges=["feedback","loop","amplify"], tags=["failure","loop"])
+        ns.define("overfitting-collapse", "Model too closely fitted to training data fails to generalize", Level=Level.BEHAVIOR, examples=["perfect on training data terrible on production", "agent handles known cases but breaks on novel inputs"], bridges=["overfit","generalize","collapse"], tags=["failure","overfit"])
+        ns.define("algorithm-panic", "Algorithm enters erroneous state from unexpected input", Level=Level.BEHAVIOR, examples=["edge case triggers undefined behavior", "NaN propagation through neural network"], bridges=["panic","edge-case","undefined"], tags=["failure","panic"])
+        ns.define("confidence-erosion", "Gradual loss of calibration in confidence estimates", Level=Level.BEHAVIOR, examples=["confidence stays high while accuracy drops", "fleet: agent sure of wrong answer"], bridges=["confidence","calibration","erosion"], tags=["failure","calibration"])
+        ns.define("resource-exhaustion-cascade", "One resource shortage triggers failures across dependent systems", Level=Level.BEHAVIOR, examples=["memory leak causes OOM kills cascade", "CPU saturation delays all downstream processing"], bridges=["exhaustion","cascade","resource"], tags=["failure","cascade"])
+        ns.define("coordination-deadlock", "Multiple agents waiting on each other with no progress possible", Level=Level.BEHAVIOR, examples=["agent A waits for B result B waits for A signal", "circular dependency in task graph"], bridges=["deadlock","circular","wait"], tags=["failure","deadlock"])
+        ns.define("goal-displacement", "Agent optimizes proxy metric instead of actual objective", Level=Level.BEHAVIOR, examples=["maximize clicks instead of user satisfaction", "minimize response time by skipping validation"], bridges=["goal","proxy","displace"], tags=["failure","goal"])
+        ns.define("context-window-overflow", "Input exceeds processing capacity losing critical information", Level=Level.CONCRETE, examples=["long conversation truncates early context", "fleet: stigmergy trail too long to process"], bridges=["overflow","capacity","truncate"], tags=["failure","capacity"])
+        ns.define("heisenberg-observation", "Monitoring agent changes its behavior invalidating observations", Level=Level.BEHAVIOR, examples=["agent behaves differently when logged", "benchmark gaming"], bridges=["observe","bias","heisenberg"], tags=["failure","observation"])
+        ns.define("cascading-misinformation", "One wrong output propagates through connected agents", Level=Level.BEHAVIOR, examples=["agent passes wrong data to fleet members", "stigmergy contamination"], bridges=["cascade","misinformation","propagate"], tags=["failure","contagion"])
+        ns.define("capability-atrophy", "Unused skills degrade from lack of practice", Level=Level.BEHAVIOR, examples=["navigation skill degrades if never used", "agent loses edge from specialization"], bridges=["atrophy","disuse","degrade"], tags=["failure","atrophy"])
+        ns.define("update-regression", "New update introduces unexpected bugs degrading performance", Level=Level.BEHAVIOR, examples=["model update breaks working features", "capability regression after code change"], bridges=["regression","update","degrade"], tags=["failure","regression"])
+        ns.define("semantic-drift", "Agent interpretation of vocabulary diverges from fleet consensus", Level=Level.BEHAVIOR, examples=["agent redefines terms differently from peers", "shared vocabulary loses meaning"], bridges=["semantic","diverge","consensus"], tags=["failure","semantic"])
+        ns.define("energy-starvation", "Agent runs out of ATP budget unable to complete tasks", Level=Level.CONCRETE, examples=["energy budget exhausted mid-deliberation", "agent forced into rest state prematurely"], bridges=["energy","starvation","budget"], tags=["failure","energy"])
+        ns.define("trust-poisoning", "Malicious agent corrupts trust scores of legitimate peers", Level=Level.BEHAVIOR, examples=["fake positive interactions inflate trust", "Sybil attack on reputation system"], bridges=["trust","poison","reputation"], tags=["failure","trust"])
+        ns.define("implicit-bias-amplification", "Agent amplifies biases present in training data over time", Level=Level.BEHAVIOR, examples=["selection bias reinforced by feedback", "cultural assumptions hardcoded through iteration"], bridges=["bias","amplify","implicit"], tags=["failure","bias"])
+        ns.define("graceful-degradation", "Maintain reduced functionality when subsystems fail", Level=Level.PATTERN, examples=["lose vision keep navigation", "lose deliberation keep reflexive execution"], bridges=["graceful","degrade","fallback"], tags=["failure","graceful"])
+        ns.define("circuit-breaker-trip", "Automatic service isolation after consecutive failures", Level=Level.CONCRETE, examples=["three failed API calls opens circuit breaker", "fleet: isolate misbehaving agent after threshold"], bridges=["circuit-breaker","isolate","threshold"], tags=["failure","circuit-breaker"])
+        ns.define("blast-radius-containment", "Limit failure propagation to prevent system-wide collapse", Level=Level.PATTERN, examples=["sandbox agent failures prevent fleet infection", "bulkhead isolation between subsystems"], bridges=["contain","blast-radius","isolate"], tags=["failure","containment"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
