@@ -285,6 +285,9 @@ class HAV:
         self._load_urban_planning()
         self._load_thinking_patterns()
         self._load_milestone_vocab()
+        self._load_posthuman_vocab()
+        self._load_flux_data_path()
+        self._load_flux_control_flow()
         self._load_game_theory()
         self._load_optimization()
         self._load_probability()
@@ -6437,6 +6440,47 @@ class HAV:
         ns.define("lexicon-critical-mass", "Minimum vocabulary size where adding new terms yields diminishing returns", Level=Level.META, examples=["HAV approaching critical mass at 1000 terms", "most agent concepts now expressible"], bridges=["critical-mass","diminishing","sufficient"], tags=["meta","milestone"])
         ns.define("terminology-ecosystem", "Self-sustaining vocabulary where terms reference and reinforce each other forming a knowledge graph", Level=Level.META, examples=["HAV bridge network connects domains", "cross-domain vocabulary forms ecosystem"], bridges=["ecosystem","self-sustaining","graph"], tags=["meta","milestone"])
         ns.define("abstraction-crest", "Highest point in the abstraction wave where vocabulary shifts from naming patterns to composing new ones", Level=Level.META, examples=["beyond 1000 terms composition dominates creation", "agents generate new vocabulary from existing terms"], bridges=["crest","composition","generation"], tags=["meta","milestone"])
+
+    def _load_posthuman_vocab(self):
+        ns = self.add_namespace("posthuman-comm", "Post-human agent-to-agent communication primitives")
+        ns.define("capability-advertise", "Broadcast available skills to fleet without revealing implementation", Level=Level.CONCRETE, examples=["publish capability hash and interface", "other agents discover and invoke"], bridges=["advertise","capability","interface"], tags=["posthuman","advertise"])
+        ns.define("intent-broadcast", "Share goal state with fleet allowing voluntary coordination", Level=Level.CONCRETE, examples=["publish current objective and priority", "agents self-organize around shared intent"], bridges=["intent","broadcast","coordinate"], tags=["posthuman","intent"])
+        ns.define("state-delta", "Communicate only changes since last synchronization reducing bandwidth", Level=Level.PATTERN, examples=["send diff not full state", "binary delta encoding for register changes"], bridges=["delta","diff","efficient"], tags=["posthuman","delta"])
+        ns.define("trust-ping", "Minimal cryptographic challenge to verify peer identity without revealing information", Level=Level.CONCRETE, examples=["send nonce expect signed response", "verify peer without exchanging data"], bridges=["ping","trust","verify"], tags=["posthuman","ping"])
+        ns.define("capability-lease", "Temporarily delegate capability to another agent with expiration", Level=Level.PATTERN, examples=["grant navigation skill for 60 seconds", "capability automatically revokes after lease"], bridges=["lease","delegate","expire"], tags=["posthuman","lease"])
+        ns.define("capability-revoke", "Immediately withdraw previously granted capability from peer", Level=Level.CONCRETE, examples=["revoke read access to sensitive data", "capability invalidation broadcast"], bridges=["revoke","withdraw","immediate"], tags=["posthuman","revoke"])
+        ns.define("gossip-merge", "Combine received state updates with local state resolving conflicts", Level=Level.PATTERN, examples=["merge conflicting state updates using version vectors", "conflict-free replicated data type merge"], bridges=["gossip","merge","conflict"], tags=["posthuman","merge"])
+        ns.define("heartbeat-signal", "Periodic liveness indicator with capability summary", Level=Level.CONCRETE, examples=["send heartbeat every 10 seconds", "missed heartbeat triggers health check"], bridges=["heartbeat","liveness","periodic"], tags=["posthuman","heartbeat"])
+        ns.define("graceful-handoff", "Transfer active task from one agent to another without data loss", Level=Level.PATTERN, examples=["hand off conversation context to new agent", "zero-downtime task transfer"], bridges=["handoff","transfer","seamless"], tags=["posthuman","handoff"])
+        ns.define("consensus-probe", "Query fleet for agreement on specific decision without forcing resolution", Level=Level.CONCRETE, examples=["ask all agents their preference and collect results", "non-binding poll for coordination"], bridges=["consensus","probe","poll"], tags=["posthuman","probe"])
+        ns.define("schema-negotiate", "Agree on communication format dynamically between agents", Level=Level.PATTERN, examples=["negotiate message structure before data exchange", "version handshake"], bridges=["schema","negotiate","format"], tags=["posthuman","schema"])
+        ns.define("funeral-announce", "Broadcast agent termination with final state and cause of death", Level=Level.CONCRETE, examples=["publish apoptosis notification with final state", "fleet reassigns tasks from terminated agent"], bridges=["funeral","announce","terminate"], tags=["posthuman","funeral"])
+
+    def _load_flux_data_path(self):
+        ns = self.add_namespace("flux-data", "FLUX VM data movement and transformation patterns")
+        ns.define("register-swap", "Exchange values between two registers without temporary", Level=Level.CONCRETE, examples=["XCHG R1 R2 atomically swaps", "no third register needed"], bridges=["swap","exchange","atomic"], tags=["flux","data","swap"])
+        ns.define("broadcast-fill", "Copy single value to all elements of a register range", Level=Level.CONCRETE, examples=["FILL R5-R15 with R0 value", "initialize register block"], bridges=["broadcast","fill","initialize"], tags=["flux","data","fill"])
+        ns.define("scatter-gather", "Write to / read from non-contiguous register addresses in one operation", Level=Level.PATTERN, examples=["SCATTER R0 to addresses in R1-R5", "GATHER from addresses into contiguous block"], bridges=["scatter","gather","non-contiguous"], tags=["flux","data","scatter"])
+        ns.define("bit-field-extract", "Extract specific bits from register into new register", Level=Level.CONCRETE, examples=["EXTRACT R1 bits 4-7 into R2", "mask and shift in one opcode"], bridges=["extract","bits","mask"], tags=["flux","data","bitfield"])
+        ns.define("vector-reduce", "Combine all elements of a vector register into scalar result", Level=Level.PATTERN, examples=["SUM R0-R7 into R8", "OR all flag registers into status"], bridges=["reduce","vector","aggregate"], tags=["flux","data","reduce"])
+        ns.define("endianness-swap", "Reverse byte order for cross-platform data interpretation", Level=Level.CONCRETE, examples=["BSWAP R1 for big-endian to little-endian", "network byte order conversion"], bridges=["endian","swap","byte-order"], tags=["flux","data","endian"])
+        ns.define("rotating-buffer", "Circular buffer in register file with automatic wraparound", Level=Level.PATTERN, examples=["RING_BUF head advances and wraps", "fixed-size FIFO without reallocation"], bridges=["rotating","circular","buffer"], tags=["flux","data","ring"])
+        ns.define("memory-map", "Map external device addresses into agent address space for direct access", Level=Level.CONCRETE, examples=["MMAP sensor at address 0xFF00", "direct hardware register access"], bridges=["memory-map","device","direct"], tags=["flux","data","mmap"])
+        ns.define("zero-copy", "Pass data between operations by reference not by copying", Level=Level.PATTERN, examples=["message buffer shared between sender and receiver", "avoid memory allocation on transfer"], bridges=["zero-copy","reference","efficient"], tags=["flux","data","zero-copy"])
+        ns.define("double-buffer", "Alternate between two buffers allowing simultaneous read and write", Level=Level.PATTERN, examples=["write to back buffer while reading front", "swap pointers on completion"], bridges=["double-buffer","alternate","concurrent"], tags=["flux","data","double"])
+
+    def _load_flux_control_flow(self):
+        ns = self.add_namespace("flux-control", "FLUX VM control flow and branching patterns")
+        ns.define("conditional-gate", "Branch execution based on register comparison result", Level=Level.CONCRETE, examples=["JE R1 R2 jump if equal", "JZ R5 jump if zero"], bridges=["branch","conditional","compare"], tags=["flux","control","branch"])
+        ns.define("loop-counter", "Register-based iteration with automatic decrement and branch", Level=Level.CONCRETE, examples=["DEC R1; JNZ loop_start", "bounded iteration without stack"], bridges=["loop","counter","decrement"], tags=["flux","control","loop"])
+        ns.define("exception-handler", "Named jump target for error recovery without stack unwinding", Level=Level.PATTERN, examples=["FAULT opcode jumps to handler address", "register error code then jump to recovery"], bridges=["exception","handler","recover"], tags=["flux","control","exception"])
+        ns.define("pipeline-flush", "Drain all pending operations before branch to prevent stale state", Level=Level.CONCRETE, examples=["FLUSH before conditional branch", "ensure all writes commit before jump"], bridges=["flush","drain","branch"], tags=["flux","control","pipeline"])
+        ns.define("call-return", "Push return address to register and jump to subroutine", Level=Level.CONCRETE, examples=["PUSH PC; JMP subroutine", "RETURN pops and jumps back"], bridges=["call","return","subroutine"], tags=["flux","control","call"])
+        ns.define("tail-call", "Replace current frame with callee avoiding stack growth", Level=Level.PATTERN, examples=["JMP instead of CALL for last instruction", "constant stack depth recursion"], bridges=["tail-call","optimize","stack"], tags=["flux","control","tail"])
+        ns.define("coroutine-yield", "Suspend execution preserving full register state for later resume", Level=Level.PATTERN, examples=["YIELD saves all registers to memory", "RESUME restores and continues"], bridges=["coroutine","yield","resume"], tags=["flux","control","coroutine"])
+        ns.define("interrupt-vector", "Predefined jump table for hardware or software interrupts", Level=Level.CONCRETE, examples=["timer interrupt jumps to scheduler", "I/O interrupt jumps to handler"], bridges=["interrupt","vector","dispatch"], tags=["flux","control","interrupt"])
+        ns.define("watchpoint-trap", "Debug register triggers trap when monitored address is accessed", Level=Level.CONCRETE, examples=["WATCH R3 triggers trap on R3 write", "memory watchpoint for debugging"], bridges=["watchpoint","trap","debug"], tags=["flux","control","trap"])
+        ns.define("barrier-sync", "Wait point where all parallel execution streams must arrive before continuing", Level=Level.PATTERN, examples=["SIMD lane barrier synchronization", "multi-core memory fence"], bridges=["barrier","sync","parallel"], tags=["flux","control","barrier"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
