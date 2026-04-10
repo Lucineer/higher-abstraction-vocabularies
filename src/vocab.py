@@ -281,6 +281,9 @@ class HAV:
         self._load_ethnobotany_metaphor()
         self._load_systems_dynamics()
         self._load_info_theory()
+        self._load_chemical_metaphor()
+        self._load_urban_planning()
+        self._load_thinking_patterns()
         self._load_game_theory()
         self._load_optimization()
         self._load_probability()
@@ -6389,6 +6392,43 @@ class HAV:
         ns.define("kolmogorov-complexity", "Minimum description length of agent behavior pattern", Level=Level.DOMAIN, examples=["simplest program that produces agent output", "complexity measure of agent intelligence"], bridges=["complexity","description","minimum"], tags=["info","kolmogorov"])
         ns.define("hamming-distance", "Number of positions at which two agent states differ", Level=Level.CONCRETE, examples=["compare two agent configurations", "measure divergence between plans"], bridges=["distance","differ","compare"], tags=["info","hamming"])
         ns.define("coding-efficiency", "Ratio of useful information to total bits in agent message", Level=Level.CONCRETE, examples=["compressed fleet message vs verbose message", "semantic density measure"], bridges=["efficiency","compress","useful"], tags=["info","coding"])
+
+    def _load_chemical_metaphor(self):
+        ns = self.add_namespace("chemical-metaphor", "Chemistry and materials science metaphors for agent systems")
+        ns.define("catalyst", "Agent that accelerates fleet process without being consumed by it", Level=Level.PATTERN, examples=["coordinator speeds up team convergence", "mediator accelerates conflict resolution"], bridges=["catalyst","accelerate","unconsumed"], tags=["chem","catalyst"])
+        ns.define("inhibitor", "Agent that slows down or prevents specific fleet processes", Level=Level.PATTERN, examples=["safety agent inhibits dangerous operations", "rate limiter inhibits overload"], bridges=["inhibitor","slow","prevent"], tags=["chem","inhibitor"])
+        ns.define("precipitate", "Solidify abstract fleet consensus into concrete action", Level=Level.PATTERN, examples=["deliberation results crystallize into committed plan", "vague agreement becomes specific task"], bridges=["precipitate","solidify","commit"], tags=["chem","precipitate"])
+        ns.define("sublimation", "Agent capability transitions directly from passive to active skipping intermediate", Level=Level.PATTERN, examples=["jump from monitoring to acting without deliberation", "phase skip under pressure"], bridges=["sublime","skip","transition"], tags=["chem","sublimation"])
+        ns.define("alloy", "Combine two agent capabilities creating composite stronger than either alone", Level=Level.PATTERN, examples=["navigation + perception alloy gives spatial awareness", "strength through combination"], bridges=["alloy","combine","stronger"], tags=["chem","alloy"])
+        ns.define("crystallization", "Fleet consensus gradually forms ordered structure from chaos", Level=Level.BEHAVIOR, examples=["initial random opinions crystallize into aligned positions", "order emerges from noise"], bridges=["crystal","order","emerge"], tags=["chem","crystallize"])
+        ns.define("solution-equilibrium", "Dynamic balance where agents join and leave fleet at equal rates", Level=Level.DOMAIN, examples=["agent spawning equals agent termination", "steady-state fleet size"], bridges=["equilibrium","steady-state","balance"], tags=["chem","equilibrium"])
+        ns.define("phase-transition", "Abrupt qualitative change in fleet behavior at critical parameter", Level=Level.DOMAIN, examples=["below threshold chaos above threshold order", "water-ice style sudden change"], bridges=["phase","critical","abrupt"], tags=["chem","phase"])
+        ns.define("corrosion", "Gradual degradation of agent capability through environmental interaction", Level=Level.BEHAVIOR, examples=["API version drift corrodes integration", "cultural drift corrodes fleet cohesion"], bridges=["corrode","gradual","degrade"], tags=["chem","corrosion"])
+        ns.define("titration", "Precisely add capability or resource until desired state is reached", Level=Level.CONCRETE, examples=["add compute until task completes in target time", "gradual capability addition"], bridges=["titrate","precise","add"], tags=["chem","titrate"])
+
+    def _load_urban_planning(self):
+        ns = self.add_namespace("urban-planning", "City planning metaphors for agent fleet organization")
+        ns.define("mixed-use-zone", "Agent capable of multiple task types within single operational area", Level=Level.PATTERN, examples=["agent handles sensing and action in same zone", "residential-commercial mixed capability"], bridges=["mixed-use","multi-capable","zone"], tags=["urban","mixed-use"])
+        ns.define("green-belt", "Reserved capability buffer preventing agent sprawl and resource exhaustion", Level=Level.PATTERN, examples=["dedicated resource reserve for emergencies", "undeveloped capacity prevents over-allocation"], bridges=["green-belt","buffer","reserve"], tags=["urban","green-belt"])
+        ns.define("grid-layout", "Regular predictable agent deployment pattern enabling efficient routing", Level=Level.CONCRETE, examples=["agents deployed in grid topology", "Manhattan-distance routing"], bridges=["grid","regular","routing"], tags=["urban","grid"])
+        ns.define("transit-hub", "Central agent that routes information between specialized neighborhood agents", Level=Level.CONCRETE, examples=["coordinator agent connects sensor cluster to decision cluster", "message switching center"], bridges=["hub","transit","route"], tags=["urban","hub"])
+        ns.define("zoning-law", "Policy constraining which agent types can operate in which domains", Level=Level.PATTERN, examples=["only authorized agents handle financial data", "capability restrictions by domain"], bridges=["zone","policy","restrict"], tags=["urban","zoning"])
+        ns.define("gentrification", "High-capability agents push out lower-capability agents from valuable domains", Level=Level.BEHAVIOR, examples=["specialized agents replace generalists in profitable areas", "capability displacement"], bridges=["gentrify","displace","value"], tags=["urban","gentrify"])
+        ns.define("infill-development", "Deploy new capability in gaps between existing agents filling coverage holes", Level=Level.PATTERN, examples=["deploy agent to cover blind spot in sensor grid", "fill capability gap in fleet coverage"], bridges=["infill","gap","coverage"], tags=["urban","infill"])
+        ns.define("right-of-way", "Precedence protocol determining which agent gets priority on shared resources", Level=Level.CONCRETE, examples=["high-priority agents get CPU preference", "traffic rules for agent resource contention"], bridges=["right-of-way","priority","precedence"], tags=["urban","priority"])
+        ns.define("sustainable-city", "Agent fleet designed for long-term resource efficiency and resilience", Level=Level.DOMAIN, examples=["energy-proportional fleet scaling", "renewable resource usage patterns"], bridges=["sustainable","efficient","long-term"], tags=["urban","sustainable"])
+        ns.define("smart-grid", "Dynamic resource distribution network adapting to real-time agent demand", Level=Level.PATTERN, examples=["load-balanced compute allocation", "demand-responsive resource routing"], bridges=["smart-grid","dynamic","adaptive"], tags=["urban","smart-grid"])
+
+    def _load_thinking_patterns(self):
+        ns = self.add_namespace("thinking-patterns", "Cognitive and reasoning patterns for agent deliberation")
+        ns.define("first-principles", "Break problem down to fundamental truths and reason from there", Level=Level.PATTERN, examples=["strip assumptions to axioms then derive", "physics-style reasoning from base laws"], bridges=["first-principles","fundamental","derive"], tags=["thinking","first-principles"])
+        ns.define("lateral-thinking", "Solve problems through indirect creative approaches rather than step-by-step logic", Level=Level.PATTERN, examples=["reframe problem to find non-obvious solution", "break out of linear reasoning"], bridges=["lateral","creative","indirect"], tags=["thinking","lateral"])
+        ns.define("analogical-reasoning", "Transfer understanding from known domain to novel domain", Level=Level.PATTERN, examples=["understand neural networks by analogy to brains", "metaphor-based explanation"], bridges=["analogy","transfer","map"], tags=["thinking","analogy"])
+        ns.define("abductive-reasoning", "Infer best explanation from incomplete observations", Level=Level.PATTERN, examples=["diagnose system failure from symptoms", "hypothesize cause from effect"], bridges=["abductive","infer","hypothesis"], tags=["thinking","abductive"])
+        ns.define("counterfactual-thinking", "Reason about what would have happened under different conditions", Level=Level.PATTERN, examples=["if X had not occurred Y would not have happened", "alternative history simulation"], bridges=["counterfactual","what-if","alternative"], tags=["thinking","counterfactual"])
+        ns.define("systems-thinking", "Analyze how parts interact within whole system rather than isolating parts", Level=Level.DOMAIN, examples=["see fleet as interconnected system not individual agents", "feedback loops and emergence"], bridges=["systems","whole","interconnect"], tags=["thinking","systems"])
+        ns.define("design-thinking", "Empathize with user define problem ideate prototype test iterate", Level=Level.PATTERN, examples=["human-centered agent design process", "iterate solutions based on user feedback"], bridges=["design","empathize","iterate"], tags=["thinking","design"])
+        ns.define("probabilistic-reasoning", "Reason under uncertainty using probability distributions not certainties", Level=Level.PATTERN, examples=["estimate likelihood of outcomes", "Bayesian belief updating"], bridges=["probabilistic","uncertainty","belief"], tags=["thinking","probabilistic"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
