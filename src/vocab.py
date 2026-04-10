@@ -292,6 +292,8 @@ class HAV:
         self._load_aerospace_vocab()
         self._load_flux_network()
         self._load_flux_concurrency()
+        self._load_culinary_vocab()
+        self._load_military_vocab()
         self._load_game_theory()
         self._load_optimization()
         self._load_probability()
@@ -6539,6 +6541,34 @@ class HAV:
         ns.define("channel-receive", "Receive message from channel blocking if empty", Level=Level.CONCRETE, examples=["CH_RECV from channel R1 into R2", "consumer reads from message queue"], bridges=["channel","receive","consume"], tags=["flux","concurrency","channel"])
         ns.define("select-wait", "Wait on multiple channels proceeding with first ready", Level=Level.PATTERN, examples=["SELECT_CH on R1 R2 R3 proceed with first", "multiplexed channel wait"], bridges=["select","multi-channel","first-ready"], tags=["flux","concurrency","select"])
         ns.define("spin-wait", "Busy-wait loop polling condition without yielding CPU", Level=Level.CONCRETE, examples=["SPIN_WAIT until R1 becomes non-zero", "low-latency polling for short waits"], bridges=["spin","poll","busy-wait"], tags=["flux","concurrency","spin"])
+
+    def _load_culinary_vocab(self):
+        ns = self.add_namespace("culinary", "Kitchen and cooking metaphors for agent operations")
+        ns.define("mise-en-place", "Prepare all resources and inputs before beginning execution", Level=Level.PATTERN, examples=["initialize all registers before task loop", "pre-load models before inference batch"], bridges=["prepare","setup","pre-load"], tags=["culinary","mise-en-place"])
+        ns.define("sauter", "Rapid high-intensity execution with constant attention and movement", Level=Level.BEHAVIOR, examples=["burst processing with frequent context switches", "hot-path execution maximum throughput"], bridges=["rapid","intense","burst"], tags=["culinary","sauter"])
+        ns.define("reduce", "Condense data or results by removing noise and concentrating signal", Level=Level.PATTERN, examples=["reduce conversation history to key points", "distill log into actionable summary"], bridges=["reduce","condense","distill"], tags=["culinary","reduce"])
+        ns.define("emulsify", "Integrate two incompatible data sources into stable unified format", Level=Level.PATTERN, examples=["merge JSON and tabular data sources", "combine real-time and batch data streams"], bridges=["emulsify","integrate","unify"], tags=["culinary","emulsify"])
+        ns.define("proof", "Validate process through low-risk trial before full commitment", Level=Level.CONCRETE, examples=["test capability on small dataset first", "proof-of-concept before production scale"], bridges=["proof","validate","trial"], tags=["culinary","proof"])
+        ns.define("deglaze", "Capture residual value from previous operation for reuse in next step", Level=Level.PATTERN, examples=["extract insights from failed attempt", "salvage partial results for retry"], bridges=["deglaze","salvage","residual"], tags=["culinary","deglaze"])
+        ns.define("ferment", "Allow slow transformation of data through time-dependent process", Level=Level.PATTERN, examples=["let knowledge accumulate through reflection", "time-based capability maturation"], bridges=["ferment","slow","transform"], tags=["culinary","ferment"])
+        ns.define("bloom", "Activate latent capability by exposing to triggering condition", Level=Level.PATTERN, examples=["activate dormant gene on encountering relevant stimulus", "bloom potential when context matches"], bridges=["bloom","activate","latent"], tags=["culinary","bloom"])
+        ns.define("broth", "Shared nutrient medium supporting multiple agent growth simultaneously", Level=Level.DOMAIN, examples=["fleet knowledge base is shared broth", "communal resource pool for agent development"], bridges=["broth","shared","nutrient"], tags=["culinary","broth"])
+        ns.define("season-to-taste", "Adjust parameters based on runtime feedback not pre-computed values", Level=Level.PATTERN, examples=["adapt confidence threshold based on recent accuracy", "tune hyperparameters in real-time"], bridges=["season","taste","adjust"], tags=["culinary","season"])
+    def _load_military_vocab(self):
+        ns = self.add_namespace("military", "Military and defense metaphors for agent coordination")
+        ns.define("reconnaissance-sweep", "Probe environment for threats and opportunities before committing", Level=Level.PATTERN, examples=["scan domain before deploying agents", "lightweight test before full operation"], bridges=["recon","probe","scout"], tags=["military","recon"])
+        ns.define("flank-coverage", "Monitor lateral data paths and peripheral vulnerabilities", Level=Level.PATTERN, examples=["agents watch side-channels for security", "protect against unexpected attack vectors"], bridges=["flank","lateral","peripheral"], tags=["military","flank"])
+        ns.define("siege-simultaneous", "Parallel multi-directional execution to overwhelm target", Level=Level.PATTERN, examples=["concurrent API calls to saturate target", "distributed denial of resource exhaustion"], bridges=["siege","parallel","overwhelm"], tags=["military","siege"])
+        ns.define("rear-guard", "Protect critical backend systems while front-line agents advance", Level=Level.PATTERN, examples=["guard database while processing agents run", "secure infrastructure during active operation"], bridges=["rear-guard","protect","backend"], tags=["military","rear-guard"])
+        ns.define("skirmish-probe", "Lightweight test engagement to validate strategy", Level=Level.CONCRETE, examples=["send test query before full deployment", "validate hypothesis with minimal cost"], bridges=["skirmish","test","validate"], tags=["military","skirmish"])
+        ns.define("overwatch", "Persistent surveillance monitoring fleet behavior and external threats", Level=Level.PATTERN, examples=["guardian agent watches for anomalies", "continuous security monitoring"], bridges=["overwatch","surveil","guard"], tags=["military","overwatch"])
+        ns.define("command-post", "Centralized orchestration hub directing task prioritization", Level=Level.CONCRETE, examples=["fleet coordinator as command post", "central decision point for all agents"], bridges=["command","central","direct"], tags=["military","command"])
+        ns.define("logistics-chain", "Dynamic resource allocation and supply management across fleet", Level=Level.PATTERN, examples=["distribute compute budget to agents by need", "resource pipeline management"], bridges=["logistics","supply","allocate"], tags=["military","logistics"])
+        ns.define("force-multiplier", "Capability that amplifies effectiveness of multiple agents simultaneously", Level=Level.DOMAIN, examples=["shared knowledge base is force multiplier", "one improvement benefits entire fleet"], bridges=["multiplier","amplify","fleet-wide"], tags=["military","multiplier"])
+        ns.define("tactical-retreat", "Withdraw from engagement preserving resources for later advantage", Level=Level.PATTERN, examples=["fail fast and release resources", "abandon losing strategy regroup"], bridges=["retreat","withdraw","preserve"], tags=["military","retreat"])
+        ns.define("amphibious-op", "Agent transitions between two different operational environments", Level=Level.PATTERN, examples=["move from cloud to edge seamlessly", "switch between batch and real-time processing"], bridges=["amphibious","transition","environment"], tags=["military","amphibious"])
+        ns.define("theater-command", "Regional fleet coordinator managing agents within operational domain", Level=Level.CONCRETE, examples=["edge cluster coordinator is theater command", "domain-specific fleet management"], bridges=["theater","regional","domain"], tags=["military","theater"])
+        ns.define("after-action-review", "Post-operation analysis extracting lessons for future improvement", Level=Level.PATTERN, examples=["analyze completed task for process improvements", "blameless post-mortem learning"], bridges=["review","analyze","improve"], tags=["military","aar"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
