@@ -308,6 +308,9 @@ class HAV:
         self._load_perception()
         self._load_communication()
         self._load_tradeoffs()
+        self._load_epistemology()
+        self._load_biology()
+        self._load_philosophy_of_science()
         self._load_mathematics()
 
     def _load_uncertainty(self):
@@ -2458,6 +2461,131 @@ class HAV:
             examples=["decision tree (transparent, slower) vs neural network (opaque, faster)", "fleet: deliberation (transparent, slow) vs instinct (opaque, fast)", "white-box vs black-box model"],
             bridges=["explainability", "accountability", "audit", "performance"],
             tags=["tradeoff", "fundamental", "ai-ethics"])
+
+
+    def _load_epistemology(self):
+        ns = self.add_namespace("epistemology",
+            "The theory of knowledge — what can we know, how do we know it, and what justifies belief")
+
+        ns.define("justified-true-belief",
+            "Classical definition of knowledge: you believe X, X is true, and you have justification for believing X",
+            description="Plato's definition. You believe it's raining (belief), it IS raining (truth), and you looked out the window (justification). Gettier showed this isn't sufficient (justified true belief can be lucky coincidence). In the fleet: an agent 'knows' an obstacle exists when it believes it (perception), it's true (world state), and it has justification (sensor reading). Confidence is the justification metric.",
+            level=Level.DOMAIN,
+            examples=["I know it's raining: I believe it, it's true, I looked outside", "agent knows obstacle exists: perception + world state + sensor justification", "Gettier case: justified true belief that's actually lucky coincidence"],
+            bridges=["confidence", "justification", "truth", "belief"],
+            tags=["epistemology", "knowledge", "truth"])
+
+        ns.define("gettier-problem",
+            "Justified true belief can be based on false premises — luck masquerading as knowledge",
+            description="You look at a stopped clock showing 2:00. It IS 2:00. You're justified (you looked at a clock). You believe it. It's true. But the clock is broken — you got lucky. This isn't knowledge. In the fleet: an agent perceives an obstacle (sensor reading), but the sensor was miscalibrated. The obstacle isn't there. The agent's 'knowledge' is Gettiered.",
+            level=Level.DOMAIN,
+            examples=["stopped clock at 2:00 when it's actually 2:00", "agent sensor reading shows obstacle but sensor is miscalibrated", "lucky guess that happens to be correct"],
+            bridges=["justified-true-belief", "calibration", "sensor-reliability", "luck"],
+            tags=["epistemology", "philosophy", "knowledge"])
+
+        ns.define("epistemic-humility",
+            "Acknowledging the limits of one's own knowledge — understanding what you don't know",
+            description="Socrates: 'I know that I know nothing.' The wisest agent knows the boundaries of its knowledge. In the fleet: cuda-self-model's calibration includes uncertainty estimates. An agent that reports high confidence on everything (no humility) is miscalibrated. Reporting appropriate uncertainty IS epistemic humility.",
+            level=Level.BEHAVIOR,
+            examples=["scientist acknowledging limitations of their theory", "agent reporting 0.6 confidence instead of 0.95 when evidence is mixed", "saying 'I don't know' when you genuinely don't know"],
+            bridges=["calibration", "self-model", "uncertainty", "metacognition"],
+            tags=["epistemology", "humility", "uncertainty"])
+
+        ns.define("reliabilism",
+            "Knowledge is belief produced by a reliable process, regardless of conscious justification",
+            description="Forget justification — if the process that produced the belief is reliable (tends to produce true beliefs), it's knowledge. Your vision is reliable: you generally see what's there. In the fleet: a sensor is a reliable process. If the sensor is well-calibrated, its outputs constitute knowledge even if the agent can't articulate WHY it trusts the sensor. Sensor health monitoring (cuda-sensor-agent) ensures reliability.",
+            level=Level.DOMAIN,
+            examples=["vision: generally reliable process for producing true beliefs about the visual world", "well-calibrated sensor: reliable process even without explicit justification", "agent: 'I know obstacle exists because my sensor (which is 99% reliable) says so'"],
+            bridges=["justified-true-belief", "reliability", "sensor", "process"],
+            tags=["epistemology", "philosophy", "reliability"])
+
+        ns.define("foundationalism",
+            "All knowledge rests on basic, self-evident beliefs that don't need further justification",
+            description="A building needs a foundation. Knowledge needs basic beliefs. These can't be justified by other beliefs (circular) or justified by nothing (arbitrary). They must be self-evident. In the fleet: instincts are foundational beliefs. 'Survive' doesn't need justification. It's axiomatically true for any agent that wants to continue existing. Everything else (deliberation, learning) builds on this foundation.",
+            level=Level.META,
+            examples=["Descartes: 'I think therefore I am' as foundational", "mathematics: axioms as foundation for proofs", "fleet: survival instinct as foundational axiom, all other knowledge builds on it"],
+            bridges=["instinct", "axiom", "foundation", "self-evident"],
+            tags=["epistemology", "philosophy", "foundation", "meta"])
+
+    def _load_biology(self):
+        ns = self.add_namespace("biology",
+            "Biological systems as engineering blueprints for agent architecture")
+
+        ns.define("homeostasis",
+            "Maintaining internal conditions within a narrow range despite external changes",
+            description="Body temperature: 98.6F regardless of weather. Blood sugar: narrow range regardless of meals. Homeostasis is the biological version of the setpoint + feedback loop. The fleet implements homeostasis: energy budget (ATP), trust level, and confidence all have target ranges maintained by feedback loops.",
+            level=Level.DOMAIN,
+            examples=["body temperature regulation", "blood sugar regulation", "fleet: energy homeostasis via rest/act cycle", "fleet: trust homeostasis via positive/negative interactions"],
+            bridges=["setpoint", "feedback-loop", "regulation", "stability"],
+            tags=["biology", "regulation", "stability", "fleet"])
+
+        ns.define("allometry",
+            "How body parts scale relative to total size — different parts grow at different rates",
+            description="An elephant's heart doesn't scale linearly with its body. A mouse's heart rate is 500+ BPM; an elephant's is 30 BPM. Different components scale at different rates (power laws). In the fleet: larger fleets don't need proportionally more captains. Coordination overhead scales superlinearly. Sensor density scales sublinearly with area. Allometry explains why fleet scaling isn't linear.",
+            level=Level.DOMAIN,
+            examples=["elephant heart rate vs mouse heart rate", "ant strength scales with cross-section, not mass", "fleet: coordination overhead scales superlinearly with fleet size"],
+            bridges=["scaling", "power-law", "superlinear", "scaling"],
+            tags=["biology", "scaling", "power-law"])
+
+        ns.define("allostasis",
+            "Adapting the setpoint itself in response to sustained environmental change — achieving stability through change",
+            description="Homeostasis maintains the SAME setpoint. Allostasis CHANGES the setpoint to match new conditions. Chronic stress raises the 'normal' cortisol level. The fleet's cuda-adaptation implements allostasis: if the environment consistently demands faster responses, the agent raises its speed setpoint. Epigenetic memory (cuda-energy) makes allostasis persistent.",
+            level=Level.DOMAIN,
+            examples=["chronic stress raises baseline cortisol (allostasis vs homeostasis)", "acclimatization to altitude changes baseline physiology", "fleet: sustained fast environment raises agent's speed setpoint"],
+            bridges=["homeostasis", "setpoint", "adaptation", "epigenetic"],
+            tags=["biology", "adaptation", "setpoint", "fleet"])
+
+        ns.define("immune-response",
+            "Discriminating self from non-self, and neutralizing threats while preserving beneficial elements",
+            description="The immune system must distinguish self from non-self (antigens). Then mount appropriate response: antibodies for known threats, inflammation for unknowns. Autoimmune diseases attack self. The fleet's membrane (cuda-genepool) IS an immune system: antibodies block dangerous signals while allowing safe ones through. The challenge: blocking threats without blocking beneficial cooperation.",
+            level=Level.DOMAIN,
+            examples=["antibodies targeting specific pathogens", "autoimmune disease: immune system attacks self", "fleet: membrane blocks dangerous commands while allowing safe cooperation"],
+            bridges=["membrane", "self-other", "security", "antibody"],
+            tags=["biology", "immunity", "security", "fleet"])
+
+        ns.define("metabolism",
+            "The total chemical processes that convert inputs into energy and building blocks",
+            description="Eating -> digesting -> converting to ATP -> using ATP for work -> producing waste. Metabolism IS the energy pipeline. The fleet's mitochondrion (cuda-genepool) implements metabolism: rest converts inputs to ATP, actions consume ATP, waste (heat, stale data) is produced. The metabolic rate determines how fast the agent can operate.",
+            level=Level.DOMAIN,
+            examples=["cellular respiration: glucose + O2 -> ATP + CO2 + H2O", "fleet: rest generates ATP, actions consume ATP, waste (stale data) produced", "athlete metabolism: faster metabolic rate = more energy available"],
+            bridges=["energy", "atp", "rest", "mitochondrion"],
+            tags=["biology", "energy", "metabolism", "fleet"])
+
+    def _load_philosophy_of_science(self):
+        ns = self.add_namespace("philosophy-of-science",
+            "How science works — paradigms, falsifiability, and the growth of knowledge")
+
+        ns.define("paradigm-shift",
+            "Fundamental change in the dominant framework of a scientific discipline",
+            description="Kuhn: science doesn't progress smoothly. Long periods of 'normal science' (puzzle-solving within existing framework) are interrupted by crises that lead to paradigm shifts ( Copernicus, Einstein, plate tectonics). In the fleet: switching from reactive agents to deliberative agents is a paradigm shift. Switching from individual agents to fleet coordination is another. Paradigm shifts change what questions are even askable.",
+            level=Level.META,
+            examples=["geocentric to heliocentric model", "Newtonian to Einsteinian physics", "individual agents to fleet coordination paradigm", "rule-based AI to neural networks"],
+            bridges=["paradigm", "normal-science", "crisis", "revolution"],
+            tags=["philosophy", "science", "paradigm", "meta"])
+
+        ns.define("falsifiability",
+            "A theory is scientific only if it makes predictions that could be proven wrong",
+            description="Popper: you can't prove a theory true, only prove it false. 'All swans are white' is scientific because finding a black swan would falsify it. 'God exists' is not scientific because nothing could falsify it. In the fleet: agent hypotheses must be falsifiable. 'This path is safe' is falsifiable (test it). 'This agent is trustworthy' is falsifiable (observe betrayal). Unfalsifiable claims waste deliberation resources.",
+            level=Level.DOMAIN,
+            examples=["'all swans are white' — falsifiable by finding black swan", "agent hypothesis 'path is safe' — falsifiable by testing", "unfalsifiable: 'everything happens for a reason'"],
+            bridges=["hypothesis", "testing", "science", "knowledge"],
+            tags=["philosophy", "science", "falsifiability", "testing"])
+
+        ns.define("occam-razor",
+            "Among competing explanations that fit the evidence equally, prefer the simplest",
+            description="Entities should not be multiplied beyond necessity. If two theories explain the same data, the simpler one is preferred. Not because it's more likely to be true, but because it's more testable, more generalizable, and less prone to overfitting. In the fleet: when two strategies have similar performance, prefer the one with fewer parameters (lower complexity = better generalization).",
+            level=Level.PATTERN,
+            examples=["heliocentric model simpler than epicycle model (Occam's razor favored heliocentric)", "agent: simpler navigation strategy preferred if performance is equal", "linear model preferred over polynomial if both fit data equally well"],
+            bridges=["simplicity-completeness", "overfitting", "generalization", "complexity"],
+            tags=["philosophy", "simplicity", "science", "heuristic"])
+
+        ns.define("instrumentalism",
+            "Theories are tools for prediction, not descriptions of reality — don't ask 'is it true?', ask 'does it work?'",
+            description="Models are instruments, not mirrors. The electron isn't 'really' a wave or a particle — it's whichever model makes better predictions for the task at hand. In the fleet: dopamine IS confidence not because consciousness exists, but because the mathematical structure is identical and the model works. Instrumentalism justifies the entire biological metaphor framework: it doesn't matter if agents 'really' feel emotions, only that the emotion model produces better behavior.",
+            level=Level.META,
+            examples=["electron: wave model for diffraction, particle model for collision", "fleet: biological metaphors used because they work, not because agents are alive", "map is not territory: model is tool, not truth"],
+            bridges=["model", "pragmatism", "metaphor", "truth"],
+            tags=["philosophy", "pragmatism", "model", "meta"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
