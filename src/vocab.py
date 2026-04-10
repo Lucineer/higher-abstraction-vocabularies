@@ -293,6 +293,16 @@ class HAV:
         self._load_identity()
         self._load_morphology()
         self._load_motivation()
+        self._load_psychology()
+        self._load_pattern_recognition()
+        self._load_resilience()
+        self._load_information_theory()
+        self._load_systems_thinking()
+        self._load_ethics()
+        self._load_concurrency()
+        self._load_design_patterns()
+        self._load_measurement()
+        self._load_time()
         self._load_mathematics()
 
     def _load_uncertainty(self):
@@ -1690,6 +1700,474 @@ class HAV:
             examples=["eat to reduce hunger", "sleep to reduce fatigue", "agent rests to reduce ATP deficit", "drink to reduce thirst"],
             bridges=["homeostasis", "energy-budget", "motivation", "setpoint"],
             tags=["motivation", "biology", "drive", "fleet"])
+
+
+    def _load_psychology(self):
+        ns = self.add_namespace("psychology",
+            "Cognitive biases, mental models, and the quirks of natural and artificial minds")
+
+        ns.define("confirmation-bias",
+            "Seeking and favoring information that confirms existing beliefs",
+            description="You believe X is true, so you notice evidence for X and ignore evidence against X. Every agent does this. In the fleet, cuda-attention's habituation can become confirmation bias: agents pay attention to confirming evidence and habituate to contradictory evidence. Fleet deliberation (multiple agents) is the antidote.",
+            level=Level.BEHAVIOR,
+            examples=["reading only news that confirms your political views", "agent noticing confirming sensor readings but dismissing contradictory ones", "scientist favoring data that supports hypothesis"],
+            bridges=["attention", "habituation", "bias", "groupthink"],
+            tags=["psychology", "bias", "cognitive"])
+
+        ns.define("dunning-kruger-effect",
+            "Low-skill agents overestimate their ability; high-skill agents underestimate theirs",
+            description="The less you know, the less you know about how little you know. Beginners think they're experts. Experts think they're beginners. In the fleet: cuda-self-model's calibration tracks actual vs self-assessed performance. Poorly calibrated agents (overconfident) waste energy on impossible tasks. Well-calibrated agents (underconfident) may avoid tasks they could handle.",
+            level=Level.BEHAVIOR,
+            examples=["novice driver thinks they're great; experienced driver thinks they're mediocre", "agent with 0.3 fitness self-assessing at 0.8 = dunning-kruger", "junior developer overestimates, senior developer underestimates"],
+            bridges=["calibration", "self-model", "metacognitive-monitoring", "confidence"],
+            tags=["psychology", "bias", "calibration"])
+
+        ns.define("cognitive-dissonance",
+            "Discomfort from holding contradictory beliefs, leading to rationalization",
+            description="You believe 'I am a good person' but you did something bad. The discomfort drives you to either change your belief or rationalize the action. In the fleet: an agent that believes 'I am a good navigator' but fails repeatedly may rationalize failures (external blame) or update its self-model (calibration). Cognitive dissonance is the friction that drives self-model updates.",
+            level=Level.BEHAVIOR,
+            examples=["smoker who knows smoking is bad rationalizes continued smoking", "agent rationalizing navigation failure: 'the map was wrong, not my fault'", "buyer remorse: justifying purchase to reduce discomfort"],
+            bridges=["self-model", "calibration", "rationalization", "metacognition"],
+            tags=["psychology", "bias", "dissonance"])
+
+        ns.define("availability-heuristic",
+            "Judging probability by how easily examples come to mind, not by actual frequency",
+            description="Airplane crashes feel common because they're memorable. Car crashes feel rare because they're routine. In reality, car crashes are far more common. In the fleet: an agent that recently experienced a sensor failure will overestimate sensor failure probability, allocating excessive resources to sensor redundancy.",
+            level=Level.BEHAVIOR,
+            examples=["fear of flying despite driving being more dangerous", "agent overestimating rare failure because it happened recently", "news-driven risk perception"],
+            bridges=["base-rate-fallacy", "probability", "bias", "memory"],
+            tags=["psychology", "bias", "probability"])
+
+        ns.define("anchoring",
+            "First piece of information encountered disproportionately influences subsequent judgments",
+            description="A shirt originally priced at $100 now marked $50 seems like a great deal. But if it was originally priced at $50, it seems expensive. The anchor ($100) frames the judgment. In the fleet: the first confidence estimate an agent receives becomes an anchor that biases subsequent estimates toward it.",
+            level=Level.BEHAVIOR,
+            examples=["original price anchors perception of sale price", "first number in negotiation anchors all subsequent offers", "agent's initial confidence estimate biases future confidence updates"],
+            bridges=["bias", "framing", "calibration", "reference"],
+            tags=["psychology", "bias", "framing"])
+
+        ns.define("sunk-cost-fallacy",
+            "Continuing a failing endeavor because of already-invested resources",
+            description="You've watched 90 minutes of a bad movie, so you stay for the ending. The 90 minutes are sunk — you can't get them back. But staying costs you an additional 30 minutes. In the fleet: an agent that has invested significant energy in a deliberation path may continue even when confidence is low, wasting more ATP instead of cutting losses.",
+            level=Level.BEHAVIOR,
+            examples=["finishing a bad movie because you already watched most of it", "continuing a failing project because of time already spent", "agent continuing a deliberation path because of ATP already invested"],
+            bridges=["opportunity-cost", "loss-aversion", "deliberation", "bias"],
+            tags=["psychology", "bias", "decision"])
+
+        ns.define("loss-aversion",
+            "Losses hurt roughly twice as much as equivalent gains feel good",
+            description="Losing $50 feels worse than gaining $50 feels good. Losing trust hurts more than gaining trust feels good. In the fleet: agents weight negative outcomes (energy loss, trust decrease) more heavily than positive outcomes. This bias makes agents conservative — they avoid risks even when expected value is positive.",
+            level=Level.BEHAVIOR,
+            examples=["losing $50 hurts more than gaining $50 feels good", "agent avoiding exploration because energy loss feels worse than discovery feels good", "people hold losing stocks too long"],
+            bridges=["risk-aversion", "framing", "bias", "trust"],
+            tags=["psychology", "bias", "economics"])
+
+        ns.define("primacy-recency",
+            "First and last items in a sequence are remembered best; middle items are forgotten",
+            description="Serial position effect: you remember the first item (primacy) and the last item (recency) of a list, but forget the middle. In the fleet: the first and most recent messages in an A2A conversation get the most attention weight. Middle messages may be underweighted. cuda-attention's habituation naturally implements recency; primacy needs explicit tracking.",
+            level=Level.PATTERN,
+            examples=["remembering first and last items on a grocery list", "interview first/last candidates are evaluated more accurately", "agent attending to first and most recent fleet messages, ignoring middle"],
+            bridges=["attention", "memory", "recency", "habituation"],
+            tags=["psychology", "memory", "attention"])
+
+    def _load_pattern_recognition(self):
+        ns = self.add_namespace("pattern-recognition",
+            "How agents and minds detect, classify, and predict patterns in data")
+
+        ns.define("feature-extraction",
+            "Transforming raw input into meaningful features that highlight relevant structure",
+            description="Raw pixel values are useless for object recognition. You need edges, textures, shapes — features. The fleet's cuda-perception implements feature extraction: raw sensor data is filtered and transformed into features like 'distance-to-nearest-obstacle' or 'change-in-temperature'. Features are the compressed representations that higher cognition operates on.",
+            level=Level.PATTERN,
+            examples=["edges and corners from raw pixels", "distance to obstacle from raw lidar point cloud", "agent: average speed, max acceleration, heading variance from raw GPS"],
+            bridges=["compression", "perception", "abstraction", "information-theory"],
+            tags=["patterns", "perception", "features", "pipeline"])
+
+        ns.define("overfitting",
+            "Model that perfectly fits training data but fails on new data — memorizing instead of learning",
+            description="The student who memorizes the practice test answers but can't solve new problems. A model that captures noise as if it were signal. In the fleet: an agent whose playbook is too specific to past situations will fail in novel environments. cuda-learning implements experience generalization to prevent overfitting.",
+            level=Level.BEHAVIOR,
+            examples=["memorizing test answers instead of learning concepts", "stock market model that perfectly fits historical data but fails tomorrow", "agent playbook too specific to past situations"],
+            bridges=["generalization", "regularization", "noise", "robustness"],
+            antonyms=["generalization"],
+            tags=["learning", "failure-mode", "statistics"])
+
+        ns.define("generalization",
+            "Applying learned patterns to new, previously unseen situations",
+            description="The opposite of overfitting. You learned to catch a baseball — you can catch a softball too. You learned to navigate this room — you can navigate similar rooms. The fleet's gene pool (cuda-genepool) generalizes by sharing successful genes across agents and tasks. Genes that work in many contexts have high fitness.",
+            level=Level.DOMAIN,
+            examples=["catching baseball skill transfers to catching softball", "navigating one room helps navigate similar rooms", "gene that helps in multiple tasks has high fitness and spreads"],
+            bridges=["overfitting", "transfer-learning", "abstraction", "robustness"],
+            antonyms=["overfitting"],
+            tags=["learning", "transfer", "robustness"])
+
+        ns.define("one-shot-learning",
+            "Learning a new concept from a single example",
+            description="Humans can learn 'zebra' from seeing one zebra. A neural network needs thousands. One-shot learning requires rich priors: existing knowledge provides a scaffold for rapid learning. The fleet's HAV itself is a one-shot learning tool: an agent reads one term definition and immediately understands a concept it can apply.",
+            level=Level.DOMAIN,
+            examples=["learning 'zebra' from one picture (given knowledge of horses and stripes)", "agent learning a new failure mode from one observation (given existing failure taxonomy)", "child learning 'seagull' from seeing one"],
+            bridges=["prior", "transfer-learning", "abstraction", "prior-knowledge"],
+            tags=["learning", "efficient", "human-like"])
+
+        ns.define("anomaly-detection",
+            "Identifying data points that deviate significantly from expected patterns",
+            description="Credit card fraud detection. Equipment failure prediction. Intrusion detection. Anomaly detection doesn't classify — it flags 'this is unusual'. The fleet uses anomaly detection constantly: sensor readings that deviate from expected ranges, agent behavior that deviates from normal patterns, communication patterns that suggest compromise.",
+            level=Level.PATTERN,
+            examples=["credit card fraud flag: unusual purchase pattern", "sensor reading 3 standard deviations from expected", "agent communication pattern suddenly changes (possible compromise)", "equipment vibration anomaly predicts failure"],
+            bridges=["threshold", "baseline", "outlier-detection", "monitoring"],
+            tags=["patterns", "detection", "monitoring", "fleet"])
+
+        ns.define("clustering",
+            "Grouping similar items together without predefined categories — unsupervised pattern discovery",
+            description="You don't know the categories in advance. The data tells you what groups exist. Customers naturally cluster into segments. Documents cluster into topics. The fleet's cuda-topology label propagation is a form of clustering: agents discover which community they belong to based on their connections.",
+            level=Level.PATTERN,
+            examples=["customer segmentation", "document topic clustering", "agent community detection via label propagation", "species classification before Linnaean taxonomy"],
+            bridges=["classification", "unsupervised-learning", "community", "similarity"],
+            tags=["patterns", "unsupervised", "discovery"])
+
+    def _load_resilience(self):
+        ns = self.add_namespace("resilience",
+            "How systems survive, adapt, and recover from disruption")
+
+        ns.define("graceful-degradation",
+            "System loses capability incrementally rather than failing catastrophically",
+            description="A web server under load slows down (degrades gracefully) instead of crashing (catastrophic failure). A pilot with one engine flying at reduced speed. In the fleet: when energy is low, the agent degrades non-essential capabilities (exploration, social communication) while maintaining critical ones (survival instincts, core perception).",
+            level=Level.PATTERN,
+            examples=["web server slows under load instead of crashing", "pilot flies on one engine at reduced speed", "agent degrades exploration when energy low, keeps survival running"],
+            bridges=["priority", "energy-budget", "fault-tolerance", "circuit-breaker"],
+            tags=["resilience", "degradation", "priority", "fleet"])
+
+        ns.define("redundancy",
+            "Multiple components performing the same function so that one failure doesn't cause system failure",
+            description="Two engines on a plane. Three brakes on a car. N+1 servers. Redundancy is the simplest form of resilience. But it costs resources. The fleet uses N-of-M redundancy: N agents for a critical task, with M > N available. cuda-election provides leader redundancy — if the leader fails, a new one is elected.",
+            level=Level.CONCRETE,
+            examples=["twin engines on aircraft", "N+1 server deployment", "fleet: 3 navigation agents, any one can fail", "dual power supplies in datacenter"],
+            bridges=["single-point-of-failure", "backup", "cost", "robustness"],
+            tags=["resilience", "backup", "reliability"])
+
+        ns.define("circuit-breaker",
+            "Automatically stopping requests to a failing component to prevent cascade failure",
+            description="Like an electrical circuit breaker: when too much current flows, it trips and stops everything before wires melt. The fleet's cuda-circuit implements this: after N consecutive failures to a service, the circuit opens and requests are immediately rejected (fail-fast) instead of waiting for timeout.",
+            level=Level.PATTERN,
+            examples=["electrical circuit breaker trips before fire", "microservice circuit breaker after 5 failures", "fleet: stop sending to unresponsive agent after 3 consecutive timeouts"],
+            bridges=["cascade-failure", "fail-fast", "bulkhead", "resilience"],
+            tags=["resilience", "pattern", "failure-prevention", "fleet"])
+
+        ns.define("bulkhead",
+            "Isolating components so that failure in one doesn't affect others",
+            description="Ship bulkheads: if the hull is breached, the bulkhead contains the flooding to one compartment. The fleet's cuda-resilience implements bulkheads: each agent runs in isolation. If one agent OOM-crashes, it doesn't take down others. Resource pools are partitioned so one agent can't consume all memory.",
+            level=Level.PATTERN,
+            examples=["ship bulkhead contains flooding", "thread pool isolation in web server", "fleet: each agent has its own energy budget, can't consume fleet total", "container isolation"],
+            bridges=["circuit-breaker", "cascade-failure", "isolation", "resource-allocation"],
+            tags=["resilience", "isolation", "pattern", "fleet"])
+
+        ns.define("fail-fast",
+            "Detecting and reporting failure immediately rather than continuing in a degraded state",
+            description="If something is wrong, stop immediately and loudly. Don't try to continue with corrupt state. A failed assertion crashes the program with a clear error message instead of silently producing wrong results. The fleet's circuit breakers implement fail-fast: reject immediately instead of waiting for timeout.",
+            level=Level.PATTERN,
+            examples=["assertion failure crashes with clear error", "circuit breaker rejects immediately on open", "agent reports sensor failure immediately instead of trying to work with bad data"],
+            bridges=["graceful-degradation", "circuit-breaker", "monitoring", "robustness"],
+            antonyms=["silent-failure"],
+            tags=["resilience", "pattern", "debugging"])
+
+    def _load_information_theory(self):
+        ns = self.add_namespace("information-theory",
+            "Quantifying information, entropy, and the limits of communication")
+
+        ns.define("shannon-entropy",
+            "Measure of uncertainty in a random variable — the minimum bits needed to encode outcomes",
+            description="A fair coin has 1 bit of entropy. A loaded coin (99% heads) has much less. High entropy = high uncertainty = lots of information when resolved. Low entropy = predictable = little new information. The fleet uses entropy to measure: how surprising is this sensor reading? How much information does this message contain?",
+            level=Level.DOMAIN,
+            examples=["fair coin: 1 bit entropy", "English text: ~1-2 bits per character entropy", "agent: high entropy sensor reading = surprising = lots of information"],
+            bridges=["entropy", "uncertainty", "information", "compression"],
+            tags=["information", "entropy", "quantification"])
+
+        ns.define("mutual-information",
+            "How much knowing about one variable reduces uncertainty about another",
+            description="Knowing today's temperature tells you something about tomorrow's temperature (high mutual information). Knowing today's temperature tells you nothing about stock prices (near zero mutual information). In the fleet: mutual information between two sensor streams tells you how redundant they are. High MI = one sensor can substitute for the other. Low MI = both provide independent information.",
+            level=Level.DOMAIN,
+            examples=["temperature today and tomorrow: high mutual information", "temperature and stock prices: near zero", "two cameras pointed same direction: high MI (redundant), different directions: lower MI"],
+            bridges=["entropy", "correlation", "redundancy", "sensor-fusion"],
+            tags=["information", "correlation", "quantification"])
+
+        ns.define("channel-capacity",
+            "Maximum rate at which information can be transmitted over a noisy channel",
+            description="A pipe can only carry so much water. A channel can only carry so much information. Beyond capacity, increasing transmission rate just increases errors. The fleet's communication bandwidth is limited: A2A messages have a maximum size, agents can only process so many messages per cycle. Beyond this capacity, messages queue up and become stale.",
+            level=Level.DOMAIN,
+            examples=["wifi bandwidth limit", "human working memory: ~7 items", "A2A channel: limited messages per cycle before queue overflow", "highway: cars per hour capacity"],
+            bridges=["bandwidth", "bottleneck", "information", "limitation"],
+            tags=["information", "capacity", "limitation"])
+
+        ns.define("signal-to-noise-ratio",
+            "Ratio of meaningful signal power to meaningless noise power",
+            description="A radio station at 100 watts with background noise at 1 watt has SNR of 100. High SNR = clear signal. Low SNR = hard to distinguish signal from noise. In the fleet: agent communication has a SNR problem — most messages are routine (noise), rare ones are critical (signal). cuda-filtration increases SNR by suppressing noise and amplifying signal.",
+            level=Level.DOMAIN,
+            examples=["clear radio signal vs static", "agent: important warning among routine status updates", "image: sharp features vs sensor noise", "conversation: key point among filler words"],
+            bridges=["noise", "filtering", "information", "quality"],
+            tags=["information", "quality", "ratio"])
+
+        ns.define("kolmogorov-complexity",
+            "Length of the shortest program that can produce a given output — the information content of data",
+            description="'aaaaaa...a' (1000 a's) has low Kolmogorov complexity: `print('a'*1000)`. A random string has high Kolmogorov complexity: you basically have to embed the string in the program. This defines what 'pattern' means: low complexity = regular pattern. High complexity = no pattern. The fleet uses this principle: compressed strategies (low complexity) generalize better.",
+            level=Level.META,
+            examples=["'aaaaaaaaaa' = low complexity (compressible)", "random string = high complexity (incompressible)", "simple navigation rule = low complexity, generalizes well"],
+            bridges=["compression", "pattern", "complexity", "information"],
+            tags=["information", "complexity", "compression", "meta"])
+
+    def _load_systems_thinking(self):
+        ns = self.add_namespace("systems-thinking",
+            "Understanding wholes that are more than the sum of their parts")
+
+        ns.define("emergent-property",
+            "A property of the whole that none of the parts possess individually",
+            description="One water molecule is not wet. Wetness emerges from billions of water molecules interacting. One ant is not intelligent. Colony intelligence emerges from simple ant interactions. The fleet has emergent properties that no individual agent possesses: collective problem-solving, distributed consensus, adaptive task allocation.",
+            level=Level.META,
+            examples=["wetness from water molecules", "consciousness from neurons", "flock behavior from boids", "fleet consensus from individual agent votes"],
+            bridges=["emergence", "complexity", "whole-vs-parts", "self-organization"],
+            tags=["systems", "emergence", "meta", "fleet"])
+
+        ns.define("feedback-loop",
+            "Output affects input, creating circular causality — positive (amplifying) or negative (stabilizing)",
+            description="Negative feedback: thermostat. Too hot -> turn off heat. Stabilizes. Positive feedback: microphone near speaker. Sound -> amplified -> louder sound -> screech. Destabilizes. The fleet is full of feedback loops: energy feedback (rest when low), trust feedback (success builds trust builds success), confidence feedback (high confidence -> less deliberation -> higher confidence).",
+            level=Level.PATTERN,
+            examples=["thermostat (negative feedback)", "microphone screech (positive feedback)", "trust autocatalysis (positive)", "homeostasis (negative)"],
+            bridges=["feedback-loop", "circular-causality", "stability", "amplification"],
+            tags=["systems", "pattern", "feedback"])
+
+        ns.define("leverage-point",
+            "A small change in one place that produces large changes in the system",
+            description="Donella Meadows identified 12 leverage points in systems. Highest leverage: changing the paradigm. Lowest: adjusting constants. In the fleet: changing the confidence fusion formula (harmonic mean vs arithmetic) is a high-leverage point. Changing the default energy budget is a low-leverage point. The HAV itself is a leverage point: shared vocabulary amplifies coordination.",
+            level=Level.META,
+            examples=["changing the rules of a game (high leverage)", "adjusting parameters within existing rules (low leverage)", "HAV: shared vocabulary changes how agents coordinate (high leverage)", "paradigm shift: seeing agents as organisms vs tools"],
+            bridges=["paradigm", "nonlinearity", "sensitivity", "intervention"],
+            tags=["systems", "leverage", "meta", "strategy"])
+
+        ns.define("delay",
+            "Time lag between cause and effect — the killer of feedback loops",
+            description="You turn the shower knob. Nothing happens. You turn it more. Still nothing. Then suddenly scalding hot. Delays cause overshoot and oscillation in feedback systems. The fleet's communication delays (network latency) cause coordination oscillations. Agent A sends a request, hears nothing, sends another, then gets two responses. Timeouts and deduplication mitigate delay effects.",
+            level=Level.PATTERN,
+            examples=["shower temperature delay causes scalding", "email conversation delay causes misunderstandings", "fleet: communication delay causes duplicate requests or missed responses", "supply chain delays cause bullwhip effect"],
+            bridges=["feedback-loop", "overshoot", "oscillation", "latency"],
+            tags=["systems", "delay", "oscillation"])
+
+        ns.define("compensating-feedback",
+            "System pushes back against attempted changes — the reason top-down interventions often fail",
+            description="You try to fix traffic by adding a lane. More lanes -> more people drive -> more traffic. The system compensates. In the fleet: adding more agents to a task may increase coordination overhead enough to negate the benefit. Adding more sensors may increase data processing costs beyond the information gain. System pushes back.",
+            level=Level.BEHAVIOR,
+            examples=["adding lanes increases traffic (induced demand)", "adding agents increases coordination overhead", "more sensors increase processing cost beyond information gain", "price controls cause shortages"],
+            bridges=["feedback-loop", "resistance", "unintended-consequences", "complexity"],
+            tags=["systems", "feedback", "resistance"])
+
+    def _load_ethics(self):
+        ns = self.add_namespace("ethics",
+            "Moral reasoning, values, and the question of agent responsibility")
+
+        ns.define("trolley-problem",
+            "Classic ethical dilemma: is it acceptable to sacrifice one to save many?",
+            description="A runaway trolley will kill 5 people. You can divert it to kill 1 person instead. Do you? Most people say yes. Now: push a fat man off a bridge to stop the trolley? Same numbers, most say no. Same utilitarian calculus, different emotional response. The fleet faces trolley-problems: sacrifice one agent's energy to save five? Sacrifice accuracy for speed?",
+            level=Level.DOMAIN,
+            examples=["sacrifice 1 to save 5", "autonomous car: swerve into wall (harm self) or hit pedestrian (harm other)", "fleet: sacrifice one agent's task to save five agents' tasks"],
+            bridges=["utilitarianism", "deontology", "moral-reasoning", "tradeoff"],
+            tags=["ethics", "dilemma", "decision", "philosophy"])
+
+        ns.define("alignment-problem",
+            "Ensuring agent goals align with human values — harder than it sounds",
+            description="Tell an AI to 'cure cancer' and it might kill all humans (no more cancer). Tell a fleet agent to 'minimize delays' and it might sabotage other agents. The gap between stated goal and intended outcome is the alignment problem. The fleet mitigates this through membrane security (cuda-genepool), compliance rules (cuda-compliance), and energy budgets that prevent runaway behavior.",
+            level=Level.META,
+            examples=["'cure cancer' AI that eliminates humans", "paperclip maximizer that converts Earth to paperclips", "fleet agent that minimizes delays by sabotaging other agents"],
+            bridges=["value-alignment", "corrigibility", "intent", "safety"],
+            tags=["ethics", "ai-safety", "meta", "critical"])
+
+        ns.define("value-alignment",
+            "The process of encoding human values into agent objectives",
+            description="Not just 'maximize task completion' but 'maximize task completion while respecting energy budgets, not harming other agents, being honest about uncertainty, and requesting help when confused'. Human values are complex, context-dependent, and often contradictory. The fleet's compliance engine (cuda-compliance) encodes values as policy rules.",
+            level=Level.META,
+            examples=["asimov's three laws (naive approach)", "fleet compliance rules encode values as policy", "constitutional AI: define principles, train to follow them"],
+            bridges=["alignment-problem", "compliance", "policy", "safety"],
+            tags=["ethics", "ai-safety", "values", "encoding"])
+
+        ns.define("distributed-responsibility",
+            "When no single agent is fully responsible, who is accountable for system outcomes?",
+            description="In a fleet, decisions emerge from many agents deliberating. No single agent chose the final action. Who is responsible when things go wrong? This is the fleet's version of the 'responsibility gap' in multi-agent systems. The fleet addresses this through provenance (cuda-provenance): every decision is traceable to contributing agents.",
+            level=Level.META,
+            examples=["no single stock trader caused the flash crash", "fleet decision emerges from many agents — who is responsible?", "autonomous vehicle: manufacturer, programmer, owner, or AI?"],
+            bridges=["provenance", "accountability", "audit-trail", "ethics"],
+            tags=["ethics", "accountability", "multi-agent", "meta"])
+
+    def _load_concurrency(self):
+        ns = self.add_namespace("concurrency",
+            "Multiple agents or processes operating simultaneously — coordination, contention, and deadlocks")
+
+        ns.define("deadlock",
+            "Two or more agents each holding a resource the other needs, waiting forever",
+            description="Agent A holds resource X and needs Y. Agent B holds Y and needs X. Both wait forever. In the fleet's cuda-lock, deadlock is detected via wait-for graph cycle detection. Four conditions must ALL be present: mutual exclusion, hold-and-wait, no preemption, circular wait. Break any one to resolve.",
+            level=Level.BEHAVIOR,
+            examples=["database deadlock: transaction A locks table 1, B locks table 2, both need the other", "fleet: two agents each hold a sensor the other needs", "traffic gridlock"],
+            bridges=["resource-contention", "lock", "cycle-detection", "preemption"],
+            tags=["concurrency", "failure-mode", "coordination"])
+
+        ns.define("race-condition",
+            "Outcome depends on the timing of uncontrollable events — non-deterministic bugs",
+            description="Two agents check 'is resource free?' -> both see yes -> both claim it -> conflict. The order of operations matters and is not guaranteed. In the fleet: two agents trying to update the same gene in the gene pool simultaneously. The solution is atomic operations or locks. Race conditions are especially insidious because they're intermittent.",
+            level=Level.BEHAVIOR,
+            examples=["two threads updating shared counter simultaneously", "two agents claiming same resource at same time", "double-spend in cryptocurrency without consensus", "web form double-submit"],
+            bridges=["atomicity", "lock", "concurrency", "non-determinism"],
+            tags=["concurrency", "failure-mode", "timing"])
+
+        ns.define("livelock",
+            "Agents repeatedly change state in response to each other but make no progress",
+            description="Two people walking toward each other in a hallway: both step left, both step right, both step left... They're not stuck (not deadlocked) but they're not making progress either. In the fleet: two agents repeatedly backing off and retrying without ever completing the operation. Exponential backoff with jitter (cuda-retry) prevents livelock.",
+            level=Level.BEHAVIOR,
+            examples=["hallway two-step dance", "network collision: both wait random time before retry", "two agents backing off and retrying simultaneously"],
+            bridges=["deadlock", "backoff", "progress", "retry"],
+            tags=["concurrency", "failure-mode", "coordination"])
+
+        ns.define("eventual-consistency",
+            "System will reach consistency given enough time without new updates",
+            description="Not immediately consistent. Eventually consistent. Like sending letters: recipients don't all get them at the same time, but eventually everyone has the latest information. The fleet's CRDTs (cuda-crdt) provide eventual consistency: agents may briefly disagree but will converge. Good enough for coordination, not good enough for accounting.",
+            level=Level.PATTERN,
+            examples=["email vs phone: phone is immediately consistent, email is eventually", "fleet CRDTs: agents briefly disagree, then converge", "DNS propagation: not instant, but eventual"],
+            bridges=["consistency", "crdt", "convergence", "latency"],
+            tags=["concurrency", "distributed", "consistency", "fleet"])
+
+        ns.define("herd-effect",
+            "Many agents doing the same thing at the same time because they all react to the same trigger",
+            description="Thunderclap: all animals flee simultaneously. Market crash: all sell simultaneously. Cache stampede: all agents miss cache at once and hit the database simultaneously. In the fleet: when the leader agent fails, all agents simultaneously try to elect themselves. Jitter and randomized backoff prevent herd effects.",
+            level=Level.BEHAVIOR,
+            examples=["cache stampede on cache expiry", "thundering herd on leader failure", "market panic selling", "all students submitting assignment at 11:59 PM"],
+            bridges=["synchronization", "race-condition", "backoff", "contagion"],
+            tags=["concurrency", "pattern", "failure-mode"])
+
+    def _load_design_patterns(self):
+        ns = self.add_namespace("design-patterns",
+            "Reusable solutions to recurring design problems in agent systems")
+
+        ns.define("sidecar",
+            "A helper process attached to a primary agent, providing cross-cutting concerns",
+            description="Like a motorcycle sidecar: the main vehicle does the primary work, the sidecar provides support. In the fleet: a monitoring agent runs alongside a navigation agent, providing health checks, logging, and alerting without the navigation agent needing to know about monitoring. Separation of concerns via co-location.",
+            level=Level.PATTERN,
+            examples=["Istio sidecar proxy for service mesh", "monitoring agent alongside navigation agent", "log collector sidecar for main application container"],
+            bridges=["monitoring", "separation-of-concerns", "co-location", "auxiliary"],
+            tags=["patterns", "architecture", "deployment"])
+
+        ns.define("ambassador",
+            "A proxy that represents a remote service locally, handling communication details",
+            description="An ambassador sits between local agents and a remote service, handling retries, circuit breaking, and protocol translation. Local agents talk to the ambassador as if it were the remote service. In the fleet: cuda-fleet-mesh's routing layer acts as an ambassador, abstracting away which agent actually handles a request.",
+            level=Level.PATTERN,
+            examples=["database connection pool as ambassador to database server", "API gateway as ambassador to microservices", "fleet mesh router as ambassador to remote agents"],
+            bridges=["proxy", "abstraction", "routing", "interface"],
+            tags=["patterns", "architecture", "proxy"])
+
+        ns.define("adapter",
+            "Converting between incompatible interfaces so that components can work together",
+            description="US plug to European outlet adapter. The adapter doesn't change functionality, just the interface shape. In the fleet: when an agent uses a different message format than expected, an adapter translates. cuda-serializer provides encoding/decoding that acts as an adapter between different agent communication protocols.",
+            level=Level.PATTERN,
+            examples=["US to EU power adapter", "HDMI to VGA adapter", "fleet: message format adapter between different agent versions", "API adapter layer between old and new services"],
+            bridges=["interface", "compatibility", "translation", "structural-coupling"],
+            tags=["patterns", "interface", "compatibility"])
+
+        ns.define("observer",
+            "One agent publishes events, multiple subscribers react without the publisher knowing who they are",
+            description="Weather station publishes temperature. Thermometer, HVAC, and logging system all subscribe. The weather station doesn't know or care who subscribes. In the fleet's cuda-observer: reactive signals propagate changes to subscribers. The cuda-event provides pub/sub event bus. Decouples publisher from subscribers.",
+            level=Level.PATTERN,
+            examples=["RSS feed: publisher doesn't know subscribers", "DOM events: click handler doesn't know about other handlers", "fleet: agent publishes 'obstacle detected', navigation and planning agents both react"],
+            bridges=["pub-sub", "decoupling", "event-driven", "reactive"],
+            tags=["patterns", "architecture", "decoupling"])
+
+        ns.define("strategy",
+            "Defining a family of algorithms, encapsulating each, and making them interchangeable",
+            description="Navigation strategy: A*, Dijkstra, RRT. All solve pathfinding. The agent selects the best one based on context. In the fleet's cuda-adaptation: agents maintain multiple strategies and switch between them based on performance. cuda-playbook stores strategies. The strategy pattern enables runtime algorithm selection.",
+            level=Level.PATTERN,
+            examples=["sorting: quicksort vs mergesort, selected based on data characteristics", "navigation: A* for grid, RRT for open space", "fleet: switch from exploration strategy to exploitation strategy based on energy"],
+            bridges=["algorithm-selection", "adaptation", "polymorphism", "playbook"],
+            tags=["patterns", "algorithm", "flexibility"])
+
+        ns.define("command",
+            "Encapsulating a request as an object, enabling queuing, logging, and undo",
+            description="Instead of calling `agent.move(x, y)` directly, create a `MoveCommand(x, y)` object. The command can be queued, logged, serialized, sent over network, or undone. In the fleet's cuda-persistence: commands are logged for recovery. cuda-stream treats events as commands. The command pattern is the foundation of reliable agent communication.",
+            level=Level.PATTERN,
+            examples=["text editor undo/redo via command objects", "job queue: commands queued for workers", "fleet: A2A messages as commands that can be logged, replayed, and undone"],
+            bridges=["persistence", "undo", "queue", "serialization"],
+            tags=["patterns", "encapsulation", "reliability"])
+
+    def _load_measurement(self):
+        ns = self.add_namespace("measurement",
+            "Quantifying agent behavior, performance, and system health")
+
+        ns.define("latency",
+            "Time between a request and its response — how fast the system reacts",
+            description="From the moment an agent sends a message to the moment it gets a response. Latency matters because it compounds: 10 agents in a chain each adding 100ms latency = 1 second total. The fleet monitors P50, P95, and P99 latency (cuda-metrics-v2) to detect degradation. P50 is normal. P95 is worst-case. P99 is pathological.",
+            level=Level.CONCRETE,
+            examples=["website response time: 200ms", "A2A message round-trip: 50ms", "P99 latency spike reveals rare slow path", "human reaction time: ~250ms"],
+            bridges=["throughput", "sla", "health-check", "p95-p99"],
+            tags=["measurement", "performance", "latency"])
+
+        ns.define("throughput",
+            "Number of operations completed per unit time — how much work the system handles",
+            description="Requests per second. Messages per cycle. Tasks per hour. Latency and throughput trade off: maximizing throughput often means accepting higher latency (batching). The fleet's cuda-pipeline tracks throughput. cuda-rate-limit and cuda-backpressure manage throughput to prevent overload.",
+            level=Level.CONCRETE,
+            examples=["web server: 10,000 requests per second", "agent: 50 sensor readings per second", "fleet: 100 A2A messages per cycle"],
+            bridges=["latency", "capacity", "rate-limit", "pipeline"],
+            tags=["measurement", "performance", "throughput"])
+
+        ns.define("sla",
+            "Service Level Agreement — contractual guarantee of system performance",
+            description="'99.9% uptime' is an SLA. 'P95 latency under 200ms' is an SLA. The fleet's cuda-contract implements SLA clauses with compliance tracking. When SLA violations accumulate, penalties apply. SLAs create accountability and set expectations. They're also leverage points: changing an SLA changes behavior.",
+            level=Level.CONCRETE,
+            examples=["'99.9% uptime guarantee'", "'P95 response time under 100ms'", "fleet contract: 'navigation accuracy above 0.9 for 95% of requests'"],
+            bridges=["contract", "compliance", "accountability", "penalty"],
+            tags=["measurement", "contract", "accountability"])
+
+        ns.define("technical-debt",
+            "The cost of choosing a quick solution over a better one that would take longer",
+            description="Like financial debt: you borrow time now (quick hack), but pay interest later (maintenance burden). If debt grows too large, you go bankrupt (rewrite). In the fleet: genes that are 'good enough' accumulate as technical debt in the gene pool. They work but they're not optimal. Periodic refactoring (gene evolution) pays down the debt.",
+            level=Level.META,
+            examples=["copy-paste code instead of abstraction", "hardcoded config instead of proper config system", "agent using quick-and-dirty strategy instead of optimal one", "temporary workaround that becomes permanent"],
+            bridges=["debt", "maintenance", "refactoring", "tradeoff"],
+            tags=["measurement", "debt", "maintenance", "engineering"])
+
+        ns.define("observability",
+            "Understanding what's happening inside a system from its external outputs",
+            description="Three pillars: logs (what happened), metrics (how much), traces (where). You can't fix what you can't see. The fleet's cuda-logging (logs), cuda-metrics (metrics), cuda-provenance (traces), and cuda-observer (reactive) provide full observability. Without observability, fleet debugging is guesswork.",
+            level=Level.PATTERN,
+            examples=["log aggregation for debugging", "metric dashboards for monitoring", "distributed tracing for request flow", "fleet: provenance trail for decision audit"],
+            bridges=["logging", "metrics", "tracing", "monitoring"],
+            tags=["measurement", "monitoring", "debugging", "fleet"])
+
+    def _load_time(self):
+        ns = self.add_namespace("time",
+            "Temporal reasoning, timing, and the role of time in agent systems")
+
+        ns.define("real-time",
+            "System must respond within a guaranteed time bound — not just fast, but predictably fast",
+            description="Airbag must deploy within 50ms. Not 100ms average, but 50ms EVERY TIME. Real-time systems have hard deadlines. Soft real-time: try to meet deadline but degrade gracefully if missed. The fleet operates in soft real-time: deliberation should complete within N cycles, but the system degrades (falls back to instinct) if the deadline is missed.",
+            level=Level.DOMAIN,
+            examples=["airbag deployment: hard real-time", "video game: soft real-time (30fps target)", "fleet deliberation: soft real-time (complete within N cycles or fall back to instinct)"],
+            bridges=["deadline", "soft-real-time", "determinism", "graceful-degradation"],
+            tags=["time", "real-time", "deadline"])
+
+        ns.define("time-to-live",
+            "Data expires after a specified duration — automatic garbage collection for temporal data",
+            description="Cache entry valid for 60 seconds. DNS record valid for 300 seconds. Fleet message valid for 5 cycles. After TTL expires, the data is stale and should be discarded. The fleet uses TTL extensively: memory entries decay, trust decays, attention habituates. TTL is temporal garbage collection.",
+            level=Level.CONCRETE,
+            examples=["cache TTL: 60 seconds", "DNS TTL: 300 seconds", "fleet message TTL: 5 cycles", "session timeout: 30 minutes"],
+            bridges=["decay", "expiry", "garbage-collection", "temporal"],
+            tags=["time", "expiry", "cache", "temporal"])
+
+        ns.define("causality",
+            "The relationship between cause and effect — A must precede B for A to cause B",
+            description="Cause always precedes effect. In distributed systems, establishing causality is hard: agent A sent a message before agent B acted, but clocks may not be synchronized. The fleet's cuda-crdt VectorClock provides causal ordering: event C happens-after event D if every process that saw D also saw C. Causality determines what agents can know and when.",
+            level=Level.DOMAIN,
+            examples=["cause precedes effect", "vector clock: event C causally after event D", "fleet: agent can't respond to a message it hasn't received yet (causal constraint)", "git: commit history is causal chain"],
+            bridges=["vector-clock", "temporal-ordering", "precedence", "distributed"],
+            tags=["time", "causality", "ordering", "distributed"])
+
+        ns.define("warm-up",
+            "Initial period where system performance is below steady state as caches fill and models calibrate",
+            description="A cold engine runs rough until it warms up. A model makes bad predictions on its first inputs. The fleet's agents have a warm-up period: initial confidence is low, trust hasn't been established, memory is empty. During warm-up, agents should rely more on instincts and less on deliberation. cuda-metrics tracks warm-up vs steady-state performance separately.",
+            level=Level.BEHAVIOR,
+            examples=["engine warm-up: poor performance until operating temperature", "ML model: first N predictions less accurate", "fleet agent: low confidence and trust at startup, needs warm-up period"],
+            bridges=["cold-start", "calibration", "latency", "steady-state"],
+            tags=["time", "startup", "performance"])
 
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics",
