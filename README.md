@@ -1,6 +1,6 @@
 # Higher Abstraction Vocabularies (HAV)
 
-**1988 terms across 290 domains** — the exhaustive vocabulary engine for precision ideation.
+**1992 terms across 291 domains** — the exhaustive vocabulary engine for precision ideation.
 
 > Each term compresses paragraphs of explanation into a single word. The vocabulary IS the manual. High-abstraction vocabulary IS the drone above the corn maze.
 
