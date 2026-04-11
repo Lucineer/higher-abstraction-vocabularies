@@ -7527,6 +7527,14 @@ class HAV:
         ns.define("hydrophobic_core_collapse","Driving force of nonpolar side chains burying inward during folding initiation phase",Level=Level.CONCRETE,examples=["hydrophobic_core_collapse"],bridges=["flux:hydrophobic_core_collapse"])
         self.namespaces.append(ns)
 
+    def _load_numismatic_signaling(self):
+        ns=Namespace("numismatic_signaling")
+        ns.define("coin_debasement_signal","Progressive reduction of precious metal content in currency indicating fiscal stress and trust erosion in issuing authority",Level=Level.CONCRETE,examples=["coin_debasement_signal"],bridges=["flux:coin_debasement_signal"])
+        ns.define("seigniorage_extraction_rate","Revenue margin between face value and production cost of currency captured by the monetary authority",Level=Level.CONCRETE,examples=["seigniorage_extraction_rate"],bridges=["flux:seigniorage_extraction_rate"])
+        ns.define("specie_reserves_ratio","Proportion of physical gold or silver backing paper currency determining convertibility confidence",Level=Level.CONCRETE,examples=["specie_reserves_ratio"],bridges=["flux:specie_reserves_ratio"])
+        ns.define("counterfeit_deterrence_layer","Multi-factor security features in physical currency designed to increase detection probability of forged notes",Level=Level.CONCRETE,examples=["counterfeit_deterrence_layer"],bridges=["flux:counterfeit_deterrence_layer"])
+        self.namespaces.append(ns)
+
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics", "Deep-mined from fleet source code")
         ns.define("temperature-confidence-fusion", 'When multiple confidence values must be combined, harmonic mean prevents any single low confidence from being hidden — worst signal dominates', Level=Level.PATTERN, examples=["harmonic_mean of confidences: sensor(0.9) * model(0.3) / avg = low", "chain strength = weakest link", "security: system security = minimum of all component securities"], bridges=["harmonic", "mean", "fusion", "confidence"], tags=["mathematics", "harmonic", "mean"])
