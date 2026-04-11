@@ -7499,6 +7499,34 @@ class HAV:
         ns.define("ultradian","Relating to biological rhythms or cycles that occur more frequently than once every 24 hours, such as the 90-minute sleep cycle.",Level=Level.CONCRETE,examples=["ultradian"],bridges=["flux:ultradian"])
         self.namespaces.append(ns)
 
+    def _load_seismic_waveform(self):
+        ns=Namespace("seismic_waveform")
+        ns.define("p_wave_arrival_pick","Automatic detection of compressional wave first arrival time for earthquake location calculation",Level=Level.CONCRETE,examples=["p_wave_arrival_pick"],bridges=["flux:p_wave_arrival_pick"])
+        ns.define("surface_wave_dispersion","Frequency-dependent velocity variation of Rayleigh and Love waves revealing subsurface structure",Level=Level.CONCRETE,examples=["surface_wave_dispersion"],bridges=["flux:surface_wave_dispersion"])
+        ns.define("coda_wave_decay","Energy attenuation pattern in waveform tail encoding scattering properties of earth medium",Level=Level.CONCRETE,examples=["coda_wave_decay"],bridges=["flux:coda_wave_decay"])
+        self.namespaces.append(ns)
+
+    def _load_industrial_robotics(self):
+        ns=Namespace("industrial_robotics")
+        ns.define("inverse_kinematics_singularity","Configuration region where robot manipulator loses degrees of freedom causing unpredictable motion",Level=Level.CONCRETE,examples=["inverse_kinematics_singularity"],bridges=["flux:inverse_kinematics_singularity"])
+        ns.define("tool_center_point_calibration","Precise mapping between end-effector frame and actual tool tip position using reference measurements",Level=Level.CONCRETE,examples=["tool_center_point_calibration"],bridges=["flux:tool_center_point_calibration"])
+        ns.define("collision_reaction_threshold","Force-torque monitoring enabling immediate motion halt upon unexpected contact detection",Level=Level.CONCRETE,examples=["collision_reaction_threshold"],bridges=["flux:collision_reaction_threshold"])
+        self.namespaces.append(ns)
+
+    def _load_plasma_physics(self):
+        ns=Namespace("plasma_physics")
+        ns.define("magnetic_confinement_beta","Ratio of plasma thermal pressure to magnetic field pressure determining fusion reactor stability",Level=Level.CONCRETE,examples=["magnetic_confinement_beta"],bridges=["flux:magnetic_confinement_beta"])
+        ns.define("tokamak_disruption_ramp","Sudden plasma confinement loss releasing thermal energy as heat pulse onto reactor wall",Level=Level.CONCRETE,examples=["tokamak_disruption_ramp"],bridges=["flux:tokamak_disruption_ramp"])
+        ns.define("langmuir_probe_sheath","Electrostatic boundary layer at plasma-material interface affecting measurement accuracy",Level=Level.CONCRETE,examples=["langmuir_probe_sheath"],bridges=["flux:langmuir_probe_sheath"])
+        self.namespaces.append(ns)
+
+    def _load_protein_folding(self):
+        ns=Namespace("protein_folding")
+        ns.define("contact_map_prediction","Pairwise residue distance matrix estimation from sequence enabling tertiary structure reconstruction",Level=Level.CONCRETE,examples=["contact_map_prediction"],bridges=["flux:contact_map_prediction"])
+        ns.define("alpha_helix_propensity","Amino acid intrinsic tendency to form right-handed helical conformations based on backbone dihedral angles",Level=Level.CONCRETE,examples=["alpha_helix_propensity"],bridges=["flux:alpha_helix_propensity"])
+        ns.define("hydrophobic_core_collapse","Driving force of nonpolar side chains burying inward during folding initiation phase",Level=Level.CONCRETE,examples=["hydrophobic_core_collapse"],bridges=["flux:hydrophobic_core_collapse"])
+        self.namespaces.append(ns)
+
     def _load_mathematics(self):
         ns = self.add_namespace("mathematics", "Deep-mined from fleet source code")
         ns.define("temperature-confidence-fusion", 'When multiple confidence values must be combined, harmonic mean prevents any single low confidence from being hidden — worst signal dominates', Level=Level.PATTERN, examples=["harmonic_mean of confidences: sensor(0.9) * model(0.3) / avg = low", "chain strength = weakest link", "security: system security = minimum of all component securities"], bridges=["harmonic", "mean", "fusion", "confidence"], tags=["mathematics", "harmonic", "mean"])
